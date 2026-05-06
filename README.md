@@ -5,9 +5,16 @@ Connect any LLM agent to any REST API without writing custom integration code.
 
 ## What is Invok?
 
-Invok acts as a universal bridge between MCP clients (Claude Desktop, Cursor, Continue, etc.) and external REST APIs. Define API providers and tools once, and any MCP-compatible agent can discover and call them dynamically.
+Invok acts as a universal bridge between MCP clients (Claude Desktop, Cursor, Antigravity, etc.) and external REST APIs. Define API providers and tools once, and any MCP-compatible agent can discover and call them dynamically.
+
+- **No auth required** — runs locally, everything is public
+- **No API keys exposed to LLMs** — secrets are encrypted with Jasypt and injected server-side
+- **OpenAPI import** — paste a Swagger/OpenAPI spec and get tools instantly
+- **Export/Import** — share tool definitions as portable JSON
 
 ## Quick Start
+
+### Docker
 
 ```bash
 docker compose up
@@ -15,9 +22,65 @@ docker compose up
 
 The app starts on `http://localhost:8080` and a SQLite database is created automatically at `data/invok.db`.
 
-On first run, a demo provider (JSONPlaceholder) with a `get_posts` tool is seeded automatically.
+### Local
 
-## Defining your first provider + tool
+```bash
+./mvnw spring-boot:run
+```
+
+Then open `http://localhost:8080` in your browser to access the web UI.
+
+## Connect from an MCP client
+
+### Streamable HTTP (remote)
+
+```json
+{
+  "mcpServers": {
+    "invok": {
+      "type": "streamable-http",
+      "url": "http://localhost:8080/mcp"
+    }
+  }
+}
+```
+
+### Bridge (stdio)
+
+Download the [Invok Bridge](https://github.com/Vrivaans/handsai-bridge/releases) binary for your OS, then:
+
+**Claude Desktop** (`claude_desktop_config.json`):
+```json
+{
+  "mcpServers": {
+    "invok": {
+      "command": "/path/to/invok-mcp",
+      "args": ["mcp"]
+    }
+  }
+}
+```
+
+**VS Code** (`.vscode/settings.json`):
+```json
+{
+  "mcp": {
+    "servers": {
+      "invok": {
+        "command": "/path/to/invok-mcp",
+        "args": ["mcp"]
+      }
+    }
+  }
+}
+```
+
+Create a `config.json` next to the bridge binary to set the Invok URL:
+```json
+{"invokUrl": "http://localhost:8080/"}
+```
+
+## Defining providers and tools
 
 ### Create a provider
 
@@ -67,21 +130,6 @@ curl -X POST http://localhost:8080/api/import \
 curl http://localhost:8080/api/export > my-tools.json
 ```
 
-## Connect from an MCP client
-
-Add to your MCP client configuration:
-
-```json
-{
-  "mcpServers": {
-    "invok": {
-      "type": "http",
-      "url": "http://localhost:8080/mcp"
-    }
-  }
-}
-```
-
 ## API Reference
 
 | Method | Endpoint | Description |
@@ -96,24 +144,31 @@ Add to your MCP client configuration:
 | `DELETE` | `/api/tools/{id}` | Delete tool |
 | `POST` | `/api/tools/{id}/validate` | Health check tool |
 | `POST` | `/api/tools/batch` | Create tools in batch |
+| `POST` | `/api/tools/call` | Execute a tool directly |
 | `POST` | `/api/import` | Import (Invok or OpenAPI format) |
 | `GET` | `/api/export` | Export all definitions |
-| `POST` | `/mcp` | MCP JSON-RPC endpoint |
-| `GET` | `/mcp/tools/list` | List tools (legacy) |
-| `POST` | `/mcp/tools/call` | Call tool (legacy) |
+| `GET` | `/api/guide` | Integration guide (also available as `invok_guide` tool for LLMs) |
+| `POST` | `/mcp` | MCP JSON-RPC (Streamable HTTP) |
+| `GET` | `/mcp/tools/list` | List tools (legacy bridge) |
+| `POST` | `/mcp/tools/call` | Call tool (legacy bridge) |
 
-## Compatibility with Invok SaaS
+## Environment Variables
 
-The import/export format is compatible with the Invok SaaS platform. You can export definitions from the OSS version and import them into the SaaS version, and vice versa.
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `PORT` | `8080` | Server port |
+| `JASYPT_ENCRYPTOR_PASSWORD` | `invok-oss-default-key` | Encryption key for stored secrets |
+| `invok.health-check.enabled` | `false` | Enable automatic periodic health checks |
 
 ## Tech Stack
 
-- Java 21
+- Java 21 with Virtual Threads
 - Spring Boot 3.5.4
-- SQLite
-- Hibernate with Community Dialects
+- SQLite via Hibernate Community Dialects
 - Jasypt for secret encryption
+- Angular 19 frontend with i18n (EN/ES)
 - GraalVM Native Image compatible
+- Docker support
 
 ## License
 
