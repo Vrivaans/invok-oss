@@ -1,0 +1,306 @@
+<div class="home-page container">
+  <header class="home-header">
+    <span class="home-label">{{ 'HOME.PAGE_LABEL' | translate }}</span>
+    <h1 class="home-brand"><span class="brand-accent">Inv</span>ok</h1>
+    <p class="home-tagline">{{ 'HOME.TITLE' | translate }}</p>
+    <div class="home-actions">
+      <button type="button" class="btn primary home-export-btn" (click)="openExportModal()">
+        <span class="home-export-icon" aria-hidden="true">☁️</span> {{ 'HOME.EXPORT_BUTTON' | translate }}
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <div class="grid">
+      <!-- Stored Tools Section -->
+
+      <div class="card">
+        <div class="card-header">
+          <h2>{{ 'HOME.SAVED_TOOLS_TITLE' | translate }}</h2>
+          <div class="home-card-meta">
+            <span class="provider-status-hint">🟢 {{ 'HOME.ACTIVE' | translate }} &nbsp; ⚪ {{ 'HOME.INACTIVE' | translate }}</span>
+            <span class="badge secondary">{{ storedTools.length }}</span>
+          </div>
+        </div>
+        <p class="description">{{ 'HOME.DESCRIPTION' | translate }}</p>
+
+        <div class="tool-list">
+          @for (group of groupedStoredTools; track group.providerName) {
+          <details class="provider-group">
+            <summary>
+              <div class="provider-summary-left">
+                <span class="provider-folder-icon" aria-hidden="true">📁</span>
+                {{ group.providerName }}
+              </div>
+              <div class="provider-summary-right">
+                <span class="badge secondary" style="font-size: 0.8rem;">{{ 'HOME.TOOLS_COUNT' | translate: {count: group.tools.length} }}</span>
+                <button *ngIf="group.providerId !== undefined" type="button" class="delete-btn delete-btn-icon"
+                   (click)="deleteProvider(group.providerId, group.providerName, $event)"
+                   [title]="'HOME.DELETE_PROVIDER_TITLE' | translate">🗑️</button>
+              </div>
+            </summary>
+
+            <div class="provider-group-body">
+              @for (tool of group.tools; track tool.id) {
+              <div class="tool-item"
+                (click)="openEditModal(tool)" title="Editar herramienta">
+                <div class="tool-icon" [class.disabled]="!tool.enabled">
+                  {{ tool.enabled ? '🟢' : '⚪' }}
+                </div>
+                <div class="tool-content">
+                  <h3>{{ tool.name }}</h3>
+                  <code class="tool-code">{{ tool.code }}</code>
+                  <p>{{ tool.description }}</p>
+                </div>
+                <div class="tool-status home-card-meta">
+                  <span class="status-tag" [class.success]="tool.healthy" [class.error]="!tool.healthy">
+                    {{ (tool.healthy ? 'HOME.STATUS_HEALTHY' : 'HOME.STATUS_UNHEALTHY') | translate }}
+                  </span>
+                  <button *ngIf="tool.id !== undefined" type="button" class="delete-btn delete-btn-icon"
+                    (click)="deleteTool(tool.id, tool.name, $event)"
+                    [title]="'HOME.DELETE_TOOL' | translate">🗑️</button>
+                </div>
+              </div>
+              }
+            </div>
+          </details>
+          } @empty {
+          <p class="empty-state">{{ 'HOME.EMPTY_STATE' | translate }}</p>
+          }
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Welcome Onboarding Modal -->
+  @if (showWelcomeModal) {
+  <div class="modal-overlay" (click)="closeWelcomeModal()">
+    <div class="modal-content modal-welcome" (click)="$event.stopPropagation()">
+      <h2 class="modal-welcome-title">Welcome to Invok!</h2>
+      <p class="modal-welcome-text">
+        Has configurado todo correctamente. Ahora podés conectar tu agente MCP y empezar a crear herramientas increíbles.
+      </p>
+      <div class="modal-actions">
+        <button type="button" class="btn primary" (click)="closeWelcomeModal()">
+          ¡Empezar a explorar!
+        </button>
+      </div>
+    </div>
+  </div>
+  }
+
+  <!-- Delete Confirmation Modal -->
+  @if (showDeleteModal) {
+  <div class="modal-overlay" (click)="closeDeleteModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <h3>{{ 'MODALS.CONFIRM_DELETE' | translate }}</h3>
+      <p>¿Estás seguro de que deseas eliminar la herramienta <strong>{{ toolToDeleteName }}</strong>?</p>
+      <div class="modal-actions">
+        <button type="button" class="btn secondary" (click)="closeDeleteModal()">{{ 'MODALS.CANCEL' | translate }}</button>
+        <button type="button" class="btn danger" (click)="confirmDelete()">{{ 'MODALS.DELETE' | translate }}</button>
+      </div>
+    </div>
+  </div>
+  }
+
+  <!-- Delete Provider Confirmation Modal -->
+  @if (showDeleteProviderModal) {
+  <div class="modal-overlay" (click)="closeDeleteProviderModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <h3>{{ 'MODALS.CONFIRM_DELETE_PROVIDER' | translate }}</h3>
+      <p>¿Estás seguro de que deseas eliminar el proveedor <strong>{{ providerToDeleteName }}</strong> y <strong>todas
+          sus herramientas asociadas</strong>?</p>
+      <div class="modal-actions">
+        <button type="button" class="btn secondary" (click)="closeDeleteProviderModal()">{{ 'MODALS.CANCEL' | translate }}</button>
+        <button type="button" class="btn danger" (click)="confirmDeleteProvider()">{{ 'MODALS.DELETE_ALL' | translate }}</button>
+      </div>
+    </div>
+  </div>
+  }
+
+  <!-- Edit Tool Modal -->
+  @if (showEditModal) {
+  <div class="modal-overlay" (click)="closeEditModal()">
+    <div class="modal-content modal--wide" (click)="$event.stopPropagation()">
+      <h3 class="modal-title">Editar Herramienta</h3>
+      <p class="modal-lead">Modifica los parámetros de configuración de esta herramienta.
+      </p>
+
+      <form class="edit-form" [formGroup]="editForm" (ngSubmit)="saveEditChanges()">
+        <div class="form-group">
+          <label for="edit-name">Nombre <span class="form-required">*</span></label>
+          <input id="edit-name" type="text" formControlName="name" placeholder="Ej. Servicio de clima" />
+          <div *ngIf="editForm.get('name')?.invalid && editForm.get('name')?.touched" class="error-msg">
+            El nombre es requerido.
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="edit-code">Código Único (Opcional)</label>
+          <input id="edit-code" type="text" formControlName="code" placeholder="Ej. api-clima" />
+        </div>
+
+        <div class="form-group">
+          <label for="edit-description">Descripción <span class="form-required">*</span></label>
+          <textarea id="edit-description" formControlName="description" rows="3"
+            placeholder="Describe qué hace esta herramienta..."></textarea>
+          <div *ngIf="editForm.get('description')?.invalid && editForm.get('description')?.touched" class="error-msg">
+            La descripción es requerida.
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="edit-path">Endpoint Path <span class="form-required">*</span></label>
+          <input id="edit-path" type="text" formControlName="endpointPath" placeholder="Ej. /v1/current.json" />
+          <div *ngIf="editForm.get('endpointPath')?.invalid && editForm.get('endpointPath')?.touched" class="error-msg">
+            El path es requerido.
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="edit-method">Método HTTP <span class="form-required">*</span></label>
+          <select id="edit-method" formControlName="httpMethod">
+            <option value="GET">GET</option>
+            <option value="POST">POST</option>
+            <option value="PUT">PUT</option>
+            <option value="DELETE">DELETE</option>
+            <option value="PATCH">PATCH</option>
+          </select>
+        </div>
+
+        <div class="form-group" style="margin-top: 1rem;"
+          *ngIf="editForm.get('httpMethod')?.value === 'POST' || editForm.get('httpMethod')?.value === 'PUT' || editForm.get('httpMethod')?.value === 'PATCH'">
+          <label for="edit-bodyTemplate">Body Payload Template (Opcional)</label>
+          <textarea id="edit-bodyTemplate" class="code-textarea" formControlName="bodyPayloadTemplate" rows="4"
+            placeholder='Ejemplo: {&#10;  "sourceContext": {&#10;    "source": "{tu_parametro}"&#10;  }&#10;}'></textarea>
+          <small class="field-hint">
+            Usá <code ngNonBindable>{{nombre_del_parametro}}</code> para inyectar dinámicamente el valor suministrado por el LLM
+            en una estructura JSON compleja. Dejalo vacío para enviar los parámetros como un diccionario JSON plano.
+          </small>
+        </div>
+
+        <div class="form-group checkbox-group" style="margin-top: 0.5rem; margin-bottom: 0.5rem;">
+          <input id="edit-enabled" type="checkbox" formControlName="enabled" />
+          <label for="edit-enabled">Habilitar esta herramienta para el agente activo</label>
+        </div>
+
+        <div class="form-group checkbox-group" style="margin-top: 0.5rem; margin-bottom: 1.5rem;">
+          <input id="edit-healthy" type="checkbox" formControlName="healthy" />
+          <label for="edit-healthy">Marcar como saludable (uncheck si sabés que falla)</label>
+        </div>
+
+        <!-- Parameters Section -->
+        <div class="form-group full-width section-title" style="margin-top: 2rem;">
+          <div class="section-heading">
+            <h4>Parámetros</h4>
+            <button type="button" class="btn secondary btn-add-param" (click)="addParameter()">+ Añadir Parámetro</button>
+          </div>
+
+          <div formArrayName="parameters" class="parameters-list"
+            style="display: flex; flex-direction: column; gap: 1rem;">
+            <div *ngFor="let param of parameters.controls; let i=index" [formGroupName]="i" class="parameter-row param-card">
+
+              <button type="button" class="btn delete-btn param-remove" (click)="removeParameter(i)" title="Eliminar parámetro">🗑️</button>
+
+              <div class="param-fields">
+                <div class="form-group param-input-tight">
+                  <label class="param-label-sm">Nombre <span class="form-required">*</span></label>
+                  <input type="text" formControlName="name" placeholder="Ej. q">
+                </div>
+
+                <div class="form-group param-input-tight">
+                  <label class="param-label-sm">Tipo <span class="form-required">*</span></label>
+                  <select formControlName="type">
+                    <option value="STRING">String</option>
+                    <option value="NUMBER">Number</option>
+                    <option value="BOOLEAN">Boolean</option>
+                    <option value="ARRAY">Array</option>
+                  </select>
+                </div>
+
+                <div class="form-group full-width param-full param-input-tight">
+                  <label class="param-label-sm">Descripción
+                    <span class="form-required">*</span></label>
+                  <input type="text" formControlName="description" placeholder="Ej. Nombre de la ciudad">
+                </div>
+
+                <div class="form-group checkbox-group param-full" style="padding-top: 0.5rem;">
+                  <input type="checkbox" [id]="'edit-required-'+i" formControlName="required" />
+                  <label [for]="'edit-required-'+i">Requerido</label>
+                </div>
+              </div>
+            </div>
+
+            <div *ngIf="parameters.controls.length === 0" class="empty-params">
+              <p>Esta herramienta no tiene
+                parámetros definidos.</p>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="error" class="alert error" style="margin-top: 15px;">{{ error }}</div>
+
+        <div class="modal-actions">
+          <button type="button" class="btn secondary" (click)="closeEditModal()">Cancelar</button>
+          <button type="submit" class="btn primary" [disabled]="isSubmittingEdit || editForm.invalid">
+            <span *ngIf="!isSubmittingEdit">Guardar Cambios</span>
+            <span *ngIf="isSubmittingEdit">Guardando...</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+  }
+  <!-- Export Modal -->
+  @if (showExportModal) {
+  <div class="modal-overlay" (click)="closeExportModal()">
+    <div class="modal-content modal--wide modal--wide-lg" (click)="$event.stopPropagation()">
+      <h3 class="modal-title">Exportar Herramientas Públicas</h3>
+      <p class="modal-lead">Crea un archivo JSON con los proveedores y herramientas
+        exportables para compartir con otros agentes y plataformas.</p>
+
+      <div class="export-panel">
+        <div class="export-panel-head">
+          <h4>Proveedores Disponibles ({{exportableProviders.length}})</h4>
+          <button type="button" class="btn secondary btn-select-all" (click)="selectAllExport()">
+            {{ selectedExportIds.size === exportableProviders.length ? 'Desmarcar Todos' : 'Seleccionar Todos' }}
+          </button>
+        </div>
+
+        @if (exportableProviders.length === 0) {
+        <p class="export-empty">No hay herramientas públicas
+          disponibles para exportar.</p>
+        } @else {
+        <div class="export-list">
+          @for (provider of exportableProviders; track provider.name; let idx = $index) {
+          <div class="card export-card"
+            [class.export-card--selected]="selectedExportIds.has(idx)"
+            (click)="toggleExportSelection(idx)">
+            <div class="export-card-inner">
+              <div>
+                <h5 class="export-card-title">{{provider.name}}</h5>
+                <p class="export-card-meta">{{provider.baseUrl}} •
+                  {{provider.tools.length}} herramientas</p>
+              </div>
+              <div class="export-check" [class.export-check--on]="selectedExportIds.has(idx)">
+                <span *ngIf="selectedExportIds.has(idx)">✓</span>
+              </div>
+            </div>
+          </div>
+          }
+        </div>
+        }
+      </div>
+
+      <div class="modal-actions" style="margin-top: 2rem;">
+        <button type="button" class="btn text-btn" (click)="closeExportModal()">Cancelar</button>
+        <button type="button" class="btn primary" (click)="exportSelectedProviders()"
+          [disabled]="isExporting || exportableProviders.length === 0">
+          <span *ngIf="!isExporting">Descargar JSON ({{ selectedExportIds.size > 0 ? selectedExportIds.size : 'Todos los' }} proveedores)</span>
+          <span *ngIf="isExporting">Generando...</span>
+        </button>
+      </div>
+    </div>
+  </div>
+  }
+</div>

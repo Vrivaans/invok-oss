@@ -1,0 +1,360 @@
+[
+    {
+        "name": "Resend API",
+        "code": "resend",
+        "baseUrl": "https://api.resend.com",
+        "authenticationType": "BEARER_TOKEN",
+        "apiKeyLocation": "HEADER",
+        "apiKeyName": "Authorization",
+        "apiKeyValue": "<YOUR_API_KEY>",
+        "customHeaders": {
+            "Content-Type": "application/json",
+            "User-Agent": "Invok/1.0"
+        },
+        "tools": [
+            {
+                "name": "Enviar Email (Resend)",
+                "code": "resend-send-email",
+                "description": "Envía un correo electrónico usando la API de Resend.",
+                "endpointPath": "/emails",
+                "httpMethod": "POST",
+                "enabled": true,
+                "isExportable": true,
+                "parameters": [
+                    {
+                        "name": "from",
+                        "type": "STRING",
+                        "description": "Dirección de envío (ej. Acme <onboarding@resend.dev>). Debe ser un dominio verificado.",
+                        "required": true,
+                        "defaultValue": ""
+                    },
+                    {
+                        "name": "to",
+                        "type": "STRING",
+                        "description": "Dirección del destinatario.",
+                        "required": true,
+                        "defaultValue": ""
+                    },
+                    {
+                        "name": "subject",
+                        "type": "STRING",
+                        "description": "Asunto del correo electrónico.",
+                        "required": true,
+                        "defaultValue": ""
+                    },
+                    {
+                        "name": "html",
+                        "type": "STRING",
+                        "description": "Cuerpo del correo en formato HTML.",
+                        "required": true,
+                        "defaultValue": ""
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "name": "Tavily AI Search",
+        "code": "tavily",
+        "baseUrl": "https://api.tavily.com",
+        "authenticationType": "API_KEY",
+        "apiKeyLocation": "IN_BODY",
+        "apiKeyName": "api_key",
+        "apiKeyValue": "<YOUR_API_KEY>",
+        "customHeaders": {
+            "Content-Type": "application/json"
+        },
+        "tools": [
+            {
+                "name": "Búsqueda Tavily",
+                "code": "tavily-search",
+                "description": "Realiza una búsqueda impulsada por IA optimizada para obtener respuestas y fuentes precisas.",
+                "endpointPath": "/search",
+                "httpMethod": "POST",
+                "enabled": true,
+                "isExportable": true,
+                "parameters": [
+                    {
+                        "name": "api_key",
+                        "type": "STRING",
+                        "description": "Clave API de Tavily (requerida en el cuerpo de la petición).",
+                        "required": true,
+                        "defaultValue": ""
+                    },
+                    {
+                        "name": "query",
+                        "type": "STRING",
+                        "description": "La consulta de búsqueda a procesar.",
+                        "required": true,
+                        "defaultValue": ""
+                    },
+                    {
+                        "name": "search_depth",
+                        "type": "STRING",
+                        "description": "Profundidad de búsqueda ('basic' o 'advanced').",
+                        "required": false,
+                        "defaultValue": "basic"
+                    },
+                    {
+                        "name": "include_images",
+                        "type": "BOOLEAN",
+                        "description": "Si se deben incluir imágenes en los resultados (true/false).",
+                        "required": false,
+                        "defaultValue": ""
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "name": "GitHub REST API",
+        "code": "github",
+        "baseUrl": "https://api.github.com",
+        "authenticationType": "BEARER_TOKEN",
+        "apiKeyLocation": "HEADER",
+        "apiKeyName": "Authorization",
+        "apiKeyValue": "<YOUR_API_KEY>",
+        "customHeaders": {
+            "Accept": "application/vnd.github+json",
+            "X-GitHub-Api-Version": "2022-11-28",
+            "User-Agent": "Invok/1.0"
+        },
+        "tools": [
+            {
+                "name": "Crear Issue Github",
+                "code": "github-create-issue",
+                "description": "Crea un 'issue' o tarea nueva en un repositorio de GitHub.",
+                "endpointPath": "/repos/{owner}/{repo}/issues",
+                "httpMethod": "POST",
+                "enabled": true,
+                "isExportable": true,
+                "parameters": [
+                    {
+                        "name": "owner",
+                        "type": "STRING",
+                        "description": "Dueño del repositorio (usuario u organización, ej. 'facebook').",
+                        "required": true,
+                        "defaultValue": ""
+                    },
+                    {
+                        "name": "repo",
+                        "type": "STRING",
+                        "description": "Nombre del repositorio (ej. 'react').",
+                        "required": true,
+                        "defaultValue": ""
+                    },
+                    {
+                        "name": "title",
+                        "type": "STRING",
+                        "description": "Título del Issue.",
+                        "required": true,
+                        "defaultValue": ""
+                    },
+                    {
+                        "name": "body",
+                        "type": "STRING",
+                        "description": "Cuerpo/Descripción del issue (acepta Markdown).",
+                        "required": false,
+                        "defaultValue": ""
+                    }
+                ]
+            },
+            {
+                "name": "Listar Pull Requests",
+                "code": "github-list-pulls",
+                "description": "Obtiene la lista de Pull Requests (PR) abiertas para un repositorio.",
+                "endpointPath": "/repos/{owner}/{repo}/pulls",
+                "httpMethod": "GET",
+                "enabled": true,
+                "isExportable": true,
+                "parameters": [
+                    {
+                        "name": "owner",
+                        "type": "STRING",
+                        "description": "Dueño del repositorio.",
+                        "required": true,
+                        "defaultValue": ""
+                    },
+                    {
+                        "name": "repo",
+                        "type": "STRING",
+                        "description": "Nombre del repositorio.",
+                        "required": true,
+                        "defaultValue": ""
+                    },
+                    {
+                        "name": "state",
+                        "type": "STRING",
+                        "description": "Estado de la PR a filtrar (open, closed, all).",
+                        "required": false,
+                        "defaultValue": "open"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "name": "Bluesky API",
+        "code": "bluesky",
+        "baseUrl": "https://bsky.social/xrpc",
+        "authenticationType": "BEARER_TOKEN",
+        "apiKeyLocation": "HEADER",
+        "apiKeyName": "Authorization",
+        "apiKeyValue": "",
+        "isDynamicAuth": true,
+        "dynamicAuthUrl": "https://bsky.social/xrpc/com.atproto.server.createSession",
+        "dynamicAuthMethod": "POST",
+        "dynamicAuthPayloadType": "JSON",
+        "dynamicAuthPayloadLocation": "BODY",
+        "dynamicAuthPayload": "{\"identifier\":\"your_handle.bsky.social\",\"password\":\"your_app_password\"}",
+        "dynamicAuthTokenExtractionPath": "accessJwt",
+        "dynamicAuthInvalidationKeywords": "ExpiredToken,AuthenticationRequired",
+        "customHeaders": {},
+        "tools": [
+            {
+                "name": "Ver Timeline",
+                "code": "bluesky-timeline",
+                "description": "Obtiene las últimas publicaciones del feed de inicio del usuario autenticado en Bluesky.",
+                "endpointPath": "/app.bsky.feed.getTimeline",
+                "httpMethod": "GET",
+                "enabled": true,
+                "isExportable": true,
+                "parameters": [
+                    {
+                        "name": "limit",
+                        "type": "NUMBER",
+                        "description": "Cantidad de posts a recuperar (ej. 10)",
+                        "required": false,
+                        "defaultValue": "10"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "name": "Jules Agent API",
+        "code": "google-jules-api",
+        "baseUrl": "https://jules.googleapis.com",
+        "authenticationType": "API_KEY",
+        "apiKeyLocation": "HEADER",
+        "apiKeyName": "x-goog-api-key",
+        "apiKeyValue": "<YOUR_JULES_API_KEY>",
+        "isDynamicAuth": false,
+        "customHeaders": {
+            "Content-Type": "application/json"
+        },
+        "tools": [
+            {
+                "name": "List Jules Sources",
+                "code": "jules-list-sources",
+                "description": "Lists available sources (like GitHub repositories) connected to Jules.",
+                "endpointPath": "/v1alpha/sources",
+                "httpMethod": "GET",
+                "enabled": true,
+                "isExportable": true,
+                "parameters": []
+            },
+            {
+                "name": "Create Jules Session",
+                "code": "jules-create-session",
+                "description": "Creates a new Jules session for a specific source.",
+                "endpointPath": "/v1alpha/sessions",
+                "httpMethod": "POST",
+                "enabled": true,
+                "isExportable": true,
+                "bodyPayloadTemplate": "{\"prompt\": \"{{prompt}}\", \"sourceContext\": {\"source\": \"{{source}}\", \"githubRepoContext\": {\"startingBranch\": \"{{startingBranch}}\"}}, \"automationMode\": \"{{automationMode}}\"}",
+                "parameters": [
+                    {
+                        "name": "prompt",
+                        "type": "STRING",
+                        "description": "The prompt for the Jules agent.",
+                        "required": true,
+                        "defaultValue": ""
+                    },
+                    {
+                        "name": "source",
+                        "type": "STRING",
+                        "description": "The name of the source (format: 'sources/github/owner/repo', use jules-list-sources to get the list).",
+                        "required": true,
+                        "defaultValue": ""
+                    },
+                    {
+                        "name": "automationMode",
+                        "type": "STRING",
+                        "description": "Optional integration mode, e.g., 'AUTO_CREATE_PR'",
+                        "required": false,
+                        "defaultValue": ""
+                    },
+                    {
+                        "name": "startingBranch",
+                        "type": "STRING",
+                        "description": "The branch to start the Jules session from.",
+                        "required": false,
+                        "defaultValue": "main"
+                    }
+                ]
+            },
+            {
+                "name": "Send Jules Message",
+                "code": "jules-send-message",
+                "description": "Sends a message to an active Jules session.",
+                "endpointPath": "/v1alpha/sessions/{session_id}:sendMessage",
+                "httpMethod": "POST",
+                "enabled": true,
+                "isExportable": true,
+                "parameters": [
+                    {
+                        "name": "session_id",
+                        "type": "STRING",
+                        "description": "The ID of the session",
+                        "required": true,
+                        "defaultValue": ""
+                    },
+                    {
+                        "name": "prompt",
+                        "type": "STRING",
+                        "description": "The message/prompt to send",
+                        "required": true,
+                        "defaultValue": ""
+                    }
+                ]
+            },
+            {
+                "name": "List Jules Sessions",
+                "code": "jules-list-sessions",
+                "description": "Lists recent Jules sessions.",
+                "endpointPath": "/v1alpha/sessions",
+                "httpMethod": "GET",
+                "enabled": true,
+                "isExportable": true,
+                "parameters": [
+                    {
+                        "name": "pageSize",
+                        "type": "NUMBER",
+                        "description": "Number of sessions to return",
+                        "required": false,
+                        "defaultValue": ""
+                    }
+                ]
+            },
+            {
+                "name": "Approve Jules Plan",
+                "code": "jules-approve-plan",
+                "description": "Approves the latest plan in a session that requires explicit approval.",
+                "endpointPath": "/v1alpha/sessions/{session_id}:approvePlan",
+                "httpMethod": "POST",
+                "enabled": true,
+                "isExportable": true,
+                "parameters": [
+                    {
+                        "name": "session_id",
+                        "type": "STRING",
+                        "description": "The ID of the session",
+                        "required": true,
+                        "defaultValue": ""
+                    }
+                ]
+            }
+        ]
+    }
+]

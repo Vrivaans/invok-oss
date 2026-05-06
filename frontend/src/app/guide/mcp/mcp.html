@@ -1,0 +1,85 @@
+<div class="container mcp-guide-container">
+  <header class="content-header">
+    <div class="header-left">
+      <h1>{{ 'MCP.TITLE' | translate }}</h1>
+      <p class="subtitle">{{ 'MCP.SUBTITLE' | translate }}</p>
+    </div>
+  </header>
+
+  <main>
+    <div class="card">
+      <div class="card-body">
+        <h2>{{ 'MCP.STREAMABLE_TITLE' | translate }}</h2>
+        <p>{{ 'MCP.STREAMABLE_DESC' | translate }}</p>
+        <pre><code>&#123;
+  "mcpServers": &#123;
+    "invok-http": &#123;
+      "type": "streamable-http",
+      "url": "http://localhost:8080/mcp"
+    &#125;
+  &#125;
+&#125;</code></pre>
+        <p class="hint">{{ 'MCP.STREAMABLE_HINT' | translate }}</p>
+      </div>
+    </div>
+
+    <div class="card bridge-downloads">
+      <div class="card-body">
+        <h2>{{ 'MCP.BRIDGE_TITLE' | translate }}</h2>
+        <p class="bridge-intro">{{ 'MCP.BRIDGE_INTRO' | translate }}</p>
+        <ul class="bridge-download-list">
+          <li *ngFor="let item of bridgeDownloads">
+            <a [href]="bridgeDownloadUrl(item.file)" target="_blank" rel="noopener noreferrer">{{ item.labelKey | translate }}</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-body">
+
+        <!-- Claude Desktop -->
+        <h2>Claude Desktop</h2>
+        <p>{{ 'MCP.CLAUDE_DESC' | translate }}</p>
+        <pre><code>&#123;
+  "mcpServers": &#123;
+    "invok": &#123;
+      "command": "/path/to/invok-mcp",
+      "args": ["mcp"]
+    &#125;
+  &#125;
+&#125;</code></pre>
+        <p class="hint">{{ 'MCP.CLAUDE_PATH_HINT' | translate }}</p>
+
+        <!-- VS Code -->
+        <h2>VS Code</h2>
+        <p>{{ 'MCP.VSCODE_DESC' | translate }}</p>
+        <pre><code>// .vscode/settings.json
+&#123;
+  "mcp": &#123;
+    "servers": &#123;
+      "invok": &#123;
+        "command": "/path/to/invok-mcp",
+        "args": ["mcp"]
+      &#125;
+    &#125;
+  &#125;
+&#125;</code></pre>
+
+        <!-- Antigravity -->
+        <h2>Antigravity</h2>
+        <p>{{ 'MCP.ANTIGRAVITY_DESC' | translate }}</p>
+        <pre><code>// ~/.gemini/antigravity/mcp_config.json
+&#123;
+  "mcpServers": &#123;
+    "invok": &#123;
+      "command": "/path/to/invok-mcp",
+      "args": ["mcp"]
+    &#125;
+  &#125;
+&#125;</code></pre>
+
+      </div>
+    </div>
+  </main>
+</div>

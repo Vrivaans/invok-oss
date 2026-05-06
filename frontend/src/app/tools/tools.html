@@ -1,0 +1,726 @@
+<div class="container">
+    <header>
+        <h1>{{ 'TOOLS.TITLE' | translate }}</h1>
+        <p>{{ 'TOOLS.SUBTITLE' | translate }}</p>
+    </header>
+
+    <main>
+        <div class="card form-card">
+            <form [formGroup]="batchForm" (ngSubmit)="onSubmit()">
+
+                <!-- OpenAPI & Invok Importer Section -->
+                <div class="form-group full-width import-section">
+                    <label for="openapi-json">{{ 'TOOLS.IMPORTER_LABEL' | translate }}</label>
+                    <p class="helper-text">{{ 'TOOLS.IMPORTER_HELPER' | translate }}</p>
+                    <textarea id="openapi-json" [(ngModel)]="openApiJsonText" [ngModelOptions]="{standalone: true}"
+                        rows="4" style="resize: vertical; min-height: 100px;"
+                        placeholder='[ { "name": "API", "tools": [...] } ]   o   { "openapi": "3.0.0", "paths": { ... } }'></textarea>
+                    <button type="button" class="btn secondary" (click)="importOpenApi()" style="margin-top: 0.5rem;">
+                        {{ 'TOOLS.PROCESS_BUTTON' | translate }}
+                    </button>
+                    <div *ngIf="importError" class="error-msg">{{ importError }}</div>
+                    <div *ngIf="importSuccessMessage" class="success-msg">{{ importSuccessMessage }}</div>
+                </div>
+
+                <div class="form-grid">
+                    <div class="form-group full-width section-title">
+                        <h3>{{ 'TOOLS.SECTION_PROVIDER' | translate }}</h3>
+                        <div class="checkbox-group" style="margin-top: 1rem; margin-bottom: 0.5rem;">
+                            <label class="checkbox-label"
+                                style="font-weight: 500; display: flex; align-items: center; gap: 8px;">
+                                <input type="checkbox" formControlName="isCreatingProvider"
+                                    style="width: auto; height: 16px; margin: 0; cursor: pointer;">
+                                {{ 'TOOLS.CREATE_NEW_PROVIDER' | translate }}
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Use Existing Provider -->
+                    <ng-container *ngIf="!batchForm.get('isCreatingProvider')?.value">
+                        <div class="form-group full-width">
+                            <label for="providerId">{{ 'TOOLS.SELECT_EXISTING' | translate }}</label>
+                            <div style="display: flex; gap: 10px; align-items: center;">
+                                <select id="providerId" formControlName="providerId" class="select-field"
+                                    style="flex: 1;">
+                                    <option value="" disabled selected>{{ 'TOOLS.CHOOSE_PROVIDER' | translate }}</option>
+                                    <option *ngFor="let p of providers" [value]="p.id">
+                                        {{ p.name }} ({{ p.baseUrl }})
+                                    </option>
+                                </select>
+                                <button type="button" class="btn secondary" *ngIf="batchForm.get('providerId')?.value"
+                                    (click)="openEditProviderModal()"
+                                    style="padding: 0.5rem 1rem; border-radius: 6px; display: flex; align-items: center; justify-content: center;"
+                                    title="Editar Proveedor Seleccionado">✏️</button>
+                            </div>
+                        </div>
+                    </ng-container>
+
+                    <!-- Create New Provider -->
+                    <ng-container *ngIf="batchForm.get('isCreatingProvider')?.value">
+                        <div class="form-group">
+                            <label for="providerName">{{ 'TOOLS.PROVIDER_NAME' | translate }} <span
+                                    style="color: #ef4444;">*</span></label>
+                            <input id="providerName" type="text" formControlName="providerName"
+                                placeholder="Ej. OpenWeatherMap API" />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="providerCode">{{ 'TOOLS.PROVIDER_CODE' | translate }}</label>
+                            <input id="providerCode" type="text" formControlName="providerCode"
+                                placeholder="Ej. owm-api" />
+                        </div>
+
+                        <div class="form-group full-width">
+                            <label for="baseUrl">{{ 'TOOLS.BASE_URL' | translate }} <span style="color: #ef4444;">*</span></label>
+                            <input id="baseUrl" type="url" formControlName="baseUrl"
+                                placeholder="Ej. https://api.weatherapi.com" />
+                        </div>
+
+                        <div class="form-group full-width checkbox-group" style="margin-top: 0.5rem; margin-bottom: 0.5rem;">
+                            <input id="provider-isexportable" type="checkbox" formControlName="isExportable" />
+                            <label for="provider-isexportable">Permitir exportar este proveedor (incluyendo solo tools públicas)</label>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="authenticationType">{{ 'TOOLS.AUTH_TYPE' | translate }}</label>
+                            <select id="authenticationType" formControlName="authenticationType">
+                                <option value="NONE">{{ 'TOOLS.AUTH_NONE' | translate }}</option>
+                                <option value="API_KEY">{{ 'TOOLS.AUTH_API_KEY' | translate }}</option>
+                                <option value="BEARER_TOKEN">{{ 'TOOLS.AUTH_BEARER' | translate }}</option>
+                                <option value="BASIC">{{ 'TOOLS.AUTH_BASIC' | translate }}</option>
+                                <option value="OAUTH2_AUTHORIZATION_CODE">{{ 'TOOLS.AUTH_OAUTH2' | translate }}</option>
+                            </select>
+                        </div>
+
+                        <ng-container
+                            *ngIf="batchForm.get('authenticationType')?.value !== 'NONE' && batchForm.get('authenticationType')?.value !== 'OAUTH2_AUTHORIZATION_CODE'">
+                            <div class="form-group">
+                                <label for="apiKeyLocation">{{ 'TOOLS.API_KEY_LOCATION' | translate }}</label>
+                                <select id="apiKeyLocation" formControlName="apiKeyLocation">
+                                    <option value="HEADER">{{ 'TOOLS.LOCATION_HEADER' | translate }}</option>
+                                    <option value="QUERY_PARAMETER">{{ 'TOOLS.LOCATION_QUERY' | translate }}</option>
+                                    <option value="IN_BODY">{{ 'TOOLS.LOCATION_BODY' | translate }}</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="apiKeyName">{{ 'TOOLS.API_KEY_NAME' | translate }}</label>
+                                <input id="apiKeyName" type="text" formControlName="apiKeyName"
+                                    placeholder="Ej. Authorization / x-api-key" />
+                            </div>
+                            <div class="form-group">
+                                <label for="apiKeyValue">{{ 'TOOLS.API_KEY_VALUE' | translate }}</label>
+                                <input id="apiKeyValue" type="password" formControlName="apiKeyValue"
+                                    placeholder="Valor del token" />
+                            </div>
+                        </ng-container>
+
+                        <!-- Secondary Authentication (App Tokens) -->
+                        <div class="form-group full-width" style="margin-top: 1rem;">
+                            <details
+                                style="background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 0.5rem 1rem;">
+                                <summary style="cursor: pointer; font-weight: 500; outline: none; padding: 0.5rem 0;">
+                                    {{ 'TOOLS.SECONDARY_AUTH_TITLE' | translate }}
+                                </summary>
+                                <div class="form-grid"
+                                    style="margin-top: 0.5rem; padding-top: 1rem; border-top: 1px solid rgba(255,255,255,0.1);">
+                                    <div class="form-group">
+                                        <label for="secondaryApiKeyLocation">{{ 'TOOLS.API_KEY_LOCATION' | translate }}</label>
+                                        <select id="secondaryApiKeyLocation" formControlName="secondaryApiKeyLocation">
+                                            <option value="HEADER">{{ 'TOOLS.LOCATION_HEADER' | translate }}</option>
+                                            <option value="QUERY_PARAMETER">{{ 'TOOLS.LOCATION_QUERY' | translate }}</option>
+                                            <option value="IN_BODY">{{ 'TOOLS.LOCATION_BODY' | translate }}</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="secondaryApiKeyName">{{ 'TOOLS.SECONDARY_API_KEY_NAME' | translate }}</label>
+                                        <input id="secondaryApiKeyName" type="text" formControlName="secondaryApiKeyName"
+                                            placeholder="Ej. token" />
+                                    </div>
+                                    <div class="form-group full-width">
+                                        <label for="secondaryApiKeyValue">{{ 'TOOLS.SECONDARY_API_KEY_VALUE' | translate }}</label>
+                                        <input id="secondaryApiKeyValue" type="password" formControlName="secondaryApiKeyValue"
+                                            placeholder="Valor del token secundario / App Token" />
+                                    </div>
+                                </div>
+                            </details>
+                        </div>
+
+                        <!-- OAuth2 Fields -->
+                        <ng-container
+                            *ngIf="batchForm.get('authenticationType')?.value === 'OAUTH2_AUTHORIZATION_CODE'">
+
+                            <!-- Redirect URI explainer -->
+                             <div class="form-group full-width"
+                                 style="background: rgba(99,102,241,0.1); border: 1px solid rgba(99,102,241,0.3); border-radius: 8px; padding: 1rem; margin-bottom: 0rem;">
+                                 <p style="margin: 0 0 0.5rem 0; font-weight: 500;">{{ 'TOOLS.OAUTH2_REDIRECT_URI_TITLE' | translate }}
+                                 </p>
+                                 <p class="helper-text" style="margin: 0 0 0.75rem 0;">{{ 'TOOLS.OAUTH2_REDIRECT_URI_HELPER' | translate }}
+                                 </p>
+                                 <code
+                                     style="display:block; background: rgba(0,0,0,0.3); border-radius: 6px; padding: 0.5rem 0.75rem; font-size: 0.85rem; word-break: break-all;">
+                                     http://localhost:8080/api/oauth2/callback/<strong>{{ batchForm.get('providerCode')?.value || '&lt;tu-codigo&gt;' }}</strong>
+                                 </code>
+                                 <p class="helper-text" style="margin: 0.5rem 0 0 0; font-size: 0.8rem;">Copiá esa URL en
+                                     Google Cloud Console / GitHub OAuth App antes de completar los campos de abajo.</p>
+                             </div>
+
+                            <div class="form-group">
+                                <label for="oauth2ClientId">{{ 'TOOLS.OAUTH2_CLIENT_ID' | translate }}</label>
+                                <input id="oauth2ClientId" type="text" formControlName="oauth2ClientId"
+                                    placeholder="Ej. 1234567890.apps.googleusercontent.com" />
+                            </div>
+                            <div class="form-group">
+                                <label for="oauth2ClientSecret">{{ 'TOOLS.OAUTH2_CLIENT_SECRET' | translate }}</label>
+                                <input id="oauth2ClientSecret" type="password" formControlName="oauth2ClientSecret"
+                                    placeholder="Tu Client Secret" />
+                            </div>
+                            <div class="form-group full-width">
+                                <label for="oauth2AuthorizationUrl">{{ 'TOOLS.OAUTH2_AUTH_URL' | translate }}</label>
+                                <input id="oauth2AuthorizationUrl" type="url" formControlName="oauth2AuthorizationUrl"
+                                    placeholder="Ej. https://accounts.google.com/o/oauth2/v2/auth" />
+                            </div>
+                            <div class="form-group">
+                                <label for="oauth2TokenUrl">{{ 'TOOLS.OAUTH2_TOKEN_URL' | translate }}</label>
+                                <input id="oauth2TokenUrl" type="url" formControlName="oauth2TokenUrl"
+                                    placeholder="Ej. https://oauth2.googleapis.com/token" />
+                            </div>
+                            <div class="form-group full-width">
+                                <label for="oauth2Scopes">{{ 'TOOLS.OAUTH2_SCOPES' | translate }}</label>
+                                <input id="oauth2Scopes" type="text" formControlName="oauth2Scopes"
+                                    placeholder="Ej. https://www.googleapis.com/auth/gmail.readonly" />
+                            </div>
+                        </ng-container>
+
+                        <div class="form-group full-width" style="margin-top: 1rem;">
+                            <details
+                                style="background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 0.5rem 1rem;">
+                                <summary style="cursor: pointer; font-weight: 500; outline: none; padding: 0.5rem 0;">
+                                    {{ 'TOOLS.ADVANCED_OPTIONS' | translate }}
+                                </summary>
+                                <div
+                                    style="margin-top: 0.5rem; padding-top: 1rem; border-top: 1px solid rgba(255,255,255,0.1);">
+                                    <p class="helper-text" style="margin-bottom: 1rem;">Agrega headers personalizados
+                                        adicionales para este proveedor que se enviarán en cada petición.</p>
+                                    <button type="button" class="btn secondary" (click)="addCustomHeader()"
+                                        style="margin-bottom: 1rem; padding: 0.4rem 0.8rem; font-size: 0.9rem;">+ Añadir
+                                        Header</button>
+
+                                    <div formArrayName="customHeaders">
+                                        <div *ngFor="let header of customHeaders.controls; let idx=index"
+                                            [formGroupName]="idx"
+                                            style="display: flex; gap: 10px; margin-bottom: 0.5rem; align-items: center;">
+                                            <input type="text" formControlName="key"
+                                                placeholder="Key (ej. X-Custom-Header)" style="flex: 1;">
+                                            <input type="password" formControlName="value" placeholder="Value *"
+                                                style="flex: 1;">
+                                            <button type="button" class="btn delete-btn"
+                                                (click)="removeCustomHeader(idx)"
+                                                style="background: none; border: none; font-size: 1.2rem; cursor: pointer;">🗑️</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </details>
+                        </div>
+
+                        <!-- Dynamic Auth Section -->
+                        <div class="form-group full-width" style="margin-top: 1rem;">
+                            <details
+                                style="background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 0.5rem 1rem;">
+                                <summary
+                                    style="cursor: pointer; font-weight: 500; outline: none; padding: 0.5rem 0; display: flex; align-items: center; justify-content: space-between;">
+                                    <span>{{ 'TOOLS.DYNAMIC_AUTH_TITLE' | translate }}</span>
+                                    <div class="checkbox-group inline" style="margin: 0;"
+                                        (click)="$event.stopPropagation()">
+                                        <input id="isDynamicAuth" type="checkbox" formControlName="isDynamicAuth" />
+                                        <label for="isDynamicAuth"
+                                            style="font-weight: normal; margin-left: 0.5rem; cursor: pointer;">Habilitar</label>
+                                    </div>
+                                </summary>
+
+                                <div *ngIf="batchForm.get('isDynamicAuth')?.value"
+                                    style="margin-top: 0.5rem; padding-top: 1rem; border-top: 1px solid rgba(255,255,255,0.1);">
+                                    <p class="helper-text" style="margin-bottom: 1rem;">Configura la obtención
+                                        automática de tokens de acceso antes de ejecutar la herramienta.</p>
+
+                                    <div class="form-grid">
+                                        <div class="form-group full-width">
+                                            <label for="dynamicAuthUrl">{{ 'TOOLS.DYNAMIC_AUTH_URL' | translate }}</label>
+                                            <input id="dynamicAuthUrl" type="url" formControlName="dynamicAuthUrl"
+                                                placeholder="Ej. https://api.ejemplo.com/oauth/token" />
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="dynamicAuthMethod">Método HTTP</label>
+                                            <select id="dynamicAuthMethod" formControlName="dynamicAuthMethod">
+                                                <option value="POST">POST</option>
+                                                <option value="GET">GET</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="dynamicAuthPayloadLocation">{{ 'TOOLS.DYNAMIC_AUTH_PAYLOAD_LOCATION' | translate }}</label>
+                                            <select id="dynamicAuthPayloadLocation"
+                                                formControlName="dynamicAuthPayloadLocation">
+                                                <option value="BODY">Body</option>
+                                                <option value="QUERY_PARAMETERS">Query Parameters</option>
+                                                <option value="HEADERS">Headers</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="form-group"
+                                            *ngIf="batchForm.get('dynamicAuthPayloadLocation')?.value === 'BODY'">
+                                            <label for="dynamicAuthPayloadType">Tipo de Payload</label>
+                                            <select id="dynamicAuthPayloadType"
+                                                formControlName="dynamicAuthPayloadType">
+                                                <option value="JSON">application/json</option>
+                                                <option value="FORM_DATA">application/x-www-form-urlencoded</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group"
+                                            *ngIf="batchForm.get('dynamicAuthPayloadLocation')?.value !== 'BODY'"></div>
+
+                                        <div class="form-group full-width" style="margin-top: 1rem;">
+                                            <label>{{ 'TOOLS.DYNAMIC_AUTH_PAYLOAD_PARAMS_TITLE' | translate }}</label>
+                                            <p class="helper-text"
+                                                style="margin-bottom: 0.5rem; font-size: 0.8rem; opacity: 0.8;">
+                                                {{ 'TOOLS.DYNAMIC_AUTH_PAYLOAD_HELPER' | translate }}
+                                            </p>
+                                            <button type="button" class="btn secondary"
+                                                (click)="addDynamicAuthPayload()"
+                                                style="margin-bottom: 1rem; padding: 0.4rem 0.8rem; font-size: 0.9rem;">+
+                                                {{ 'TOOLS.ADD_PARAMETER' | translate }}</button>
+
+                                            <div formArrayName="dynamicAuthPayload">
+                                                <div *ngFor="let payload of dynamicAuthPayload.controls; let idx=index"
+                                                    [formGroupName]="idx"
+                                                    style="display: flex; gap: 10px; margin-bottom: 0.5rem; align-items: center;">
+                                                    <input type="text" formControlName="key"
+                                                        placeholder="Key (ej. client_id)" style="flex: 1;">
+                                                    <input type="password" formControlName="value"
+                                                        placeholder="Value (ej. 12345) *" style="flex: 1;">
+                                                    <button type="button" class="btn delete-btn"
+                                                        (click)="removeDynamicAuthPayload(idx)"
+                                                        style="background: none; border: none; font-size: 1.2rem; cursor: pointer;">🗑️</button>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="dynamicAuthTokenExtractionPath">{{ 'TOOLS.DYNAMIC_AUTH_TOKEN_PATH' | translate }}</label>
+                                            <input id="dynamicAuthTokenExtractionPath" type="text"
+                                                formControlName="dynamicAuthTokenExtractionPath"
+                                                placeholder="Ej. access_token o data.token" />
+                                            <span class="helper-text"
+                                                style="font-size: 0.8rem; display: block; margin-top: 4px;">({{ 'TOOLS.DYNAMIC_AUTH_TOKEN_PATH_HELPER' | translate }})</span>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="dynamicAuthInvalidationKeywords">{{ 'TOOLS.DYNAMIC_AUTH_INVALIDATION' | translate }}</label>
+                                            <input id="dynamicAuthInvalidationKeywords" type="text"
+                                                formControlName="dynamicAuthInvalidationKeywords"
+                                                placeholder="invalid_token, expired" />
+                                            <span class="helper-text"
+                                                style="font-size: 0.8rem; display: block; margin-top: 4px;">{{ 'TOOLS.DYNAMIC_AUTH_INVALIDATION_HELPER' | translate }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </details>
+                        </div>
+                        </ng-container>
+
+                    <!-- Endpoints Section -->
+                    <div class="form-group full-width section-title">
+                        <div class="section-header">
+                            <h3>{{ 'TOOLS.SECTION_ENDPOINTS' | translate : { count: endpoints.length } }}</h3>
+                            <button type="button" class="btn secondary" (click)="addEndpoint()">+ {{ 'TOOLS.ADD_MANUAL' | translate }}</button>
+                        </div>
+                    </div>
+
+                    <div formArrayName="endpoints" class="full-width endpoints-list">
+                        <div *ngFor="let ep of endpoints.controls; let i=index" [formGroupName]="i"
+                            class="endpoint-card">
+                            <div class="endpoint-header">
+                                <select formControlName="httpMethod" class="method-badge"
+                                    [ngClass]="ep.get('httpMethod')?.value" title="Cambiar Método">
+                                    <option value="GET">GET</option>
+                                    <option value="POST">POST</option>
+                                    <option value="PUT">PUT</option>
+                                    <option value="DELETE">DELETE</option>
+                                    <option value="PATCH">PATCH</option>
+                                </select>
+                                <input type="text" formControlName="endpointPath" class="inline-input path-input"
+                                    placeholder="Path ej. /v1/current.json">
+                                <button type="button" class="btn delete-btn" (click)="removeEndpoint(i)"
+                                    title="Eliminar endpoint">🗑️</button>
+                            </div>
+
+                            <div class="endpoint-body">
+                                <div class="form-group">
+                                    <label>{{ 'TOOLS.TOOL_NAME' | translate }} <span style="color: #ef4444;">*</span></label>
+                                    <input type="text" formControlName="name" placeholder="Ej. Obtener Clima Actual">
+                                </div>
+                                <div class="form-group">
+                                    <label>{{ 'TOOLS.TOOL_CODE' | translate }}</label>
+                                    <input type="text" formControlName="code" placeholder="Ej. get-weather-current">
+                                </div>
+                                <div class="form-group full-width">
+                                    <label>{{ 'TOOLS.TOOL_DESCRIPTION' | translate }} <span style="color: #ef4444;">*</span></label>
+                                    <textarea formControlName="description" rows="2"
+                                        placeholder="Describe para qué sirve..."></textarea>
+                                </div>
+
+                                <!-- Endpoint Parameters -->
+                                <div class="parameters-mini-list full-width">
+                                    <div class="section-header-mini">
+                                        <label>{{ 'TOOLS.PARAMETERS_COUNT' | translate : { count: getParameters(i).length } }}</label>
+                                        <button type="button" class="btn small" (click)="addParameter(i)">+
+                                            Param</button>
+                                    </div>
+                                    <div formArrayName="parameters">
+                                        <div *ngFor="let param of getParameters(i).controls; let j=index"
+                                            [formGroupName]="j" class="param-row-mini"
+                                            style="flex-wrap: wrap; margin-bottom: 1rem; border-bottom: 1px dashed rgba(255,255,255,0.1); padding-bottom: 0.5rem;">
+                                            <div style="display: flex; gap: 0.5rem; width: 100%;">
+                                                <input type="text" formControlName="name" placeholder="Nombre (ej. q)"
+                                                    class="param-name">
+                                                <select formControlName="type" class="param-type">
+                                                    <option value="STRING">String</option>
+                                                    <option value="NUMBER">Number</option>
+                                                    <option value="BOOLEAN">Boolean</option>
+                                                    <option value="ARRAY">Array</option>
+                                                </select>
+                                                <label class="param-req" style="min-width: 60px;"><input type="checkbox"
+                                                        formControlName="required">
+                                                    Req.</label>
+                                                <button type="button" class="btn-text-danger"
+                                                    (click)="removeParameter(i, j)">×</button>
+                                            </div>
+                                            <div style="width: 100%; margin-top: 5px;">
+                                                <input type="text" formControlName="description"
+                                                    placeholder="Descripción del parámetro (para la IA)"
+                                                    style="width: 100%; font-size: 0.85rem; padding: 0.4rem; border-radius: 4px; border: 1px solid rgba(255, 255, 255, 0.1); background: rgba(0, 0, 0, 0.2); color: #fff;">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group full-width checkbox-group" style="margin-top: 1rem;">
+                                    <input [id]="'enabled-'+i" type="checkbox" formControlName="enabled" />
+                                    <label [for]="'enabled-'+i">{{ 'TOOLS.TOOL_ENABLE_NOW' | translate }}</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div *ngIf="endpoints.controls.length === 0" class="empty-state">
+                            <p>{{ 'TOOLS.EMPTY_ENDPOINTS' | translate }}</p>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="form-actions">
+                    <div *ngIf="successMessage" class="alert success">{{ successMessage }}</div>
+                    <div *ngIf="errorMessage" class="alert error">{{ errorMessage }}</div>
+
+                    <button type="button" class="btn ghost" routerLink="/home">{{ 'MODALS.CANCEL' | translate }}</button>
+                    <button type="submit" class="btn primary" [disabled]="isSubmitting || endpoints.length === 0">
+                        <span *ngIf="!isSubmitting">{{ 'TOOLS.SUBMIT_BUTTON' | translate }}</span>
+                        <span *ngIf="isSubmitting">{{ 'TOOLS.SUBMITTING' | translate }}</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    @if (showEditProviderModal) {
+    <div class="modal-overlay" (click)="closeEditProviderModal()">
+        <div class="modal-content" (click)="$event.stopPropagation()"
+            style="max-width: 500px; max-height: 90vh; overflow-y: auto;">
+            <h3 style="margin-top: 0; margin-bottom: 5px; font-size: 1.5rem;">{{ 'TOOLS.EDIT_PROVIDER_TITLE' | translate }}</h3>
+            <p style="text-align: left; margin-bottom: 1.5rem;">{{ 'TOOLS.EDIT_PROVIDER_SUBTITLE' | translate }}</p>
+
+            <form [formGroup]="editProviderForm" (ngSubmit)="saveProviderChanges()">
+                <div class="form-group">
+                    <label for="editProviderName">Nombre del Proveedor <span style="color: #ef4444;">*</span></label>
+                    <input id="editProviderName" type="text" formControlName="name" placeholder="Ej. Stripe API" />
+                </div>
+
+                <div class="form-group">
+                    <label for="editProviderCode">Código Único (Opcional)</label>
+                    <input id="editProviderCode" type="text" formControlName="code" placeholder="Ej. stripe-api" />
+                </div>
+
+                <div class="form-group">
+                    <label for="editBaseUrl">URL Base <span style="color: #ef4444;">*</span></label>
+                    <input id="editBaseUrl" type="url" formControlName="baseUrl"
+                        placeholder="Ej. https://api.stripe.com" />
+                </div>
+
+                <div class="form-group full-width checkbox-group" style="margin-top: 0.5rem; margin-bottom: 0.5rem;">
+                    <input id="edit-provider-isexportable" type="checkbox" formControlName="isExportable" />
+                    <label for="edit-provider-isexportable">Permitir exportar este proveedor (incluyendo solo tools públicas)</label>
+                </div>
+
+                <div class="form-group">
+                    <label for="editAuthenticationType">{{ 'TOOLS.AUTH_TYPE' | translate }}</label>
+                    <select id="editAuthenticationType" formControlName="authenticationType">
+                        <option value="NONE">{{ 'TOOLS.AUTH_NONE' | translate }}</option>
+                        <option value="API_KEY">{{ 'TOOLS.AUTH_API_KEY' | translate }}</option>
+                        <option value="BEARER_TOKEN">{{ 'TOOLS.AUTH_BEARER' | translate }}</option>
+                        <option value="BASIC">{{ 'TOOLS.AUTH_BASIC' | translate }}</option>
+                        <option value="OAUTH2_AUTHORIZATION_CODE">{{ 'TOOLS.AUTH_OAUTH2' | translate }}</option>
+                    </select>
+                </div>
+
+                <ng-container
+                    *ngIf="editProviderForm.get('authenticationType')?.value !== 'NONE' && editProviderForm.get('authenticationType')?.value !== 'OAUTH2_AUTHORIZATION_CODE'">
+                    <div class="form-group">
+                        <label for="editApiKeyLocation">{{ 'TOOLS.API_KEY_LOCATION' | translate }}</label>
+                        <select id="editApiKeyLocation" formControlName="apiKeyLocation">
+                            <option value="HEADER">{{ 'TOOLS.LOCATION_HEADER' | translate }}</option>
+                            <option value="QUERY_PARAMETER">{{ 'TOOLS.LOCATION_QUERY' | translate }}</option>
+                            <option value="IN_BODY">{{ 'TOOLS.LOCATION_BODY' | translate }}</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="editApiKeyName">Nombre de la clave</label>
+                        <input id="editApiKeyName" type="text" formControlName="apiKeyName"
+                            placeholder="Ej. Authorization / x-api-key" />
+                    </div>
+
+                        <div class="form-group full-width">
+                            <label for="editApiKeyValue">{{ 'TOOLS.API_KEY_VALUE' | translate }} (En blanco para no cambiar)</label>
+                            <input id="editApiKeyValue" type="password" formControlName="apiKeyValue"
+                                placeholder="Nuevo valor del token" />
+                        </div>
+                    </ng-container>
+
+                    <!-- Secondary Authentication (Edit) -->
+                    <div class="form-group full-width" style="margin-top: 1rem;">
+                        <details
+                            style="background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 0.5rem 1rem;">
+                            <summary style="cursor: pointer; font-weight: 500; outline: none; padding: 0.5rem 0;">
+                                {{ 'TOOLS.SECONDARY_AUTH_TITLE' | translate }}
+                            </summary>
+                            <div class="form-grid"
+                                style="margin-top: 0.5rem; padding-top: 1rem; border-top: 1px solid rgba(255,255,255,0.1);">
+                                <div class="form-group">
+                                    <label for="editSecondaryApiKeyLocation">{{ 'TOOLS.API_KEY_LOCATION' | translate }}</label>
+                                    <select id="editSecondaryApiKeyLocation" formControlName="secondaryApiKeyLocation">
+                                        <option value="HEADER">{{ 'TOOLS.LOCATION_HEADER' | translate }}</option>
+                                        <option value="QUERY_PARAMETER">{{ 'TOOLS.LOCATION_QUERY' | translate }}</option>
+                                        <option value="IN_BODY">{{ 'TOOLS.LOCATION_BODY' | translate }}</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="editSecondaryApiKeyName">{{ 'TOOLS.SECONDARY_API_KEY_NAME' | translate }}</label>
+                                    <input id="editSecondaryApiKeyName" type="text" formControlName="secondaryApiKeyName"
+                                        placeholder="Ej. token" />
+                                </div>
+                                <div class="form-group full-width">
+                                    <label for="editSecondaryApiKeyValue">{{ 'TOOLS.SECONDARY_API_KEY_VALUE' | translate }} (En blanco para no cambiar)</label>
+                                    <input id="editSecondaryApiKeyValue" type="password" formControlName="secondaryApiKeyValue"
+                                        placeholder="Nuevo valor del token secundario" />
+                                </div>
+                            </div>
+                        </details>
+                    </div>
+
+                <!-- OAuth2 Fields (Edit) -->
+                <ng-container *ngIf="editProviderForm.get('authenticationType')?.value === 'OAUTH2_AUTHORIZATION_CODE'">
+                    <!-- Redirect URI display -->
+                     <div class="form-group full-width"
+                         style="background: rgba(99,102,241,0.1); border: 1px solid rgba(99,102,241,0.3); border-radius: 8px; padding: 1rem;">
+                         <p style="margin: 0 0 0.5rem 0; font-weight: 500;">{{ 'TOOLS.OAUTH2_REDIRECT_URI_TITLE' | translate }}</p>
+                         <code
+                             style="display:block; background: rgba(0,0,0,0.3); border-radius: 6px; padding: 0.5rem 0.75rem; font-size: 0.85rem; word-break: break-all;">
+                             http://localhost:8080/api/oauth2/callback/<strong>{{ providerToEdit?.code || editProviderForm.get('code')?.value }}</strong>
+                         </code>
+                         <p class="helper-text" style="margin: 0.5rem 0 0 0; font-size: 0.8rem;">{{ 'TOOLS.OAUTH2_REDIRECT_URI_HELPER_SHORT' | translate }}</p>
+                     </div>
+                    <div class="form-group">
+                        <label for="editOauth2ClientId">Client ID</label>
+                        <input id="editOauth2ClientId" type="text" formControlName="oauth2ClientId"
+                            placeholder="Ej. 1234567890.apps.googleusercontent.com" />
+                    </div>
+                    <div class="form-group">
+                        <label for="editOauth2ClientSecret">Client Secret (en blanco = no cambiar)</label>
+                        <input id="editOauth2ClientSecret" type="password" formControlName="oauth2ClientSecret"
+                            placeholder="Tu Client Secret" />
+                    </div>
+                    <div class="form-group full-width">
+                        <label for="editOauth2AuthorizationUrl">URL de Autorización</label>
+                        <input id="editOauth2AuthorizationUrl" type="url" formControlName="oauth2AuthorizationUrl"
+                            placeholder="Ej. https://accounts.google.com/o/oauth2/v2/auth" />
+                    </div>
+                    <div class="form-group">
+                        <label for="editOauth2TokenUrl">URL del Token</label>
+                        <input id="editOauth2TokenUrl" type="url" formControlName="oauth2TokenUrl"
+                            placeholder="Ej. https://oauth2.googleapis.com/token" />
+                    </div>
+                    <div class="form-group full-width">
+                        <label for="editOauth2Scopes">Scopes</label>
+                        <input id="editOauth2Scopes" type="text" formControlName="oauth2Scopes"
+                            placeholder="Ej. https://www.googleapis.com/auth/gmail.readonly" />
+                    </div>
+                    <div class="form-group full-width" style="margin-top: 0.5rem;">
+                        <a [href]="'/api/oauth2/login-url/' + (providerToEdit?.code || editProviderForm.get('code')?.value)"
+                            target="_blank" class="btn primary" style="text-decoration: none; display: inline-block;">
+                            🔗 {{ 'TOOLS.OAUTH2_CONNECT' | translate }}
+                        </a>
+                        <p class="helper-text" style="margin-top: 0.5rem; font-size: 0.8rem;">{{ 'TOOLS.OAUTH2_CONNECT_HELPER' | translate }}</p>
+                    </div>
+                </ng-container>
+
+                <div class="form-group full-width" style="margin-top: 1rem;">
+                    <details
+                        style="background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 0.5rem 1rem;">
+                        <summary style="cursor: pointer; font-weight: 500; outline: none; padding: 0.5rem 0;">
+                            Opciones Avanzadas (Custom Headers)
+                        </summary>
+                        <div
+                            style="margin-top: 0.5rem; padding-top: 1rem; border-top: 1px solid rgba(255,255,255,0.1);">
+                            <p class="helper-text" style="margin-bottom: 1rem;">Agrega headers personalizados
+                                adicionales para este proveedor que se enviarán en cada petición.</p>
+                            <button type="button" class="btn secondary" (click)="addEditCustomHeader()"
+                                style="margin-bottom: 1rem; padding: 0.4rem 0.8rem; font-size: 0.9rem;">+ Añadir
+                                Header</button>
+
+                            <div formArrayName="customHeaders">
+                                <div *ngFor="let header of editCustomHeaders.controls; let idx=index"
+                                    [formGroupName]="idx"
+                                    style="display: flex; gap: 10px; margin-bottom: 0.5rem; align-items: center;">
+                                    <input type="text" formControlName="key" placeholder="Key (ej. X-Custom-Header)"
+                                        style="flex: 1;">
+                                    <input type="password" formControlName="value" placeholder="Value *"
+                                        style="flex: 1;">
+                                    <button type="button" class="btn delete-btn" (click)="removeEditCustomHeader(idx)"
+                                        style="background: none; border: none; font-size: 1.2rem; cursor: pointer;">🗑️</button>
+                                </div>
+                            </div>
+                        </div>
+                    </details>
+                </div>
+
+                <!-- Dynamic Auth Section (Edit) -->
+                <div class="form-group full-width" style="margin-top: 1rem;">
+                    <details
+                        style="background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 0.5rem 1rem;">
+                        <summary
+                            style="cursor: pointer; font-weight: 500; outline: none; padding: 0.5rem 0; display: flex; align-items: center; justify-content: space-between;">
+                            <span>Autenticación Dinámica (Token Exchange)</span>
+                            <div class="checkbox-group inline" style="margin: 0;" (click)="$event.stopPropagation()">
+                                <input id="editIsDynamicAuth" type="checkbox" formControlName="isDynamicAuth" />
+                                <label for="editIsDynamicAuth"
+                                    style="font-weight: normal; margin-left: 0.5rem; cursor: pointer;">Habilitar</label>
+                            </div>
+                        </summary>
+
+                        <div *ngIf="editProviderForm.get('isDynamicAuth')?.value"
+                            style="margin-top: 0.5rem; padding-top: 1rem; border-top: 1px solid rgba(255,255,255,0.1);">
+                            <p class="helper-text" style="margin-bottom: 1rem;">Configura la obtención automática de
+                                tokens de acceso antes de ejecutar la herramienta.</p>
+
+                            <div class="form-grid">
+                                <div class="form-group full-width">
+                                    <label for="editDynamicAuthUrl">URL del Endpoint de Autenticación</label>
+                                    <input id="editDynamicAuthUrl" type="url" formControlName="dynamicAuthUrl"
+                                        placeholder="Ej. https://api.ejemplo.com/oauth/token" />
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="editDynamicAuthMethod">Método HTTP</label>
+                                    <select id="editDynamicAuthMethod" formControlName="dynamicAuthMethod">
+                                        <option value="POST">POST</option>
+                                        <option value="GET">GET</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="editDynamicAuthPayloadLocation">Ubicación del Payload</label>
+                                    <select id="editDynamicAuthPayloadLocation"
+                                        formControlName="dynamicAuthPayloadLocation">
+                                        <option value="BODY">Body</option>
+                                        <option value="QUERY_PARAMETERS">Query Parameters</option>
+                                        <option value="HEADERS">Headers</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group"
+                                    *ngIf="editProviderForm.get('dynamicAuthPayloadLocation')?.value === 'BODY'">
+                                    <label for="editDynamicAuthPayloadType">Tipo de Payload</label>
+                                    <select id="editDynamicAuthPayloadType" formControlName="dynamicAuthPayloadType">
+                                        <option value="JSON">application/json</option>
+                                        <option value="FORM_DATA">application/x-www-form-urlencoded</option>
+                                    </select>
+                                </div>
+                                <div class="form-group"
+                                    *ngIf="editProviderForm.get('dynamicAuthPayloadLocation')?.value !== 'BODY'"></div>
+
+                                <div class="form-group full-width" style="margin-top: 1rem;">
+                                    <label>Payload Params (Key-Value)</label>
+                                    <p class="helper-text"
+                                        style="margin-bottom: 0.5rem; font-size: 0.8rem; opacity: 0.8;">
+                                        Agrega las claves y valores que formarán el cuerpo de la petición.
+                                    </p>
+                                    <button type="button" class="btn secondary" (click)="addEditDynamicAuthPayload()"
+                                        style="margin-bottom: 1rem; padding: 0.4rem 0.8rem; font-size: 0.9rem;">+ Añadir
+                                        Parámetro</button>
+
+                                    <div formArrayName="dynamicAuthPayload">
+                                        <div *ngFor="let payload of editDynamicAuthPayload.controls; let idx=index"
+                                            [formGroupName]="idx"
+                                            style="display: flex; gap: 10px; margin-bottom: 0.5rem; align-items: center;">
+                                            <input type="text" formControlName="key" placeholder="Key (ej. client_id)"
+                                                style="flex: 1;">
+                                            <input type="password" formControlName="value"
+                                                placeholder="Value (ej. 12345) *" style="flex: 1;">
+                                            <button type="button" class="btn delete-btn"
+                                                (click)="removeEditDynamicAuthPayload(idx)"
+                                                style="background: none; border: none; font-size: 1.2rem; cursor: pointer;">🗑️</button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="editDynamicAuthTokenExtractionPath">{{ 'TOOLS.DYNAMIC_AUTH_TOKEN_PATH' | translate }}</label>
+                                    <input id="editDynamicAuthTokenExtractionPath" type="text"
+                                        formControlName="dynamicAuthTokenExtractionPath"
+                                        placeholder="Ej. access_token o data.token" />
+                                    <span class="helper-text"
+                                        style="font-size: 0.8rem; display: block; margin-top: 4px;">({{ 'TOOLS.DYNAMIC_AUTH_TOKEN_PATH_HELPER' | translate }})</span>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="editDynamicAuthInvalidationKeywords">{{ 'TOOLS.DYNAMIC_AUTH_INVALIDATION' | translate }}</label>
+                                    <input id="editDynamicAuthInvalidationKeywords" type="text"
+                                        formControlName="dynamicAuthInvalidationKeywords"
+                                        placeholder="invalid_token, expired" />
+                                    <span class="helper-text"
+                                        style="font-size: 0.8rem; display: block; margin-top: 4px;">{{ 'TOOLS.DYNAMIC_AUTH_INVALIDATION_HELPER' | translate }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </details>
+                </div>
+
+                <div *ngIf="editProviderError" class="alert error" style="margin-top: 1rem;">
+                    {{ editProviderError }}
+                </div>
+
+                <div class="form-actions"
+                    style="margin-top: 2rem; justify-content: flex-end; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 1.5rem;">
+                    <button type="button" class="btn ghost" (click)="closeEditProviderModal()"
+                        [disabled]="isEditingProvider">{{ 'MODALS.CANCEL' | translate }}</button>
+                    <button type="submit" class="btn primary"
+                        [disabled]="editProviderForm.invalid || isEditingProvider">
+                        <span *ngIf="!isEditingProvider">{{ 'MODALS.SAVE_CHANGES' | translate }}</span>
+                        <span *ngIf="isEditingProvider">{{ 'MODALS.SAVING' | translate }}</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    }
+</div>

@@ -1,0 +1,284 @@
+[
+  {
+    "name": "CubePath VPS + Status",
+    "code": "cubepath",
+    "baseUrl": "https://api.cubepath.com",
+    "authenticationType": "API_KEY",
+    "apiKeyLocation": "HEADER",
+    "apiKeyName": "X-API-Key",
+    "apiKeyValue": "<YOUR_API_KEY>",
+    "customHeaders": {
+      "Accept": "application/json",
+      "Content-Type": "application/json",
+      "User-Agent": "Invok/1.0"
+    },
+    "tools": [
+      {
+        "name": "CubePath - List all VPS servers",
+        "code": "cubepath-vps-list",
+        "description": "Lista todos los servidores VPS del tenant autenticado.",
+        "endpointPath": "/vps/",
+        "httpMethod": "GET",
+        "enabled": true,
+        "isExportable": true,
+        "parameters": []
+      },
+      {
+        "name": "CubePath - Create new server",
+        "code": "cubepath-vps-create",
+        "description": "Crea un nuevo servidor VPS dentro de un proyecto.",
+        "endpointPath": "/vps/create/{project_id}",
+        "httpMethod": "POST",
+        "enabled": true,
+        "isExportable": true,
+        "bodyPayloadTemplate": "{\"label\":\"{{label}}\",\"template_name\":\"{{template_name}}\",\"plan_name\":\"{{plan_name}}\",\"location_name\":\"{{location_name}}\",\"name\":\"{{name}}\",\"password\":\"{{password}}\",\"custom_cloudinit\":\"{{custom_cloudinit}}\",\"ssh_key_names\":{{ssh_key_names_json}},\"enable_backups\":{{enable_backups}}}",
+        "parameters": [
+          {
+            "name": "project_id",
+            "type": "NUMBER",
+            "description": "ID numérico del proyecto donde crear el VPS.",
+            "required": true
+          },
+          {
+            "name": "label",
+            "type": "STRING",
+            "description": "Etiqueta visible del servidor.",
+            "required": true
+          },
+          {
+            "name": "template_name",
+            "type": "STRING",
+            "description": "Nombre del template/imagen (ej. ubuntu-24).",
+            "required": true
+          },
+          {
+            "name": "plan_name",
+            "type": "STRING",
+            "description": "Nombre del plan de recursos.",
+            "required": true
+          },
+          {
+            "name": "location_name",
+            "type": "STRING",
+            "description": "Nombre de la ubicación/región.",
+            "required": true
+          },
+          {
+            "name": "name",
+            "type": "STRING",
+            "description": "Hostname o nombre interno del VPS.",
+            "required": true
+          },
+          {
+            "name": "password",
+            "type": "STRING",
+            "description": "Contraseña de root opcional. Si la API de CubePath la exige, mínimo 8 caracteres; vacío = sin contraseña de root (según documentación).",
+            "required": false,
+            "defaultValue": ""
+          },
+          {
+            "name": "custom_cloudinit",
+            "type": "STRING",
+            "description": "YAML de cloud-init opcional. Dejá vacío si no usás. Invok escapa comillas y barras en el JSON; para varias líneas podés usar \\n en el texto.",
+            "required": false,
+            "defaultValue": ""
+          },
+          {
+            "name": "ssh_key_names_json",
+            "type": "STRING",
+            "description": "JSON array en texto con nombres de llaves SSH. Ej: [\"main-key\"]. Si no usás, enviar []",
+            "required": false,
+            "defaultValue": "[]"
+          },
+          {
+            "name": "enable_backups",
+            "type": "BOOLEAN",
+            "description": "Habilita backups automáticos.",
+            "required": false,
+            "defaultValue": "false"
+          }
+        ]
+      },
+      {
+        "name": "CubePath - Update server details",
+        "code": "cubepath-vps-update",
+        "description": "Actualiza nombre/label del servidor VPS.",
+        "endpointPath": "/vps/update/{vps_id}",
+        "httpMethod": "PATCH",
+        "enabled": true,
+        "isExportable": true,
+        "bodyPayloadTemplate": "{\"label\":\"{{label}}\",\"name\":\"{{name}}\"}",
+        "parameters": [
+          {
+            "name": "vps_id",
+            "type": "NUMBER",
+            "description": "ID del VPS a actualizar.",
+            "required": true
+          },
+          {
+            "name": "label",
+            "type": "STRING",
+            "description": "Nuevo label del VPS.",
+            "required": false
+          },
+          {
+            "name": "name",
+            "type": "STRING",
+            "description": "Nuevo nombre/hostname del VPS.",
+            "required": false
+          }
+        ]
+      },
+      {
+        "name": "CubePath - View server metrics",
+        "code": "cubepath-vps-metrics",
+        "description": "Consulta métricas del VPS, con filtro opcional por métrica y rango temporal.",
+        "endpointPath": "/vps/{vps_id}/metrics",
+        "httpMethod": "GET",
+        "enabled": true,
+        "isExportable": true,
+        "parameters": [
+          {
+            "name": "vps_id",
+            "type": "NUMBER",
+            "description": "ID del VPS.",
+            "required": true
+          },
+          {
+            "name": "metrics",
+            "type": "STRING",
+            "description": "Lista separada por comas (opcional). Ej: cpu,ram,disk",
+            "required": false
+          },
+          {
+            "name": "time_range",
+            "type": "STRING",
+            "description": "Rango temporal, ej: 1h, 24h, 7d.",
+            "required": false,
+            "defaultValue": "1h"
+          }
+        ]
+      },
+      {
+        "name": "CubePath - Create manual backup",
+        "code": "cubepath-vps-backup-create",
+        "description": "Crea un backup manual del VPS.",
+        "endpointPath": "/vps/{vps_id}/backups",
+        "httpMethod": "POST",
+        "enabled": true,
+        "isExportable": true,
+        "bodyPayloadTemplate": "{\"notes\":\"{{notes}}\"}",
+        "parameters": [
+          {
+            "name": "vps_id",
+            "type": "NUMBER",
+            "description": "ID del VPS.",
+            "required": true
+          },
+          {
+            "name": "notes",
+            "type": "STRING",
+            "description": "Notas opcionales del backup.",
+            "required": false
+          }
+        ]
+      },
+      {
+        "name": "CubePath - List all projects",
+        "code": "cubepath-projects-list",
+        "description": "Lista todos los proyectos disponibles.",
+        "endpointPath": "/projects/",
+        "httpMethod": "GET",
+        "enabled": true,
+        "isExportable": true,
+        "parameters": []
+      },
+      {
+        "name": "CubePath - Create project",
+        "code": "cubepath-projects-create",
+        "description": "Crea un proyecto nuevo.",
+        "endpointPath": "/projects/",
+        "httpMethod": "POST",
+        "enabled": true,
+        "isExportable": true,
+        "bodyPayloadTemplate": "{\"name\":\"{{name}}\",\"description\":\"{{description}}\"}",
+        "parameters": [
+          {
+            "name": "name",
+            "type": "STRING",
+            "description": "Nombre del proyecto.",
+            "required": true
+          },
+          {
+            "name": "description",
+            "type": "STRING",
+            "description": "Descripción opcional del proyecto.",
+            "required": false
+          }
+        ]
+      },
+      {
+        "name": "CubePath - Update project",
+        "code": "cubepath-projects-update",
+        "description": "Actualiza los datos de un proyecto existente.",
+        "endpointPath": "/projects/{project_id}",
+        "httpMethod": "PUT",
+        "enabled": true,
+        "isExportable": true,
+        "bodyPayloadTemplate": "{\"name\":\"{{name}}\"}",
+        "parameters": [
+          {
+            "name": "project_id",
+            "type": "NUMBER",
+            "description": "ID del proyecto a actualizar.",
+            "required": true
+          },
+          {
+            "name": "name",
+            "type": "STRING",
+            "description": "Nuevo nombre del proyecto.",
+            "required": false
+          }
+        ]
+      },
+      {
+        "name": "CubePath - Get incidents",
+        "code": "cubepath-status-incidents",
+        "description": "Obtiene los incidentes publicados en el endpoint de status de CubePath.",
+        "endpointPath": "/status/incidents",
+        "httpMethod": "GET",
+        "enabled": true,
+        "isExportable": true,
+        "parameters": []
+      },
+      {
+        "name": "CubePath - Get maintenances",
+        "code": "cubepath-status-maintenances",
+        "description": "Obtiene mantenimientos programados o históricos.",
+        "endpointPath": "/status/maintenances",
+        "httpMethod": "GET",
+        "enabled": true,
+        "isExportable": true,
+        "parameters": [
+          {
+            "name": "hide_ended",
+            "type": "BOOLEAN",
+            "description": "Si true, oculta mantenimientos ya finalizados.",
+            "required": false,
+            "defaultValue": "false"
+          }
+        ]
+      },
+      {
+        "name": "List VPS plans",
+        "code": "cubepath-list-vps-plans",
+        "description": "Obtiene los planes de VPS disponibles en CubePath.",
+        "endpointPath": "/vps/plans",
+        "httpMethod": "GET",
+        "enabled": true,
+        "isExportable": true,
+        "parameters": []
+      }
+    ]
+  }
+]

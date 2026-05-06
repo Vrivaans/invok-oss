@@ -1,0 +1,404 @@
+{
+  "NAVBAR": {
+    "HOME": "Home",
+    "TOOLS": "Tools",
+    "ANALYTICS": "Analytics",
+    "TASKS": "Tasks",
+    "BRIDGE_TOKEN": "Invok Token",
+    "DOCS": "Docs",
+    "TUTORIALS": "Tutorials",
+    "SETUP_MCP": "Configure your MCP client",
+    "MCP_CONNECTED": "MCP Connected",
+    "LOGOUT": "Log out"
+  },
+  "HOME": {
+    "PAGE_LABEL": "Overview",
+    "TITLE": "AI as the brain, Invok as the hands",
+    "EXPORT_BUTTON": "Export Tools",
+    "SAVED_TOOLS_TITLE": "Saved Tools",
+    "ACTIVE": "Active",
+    "INACTIVE": "Inactive",
+    "DESCRIPTION": "All registered API tools. Click on one to edit it.",
+    "TOOLS_COUNT": "{{count}} tools",
+    "DELETE_PROVIDER_TITLE": "Delete provider and its tools",
+    "EMPTY_STATE": "No tools registered.",
+    "STATUS_HEALTHY": "Healthy",
+    "STATUS_UNHEALTHY": "Unhealthy",
+    "DELETE_TOOL": "Delete tool"
+  },
+  "TOOLS": {
+    "TITLE": "API Tools",
+    "SUBTITLE": "Add and configure your providers and tools manually or import from OpenAPI.",
+    "IMPORTER_LABEL": "Quick Importer (Invok JSON or OpenAPI)",
+    "IMPORTER_HELPER": "Paste the JSON exported directly from another Invok agent, or use a Swagger 2.0 / OpenAPI 3.x and we will process the routes for you.",
+    "PROCESS_BUTTON": "Process JSON",
+    "SECTION_PROVIDER": "1. Provider Configuration (Base)",
+    "CREATE_NEW_PROVIDER": "Create new provider for all these tools",
+    "SELECT_EXISTING": "Select Existing Provider",
+    "CHOOSE_PROVIDER": "-- Choose a provider --",
+    "EDIT_PROVIDER": "Edit Selected Provider",
+    "PROVIDER_NAME": "Provider Name (e.g. OpenWeatherMap)",
+    "PROVIDER_CODE": "Unique Code (Optional)",
+    "BASE_URL": "Base URL",
+    "AUTH_TYPE": "Authentication Type",
+    "AUTH_NONE": "No Authentication",
+    "AUTH_API_KEY": "API Key",
+    "AUTH_BEARER": "Bearer Token",
+    "AUTH_BASIC": "Basic Auth",
+    "AUTH_OAUTH2": "🔐 OAuth2 (Authorization Code)",
+    "API_KEY_LOCATION": "Location (API Key)",
+    "LOCATION_HEADER": "Header",
+    "LOCATION_QUERY": "Query Parameter",
+    "LOCATION_BODY": "In Body (JSON)",
+    "API_KEY_NAME": "Key Name",
+    "API_KEY_VALUE": "Value (Secret)",
+    "OAUTH2_REDIRECT_URI_TITLE": "🔑 How to configure the Redirect URI",
+    "OAUTH2_REDIRECT_URI_HELPER": "First save the provider to generate the URI. It will use your code:",
+    "OAUTH2_CLIENT_ID": "Client ID",
+    "OAUTH2_CLIENT_SECRET": "Client Secret",
+    "OAUTH2_AUTH_URL": "Authorization URL",
+    "OAUTH2_TOKEN_URL": "Token URL",
+    "OAUTH2_SCOPES": "Scopes (space between each)",
+    "ADVANCED_OPTIONS": "Advanced Options (Custom Headers)",
+    "DYNAMIC_AUTH_TITLE": "Dynamic Authentication (Token Exchange)",
+    "DYNAMIC_AUTH_ENABLE": "Enable",
+    "SECTION_ENDPOINTS": "2. Endpoints to Create",
+    "ADD_MANUAL": "Add Manually",
+    "SUBMIT_BUTTON": "Save All",
+    "SUBMITTING": "Saving Batch...",
+    "SECONDARY_AUTH_TITLE": "Secondary Authentication (App Tokens)",
+    "SECONDARY_API_KEY_NAME": "Secondary Key Name (e.g. 'token')",
+    "SECONDARY_API_KEY_VALUE": "Secondary Key Value",
+    "EDIT_PROVIDER_TITLE": "Edit Provider",
+    "EDIT_PROVIDER_SUBTITLE": "Update the base configuration for this provider. Changes will affect all its tools.",
+    "BATCH_SUCCESS_NEW": "Provider and {{count}} tools created successfully!",
+    "BATCH_SUCCESS_EXISTING": "{{count}} tools added to the provider successfully!",
+    "IMPORT_SUCCESS_INVOK": "Invok tools imported successfully!",
+    "IMPORT_ERROR_INVOK": "Error importing Invok tools. Check the format.",
+    "IMPORT_SUCCESS_COUNT": "{{count}} endpoints processed from OpenAPI.",
+    "IMPORT_SUCCESS_REVIEW": "{{count}} endpoints loaded from OpenAPI. Review them, confirm the provider, and click Save All to create them.",
+    "IMPORT_BASE_URL_REQUIRED": "An absolute base URL could not be inferred; complete the provider Base URL before saving.",
+    "OPENAPI_PROVIDER_REQUIRED": "To save the endpoints imported from OpenAPI, complete the provider name and an absolute Base URL.",
+    "OPENAPI_EXISTING_PROVIDER_REQUIRED": "To save the endpoints imported from OpenAPI, select an existing provider or create a new one with its Base URL.",
+    "EMPTY_ENDPOINTS": "No endpoints added yet. Use the importer or add one manually.",
+    "TOOL_NAME": "Tool Name",
+    "TOOL_CODE": "Tool Code",
+    "TOOL_DESCRIPTION": "Description",
+    "TOOL_ENABLE_NOW": "Enable now",
+    "PARAMETERS_COUNT": "Parameters ({{count}})",
+    "ADD_PARAMETER": "Add Parameter",
+    "OAUTH2_CONNECT": "Connect with OAuth2",
+    "OAUTH2_CONNECT_HELPER": "Click to authorize the application and obtain the initial token.",
+    "OAUTH2_REDIRECT_URI_HELPER_SHORT": "Copy this URL to your OAuth provider configuration."
+  },
+  "MODALS": {
+    "CONFIRM_DELETE": "Confirm Deletion",
+    "CONFIRM_DELETE_PROVIDER": "Confirm Provider Deletion",
+    "CANCEL": "Cancel",
+    "DELETE": "Delete",
+    "DELETE_ALL": "Delete All",
+    "EDIT_TOOL": "Edit Tool",
+    "SAVE_CHANGES": "Save Changes",
+    "SAVING": "Saving...",
+    "SAVING_CHANGES": "Saving changes...",
+    "SAVED": "Changes saved successfully!"
+  },
+  "ANALYTICS": {
+    "TITLE": "Execution Analytics",
+    "SUBTITLE": "Monitor and audit how the AI agent is using the tools.",
+    "LOADING": "Loading analytics...",
+    "TOTAL_EXECUTIONS": "Total Executions (30 days)",
+    "SUCCESSFUL": "Successful Executions",
+    "SUCCESS_RATE": "Success Rate",
+    "AVG_LATENCY": "Average Latency",
+    "LOADING_ERROR_SUMMARY": "Could not load main analytics.",
+    "LOADING_ERROR_LOGS": "Could not load execution history.",
+    "HISTORY_TITLE": "Execution History",
+    "RECORDS_COUNT": "{{ count }} records",
+    "TABLE_DATE": "Date",
+    "TABLE_TOOL": "Tool",
+    "TABLE_STATUS": "Status",
+    "TABLE_LATENCY": "Latency",
+    "TABLE_PAYLOADS": "Payloads",
+    "VIEW_DETAILS": "View Details",
+    "STATUS_SUCCESS": "Success",
+    "STATUS_ERROR": "Error",
+    "EMPTY_LOGS": "No execution logs yet.",
+    "PAGINATION_PAGE": "Page {{ current }} of {{ total }}",
+    "MODAL_DETAILS_TITLE": "Execution Details: {{ tool }}",
+    "ERROR_BANNER_TITLE": "Error Message",
+    "REQUEST_PAYLOAD": "Request Payload",
+    "RESPONSE_PAYLOAD": "Response Payload"
+  },
+  "AUTH": {
+    "LANGUAGE_LABEL": "Language",
+    "LANG_ES": "Spanish",
+    "LANG_EN": "English",
+    "LOGIN_TITLE": "Admin Login",
+    "LOGIN_SUBTITLE": "Log in to manage your Invok API tokens.",
+    "USERNAME": "Username",
+    "PASSWORD": "Password",
+    "LOGIN_BUTTON": "Login",
+    "LOGGING_IN": "Logging in...",
+    "ATTEMPTS_REMAINING": "Attempts remaining: {{ count }}",
+    "LOCKED_RETRY": "Try again after {{ time }}",
+    "NO_ACCOUNT": "Don't have an account? Sign up",
+    "RETURN_DASHBOARD": "Return to Dashboard",
+    "SETUP_TITLE": "Sign Up for Invok",
+    "SETUP_SUBTITLE": "Create your admin account to get started.",
+    "ADMIN_USERNAME": "Admin Username",
+    "EMAIL": "Admin Email",
+    "ADMIN_PASSWORD": "Admin Password",
+    "CONFIRM_PASSWORD": "Confirm Password",
+    "PASSWORD_MIN": "Min 8 characters",
+    "CONFIGURING": "Configuring...",
+    "COMPLETE_SETUP": "Complete Setup",
+    "ALREADY_ACCOUNT": "Already have an account? Log in",
+    "REG_COMPLETE": "Registration Complete! 🎉",
+    "REG_SUBTITLE": "Your workspace has been provisioned successfully.",
+    "BRIDGE_TOKEN_TITLE": "Your initial Invok Token (MCP PAT)",
+    "BRIDGE_TOKEN_HELPER": "Use this token to connect local or remote MCP clients to this workspace.",
+    "COPY": "Copy",
+    "COPIED": "Copied!",
+    "GO_DASHBOARD": "Go to Dashboard",
+    "VERIFY_TITLE": "Verify your email",
+    "VERIFY_SUBTITLE": "Enter the 6-digit code we sent you. After verification you will see your Invok Token.",
+    "VERIFY_CODE_LABEL": "Verification code",
+    "VERIFY_CODE_PLACEHOLDER": "000000",
+    "VERIFY_SUBMIT": "Verify and continue",
+    "VERIFY_SUBMITTING": "Verifying…",
+    "VERIFY_RESEND": "Resend code",
+    "VERIFY_RESENDING": "Sending…",
+    "VERIFY_LOGOUT": "Log out",
+    "VERIFY_DEADLINE": "Complete verification before",
+    "SETUP_LOADING": "Loading…",
+    "VERIFY_RESUME_HINT": "Already signed up but did not verify your email? Enter your username and password below, then send a new code.",
+    "VERIFY_RESUME_BUTTON": "Send new verification code",
+    "VERIFY_RESUME_SENDING": "Sending…"
+  },
+  "SYSADMIN": {
+    "BACK_LOGIN": "← Back",
+    "TITLE": "Check",
+    "KEY_LABEL": "Reference",
+    "KEY_PLACEHOLDER": "Value",
+    "SAVE_LOAD": "Continue",
+    "CLEAR_KEY": "Clear",
+    "LOADING": "Loading…",
+    "COL_ID": "#",
+    "COL_USER": "Name",
+    "COL_EMAIL": "Mail",
+    "COL_VERIFIED": "Status",
+    "COL_TENANT": "Ref.",
+    "YES": "Yes",
+    "NO": "No",
+    "DELETE": "Remove",
+    "EMPTY": "No data.",
+    "CONFIRM_ACTION": "Confirm? This cannot be undone.",
+    "MSG_DONE": "Done."
+  },
+  "MCP": {
+    "TITLE": "MCP Connection Guide",
+    "SUBTITLE": "Instructions to connect your AI agent with Invok.",
+    "CLAUDE_DESC": "To connect Claude Desktop with Invok, edit your configuration file at ~/Library/Application Support/Claude/claude_desktop_config.json and add the following section:",
+    "CLAUDE_PATH_HINT": "Replace /path/to/invok-mcp with the actual path to the downloaded invok-mcp executable, and <Invok-Token> with your Invok Token.",
+    "VSCODE_DESC": "Add the following section to your project's .vscode/settings.json file. VS Code will automatically detect the MCP server:",
+    "ANTIGRAVITY_DESC": "To use Invok with Google DeepMind's Antigravity agent, add the following entry to your mcp_config.json file:",
+    "BRIDGE_TITLE": "MCP bridge (stdio)",
+    "BRIDGE_INTRO": "For MCP clients that only support stdio: download the build for your OS and point your client to the binary. Assets are published in the handsai-bridge repository.",
+    "BRIDGE_WINDOWS": "Windows (64-bit) — .zip",
+    "BRIDGE_LINUX": "Linux (x64) — .tar.gz",
+    "BRIDGE_MAC_ARM": "macOS (Apple Silicon) — .tar.gz",
+    "BRIDGE_MAC_INTEL": "macOS (Intel) — .tar.gz",
+    "STREAMABLE_TITLE": "Remote MCP (Streamable HTTP)",
+    "STREAMABLE_DESC": "If your MCP client supports remote HTTP connections, point it directly to Invok using POST /mcp. This mode does not need the bridge.",
+    "STREAMABLE_HINT": "Replace <Invok-Token> with your Invok Token."
+  },
+  "GUIDE": {
+    "DOCS": {
+      "TITLE": "Invok Integrations Documentation",
+      "SUBTITLE": "Public guide for humans and agents with rules, advanced cases, and JSON template.",
+      "LOADING": "Loading documentation...",
+      "LOAD_ERROR": "Could not load public documentation.",
+      "OVERVIEW": "Overview",
+      "PUBLIC_ENDPOINT": "Public endpoint",
+      "AGENT_TOOL": "Agent tool",
+      "CORE_RULES": "Core rules",
+      "ADVANCED_CASES": "Advanced cases",
+      "AUTHORING_FLOW": "Recommended flow",
+      "CHECKLIST": "Validation checklist",
+      "PROVIDER_TEMPLATE": "Provider template"
+    }
+  },
+  "LANDING": {
+    "NAV": {
+      "PHILOSOPHY": "Philosophy",
+      "FEATURES": "Use cases",
+      "PACKS": "Packs",
+      "SECURITY": "Security",
+      "HOW": "How it works"
+    },
+    "HERO": {
+      "BADGE": "Early access",
+      "TITLE": "Turn any API into tools your AI can use",
+      "SUBTITLE": "Register any API once. Turn it into reusable tools. Your agent can use them or share them with anyone.",
+      "HOOK": "Never integrate the same API twice.",
+      "CTA_PRIMARY": "Try Invok now",
+      "CTA_SECONDARY": "See use cases"
+    },
+    "HOW": {
+      "LABEL": "How it works",
+      "TITLE": "From API to action in minutes",
+      "SUBTITLE": "No setup headaches. Just connect, generate, and run.",
+      "INSIGHT": "Tools can also be imported from external packs, so there is no need to build everything from scratch.",
+      "STEPS": {
+        "DOCS": {
+          "TITLE": "1. Paste the API docs",
+          "DESC": "Import OpenAPI or other documentation. Invok understands the structure automatically."
+        },
+        "KEY": {
+          "TITLE": "2. Add your API key",
+          "DESC": "Your credentials stay secure. The agent never sees them."
+        },
+        "GENERATE": {
+          "TITLE": "3. Generate tools",
+          "DESC": "Invok turns endpoints into tools your AI can call instantly."
+        },
+        "ACT": {
+          "TITLE": "4. Let your agent act",
+          "DESC": "Your agent uses natural language to execute real actions across real systems."
+        }
+      }
+    },
+    "USE_CASES": {
+      "LABEL": "Use cases",
+      "TITLE": "Real actions. Not just responses.",
+      "SUBTITLE": "Your AI does not only analyze data: it interacts with real systems and runs complete workflows.",
+      "VIDEO_BADGE": "Video demo",
+      "WATCH_DEMO": "Watch demo",
+      "VIDEOS": {
+        "ODOO": {
+          "TITLE": "Invok Odoo Demo",
+          "DESCRIPTION": "See how Invok operates on top of Odoo to execute real actions from natural language without custom integrations.",
+          "HIGHLIGHT": "Shows the project working end-to-end on a real system."
+        },
+        "SOCIAL": {
+          "TITLE": "Invok LinkedIn and Bluesky Demo",
+          "DESCRIPTION": "Invok coordinates posting and automations across multiple social networks from the same agent workflow.",
+          "HIGHLIGHT": "Key point: 1 single prompt triggers multiple executions and actions across multiple destinations."
+        }
+      },
+      "CARDS": {
+        "INFRA": {
+          "TITLE": "Deploy infrastructure",
+          "DESC": "Spin up VPS instances and operate services from your agent without writing new integrations."
+        },
+        "PACKS": {
+          "TITLE": "Shareable integrations",
+          "DESC": "Export and import complete toolsets. Build once and reuse wherever you need them."
+        },
+        "MULTI_ACTION": {
+          "TITLE": "One prompt, multiple actions",
+          "DESC": "Design flows where a single user instruction activates several coordinated tools."
+        }
+      }
+    },
+    "PACKS": {
+      "LABEL": "Reusable API packs",
+      "TITLE": "Build once. Use everywhere.",
+      "SUBTITLE": "Invok lets you export your integrations as portable JSON packs. Anyone can import them, add their API key, and instantly unlock the same capabilities.",
+      "INSIGHT": "<strong>Import only what you need</strong><br>Not bloated integrations. Just the tools your agent actually uses.",
+      "TAGLINE": "APIs become assets. Not repeated work.",
+      "STEPS": {
+        "CREATE": {
+          "LABEL": "1 · Create",
+          "TITLE": "Connect any API and generate tools"
+        },
+        "EXPORT": {
+          "LABEL": "2 · Export",
+          "TITLE": "Download a reusable JSON pack"
+        },
+        "IMPORT": {
+          "LABEL": "3 · Import",
+          "TITLE": "Add the API key and your agent is ready"
+        }
+      }
+    },
+    "PHILOSOPHY": {
+      "LABEL": "Why Invok",
+      "TITLE": "Your AI already knows what to do. Invok lets it do it.",
+      "SUBTITLE": "Without Invok, connecting AI to real systems requires custom code, fragile integrations, and constant maintenance. Invok removes that layer completely.",
+      "PILLARS": {
+        "NO_INTEGRATIONS": {
+          "TITLE": "No integrations to build",
+          "DESC": "Stop writing glue code. If an API exists, your agent can use it."
+        },
+        "STACK": {
+          "TITLE": "Works with your stack",
+          "DESC": "Use it with any agent or LLM that supports tool calling."
+        },
+        "EXECUTION": {
+          "TITLE": "Built for real execution",
+          "DESC": "Not just responses: real actions across real systems."
+        },
+        "REUSE": {
+          "TITLE": "Build once. Use everywhere.",
+          "DESC": "Once you convert an API into tools, it becomes portable and reusable by your team or community."
+        }
+      }
+    },
+    "SECURITY": {
+      "LABEL": "Security",
+      "TITLE": "Your APIs stay yours.",
+      "SUBTITLE": "Invok never exposes your credentials to the AI. Everything is handled securely behind the scenes.",
+      "ITEMS": {
+        "CREDENTIALS": {
+          "TITLE": "Credentials never reach the AI",
+          "DESC": "API keys are injected server-side only when needed."
+        },
+        "CONTROL": {
+          "TITLE": "Full control",
+          "DESC": "Your agent can only access what you explicitly configure."
+        },
+        "SAFE_EXECUTION": {
+          "TITLE": "Safe execution layer",
+          "DESC": "External responses are sanitized before reaching the model."
+        }
+      }
+    },
+    "PRICING": {
+      "LABEL": "Pricing",
+      "TITLE": "Simple pricing to get started",
+      "FREE": {
+        "TITLE": "Free",
+        "DESC": "• Limited APIs<br>• Basic usage<br>• Test the platform"
+      },
+      "PRO": {
+        "TITLE": "Pro — $30/mo",
+        "DESC": "• Unlimited APIs<br>• Higher limits<br>• Full access"
+      }
+    },
+    "CTA": {
+      "TITLE": "Build your first API pack",
+      "SUBTITLE": "Or import one and get started in seconds.",
+      "BUTTON": "Open Invok"
+    },
+    "FOOTER": {
+      "TEXT": "Built with Spring Boot · Java 21 · MCP"
+    }
+  },
+  "TUTORIALS": {
+    "TITLE": "Tutorials",
+    "SUBTITLE": "Quick guides for using Invok in real workflows.",
+    "WATCH_ON_YOUTUBE": "Watch on YouTube",
+    "VIDEOS": {
+      "EXPORT_IMPORT": {
+        "TITLE": "Guide to exporting and importing tools in Invok",
+        "DESCRIPTION": "Learn how to export tools and import them back into another Invok environment."
+      },
+      "ODOO_EXECUTION": {
+        "TITLE": "Execution guide in Odoo",
+        "DESCRIPTION": "Hands-on tutorial to run Invok workflows inside Odoo."
+      }
+    }
+  }
+}

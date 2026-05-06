@@ -1,0 +1,424 @@
+.home-page {
+  &.container {
+    padding-top: 2.5rem;
+  }
+
+  .tool-item {
+    cursor: pointer;
+  }
+}
+
+.home-card-meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.home-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.home-label {
+  display: block;
+  font-family: 'DM Mono', ui-monospace, monospace;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin: 0 0 0.75rem 0;
+}
+
+.home-brand {
+  font-family: 'DM Serif Display', Georgia, serif;
+  font-size: clamp(2.5rem, 6vw, 3.75rem);
+  font-weight: 400;
+  margin: 0 0 0.75rem 0;
+  color: var(--text);
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+
+  .brand-accent {
+    color: var(--accent);
+  }
+}
+
+.home-tagline {
+  color: var(--muted);
+  font-size: 1.05rem;
+  line-height: 1.55;
+  max-width: 36rem;
+  margin: 0 auto;
+}
+
+.home-actions {
+  display: flex;
+  justify-content: center;
+  margin-top: 1.75rem;
+}
+
+.home-export-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  .home-export-icon {
+    font-size: 1.15rem;
+    line-height: 1;
+  }
+}
+
+.provider-status-hint {
+  font-family: 'DM Mono', ui-monospace, monospace;
+  font-size: 0.75rem;
+  color: var(--muted);
+  letter-spacing: 0.02em;
+}
+
+.provider-group {
+  background: var(--surface);
+  border-radius: 0.75rem;
+  margin-bottom: 1rem;
+  border: 1px solid var(--border);
+  overflow: hidden;
+  transition: border-color 0.2s ease;
+
+  &:hover {
+    border-color: rgba(200, 240, 74, 0.2);
+  }
+
+  summary {
+    padding: 1rem 1.25rem;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 1.05rem;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    font-family: 'Instrument Sans', sans-serif;
+    color: var(--text);
+
+    &::-webkit-details-marker {
+      display: none;
+    }
+  }
+
+  .provider-summary-left {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+  }
+
+  .provider-folder-icon {
+    font-size: 1.2rem;
+    line-height: 1;
+    opacity: 0.9;
+  }
+
+  .provider-summary-right {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .delete-btn-icon {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.15rem;
+    padding: 0.25rem;
+    line-height: 1;
+    border-radius: 6px;
+    transition: background-color 0.15s ease;
+
+    &:hover {
+      background: rgba(240, 74, 74, 0.12);
+    }
+  }
+}
+
+.provider-group-body {
+  padding: 0 1.25rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  border-top: 1px solid var(--border);
+  padding-top: 1rem;
+}
+
+.modal--wide {
+  max-width: 500px;
+  max-height: 90vh;
+  overflow-y: auto;
+  text-align: left;
+}
+
+.modal--wide-lg {
+  max-width: 600px;
+}
+
+.export-card-title {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  font-family: 'Instrument Sans', sans-serif;
+  color: var(--text);
+}
+
+.modal-title {
+  margin-top: 0;
+  margin-bottom: 0.35rem;
+  font-size: 1.5rem;
+  font-family: 'DM Serif Display', Georgia, serif;
+  font-weight: 400;
+  color: var(--text);
+}
+
+.modal-lead {
+  text-align: left;
+  margin-bottom: 1.5rem;
+  color: var(--muted);
+}
+
+.modal-welcome {
+  text-align: center;
+  padding: 2.5rem 2rem;
+
+  .modal-welcome-title {
+    font-family: 'DM Serif Display', Georgia, serif;
+    font-size: 1.85rem;
+    font-weight: 400;
+    margin: 0 0 1rem 0;
+    color: var(--text);
+  }
+
+  .modal-welcome-text {
+    font-size: 1.05rem;
+    color: var(--muted);
+    margin-bottom: 2rem;
+    line-height: 1.55;
+  }
+
+  .modal-actions {
+    justify-content: center;
+    border-top: none;
+    padding-top: 0;
+    margin-top: 0;
+  }
+}
+
+.form-required {
+  color: var(--danger);
+}
+
+.edit-form {
+  .section-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 0.5rem;
+    margin-bottom: 1rem;
+
+    h4 {
+      margin: 0;
+      font-size: 1.05rem;
+      font-weight: 600;
+      font-family: 'Instrument Sans', sans-serif;
+    }
+  }
+
+  .btn-add-param {
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    font-size: 0.85rem;
+  }
+
+  .param-card {
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid var(--border);
+    padding: 1.25rem;
+    border-radius: 8px;
+    position: relative;
+  }
+
+  .param-remove {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.2rem;
+    padding: 0.2rem;
+    display: flex;
+    align-items: center;
+    opacity: 0.7;
+    transition: opacity 0.2s ease;
+    border-radius: 6px;
+
+    &:hover {
+      opacity: 1;
+      background: rgba(240, 74, 74, 0.1);
+    }
+  }
+
+  .param-fields {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    padding-right: 2rem;
+  }
+
+  .param-label-sm {
+    font-size: 0.85rem;
+    color: var(--muted);
+    margin-bottom: 0.3rem;
+  }
+
+  .param-input-tight {
+    margin: 0;
+  }
+
+  .param-full {
+    grid-column: 1 / -1;
+  }
+
+  .code-textarea {
+    width: 100%;
+    padding: 0.6rem;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    background: rgba(0, 0, 0, 0.25);
+    color: var(--text);
+    font-family: 'DM Mono', ui-monospace, monospace;
+    resize: vertical;
+  }
+
+  .field-hint {
+    color: var(--muted);
+    display: block;
+    margin-top: 5px;
+    font-size: 0.8rem;
+
+    code {
+      background: rgba(200, 240, 74, 0.1);
+      padding: 2px 4px;
+      border-radius: 3px;
+      font-family: 'DM Mono', ui-monospace, monospace;
+      font-size: 0.85em;
+      color: var(--accent2);
+    }
+  }
+
+  .empty-params {
+    text-align: center;
+    padding: 2rem 1rem;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    border: 1px dashed var(--border);
+
+    p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+  }
+}
+
+.export-panel {
+  background: rgba(0, 0, 0, 0.2);
+  padding: 1.5rem;
+  border-radius: 0.75rem;
+  border: 1px solid var(--border);
+}
+
+.export-panel-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.5rem;
+
+  h4 {
+    margin: 0;
+    font-family: 'DM Serif Display', Georgia, serif;
+    font-weight: 400;
+    font-size: 1.15rem;
+  }
+
+  .btn-select-all {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.85rem;
+  }
+}
+
+.export-empty {
+  text-align: center;
+  color: var(--muted);
+  font-style: italic;
+}
+
+.export-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  max-height: 300px;
+  overflow-y: auto;
+  padding-right: 0.5rem;
+}
+
+.export-card {
+  padding: 1rem;
+  cursor: pointer;
+  border: 1px solid var(--border);
+  transition: background-color 0.2s, border-color 0.2s;
+  background: rgba(255, 255, 255, 0.02);
+
+  &:hover {
+    border-color: rgba(200, 240, 74, 0.25);
+    background: var(--surface2);
+  }
+
+  &.export-card--selected {
+    background: rgba(200, 240, 74, 0.08);
+    border-color: rgba(200, 240, 74, 0.35);
+  }
+}
+
+.export-card-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.export-card-meta {
+  margin: 0.3rem 0 0;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.export-check {
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+  border: 2px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: background-color 0.15s, border-color 0.15s;
+
+  &.export-check--on {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #0a0a0a;
+    font-weight: 700;
+    font-size: 0.85rem;
+  }
+}

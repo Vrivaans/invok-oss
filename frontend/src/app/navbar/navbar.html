@@ -1,0 +1,30 @@
+<nav class="navbar" *ngIf="showMainNavbar">
+    <div class="navbar-brand">
+        <a routerLink="/home" class="brand-link">
+            <span class="brand-text"><span class="brand-accent">Inv</span>ok</span>
+        </a>
+    </div>
+    <ul class="navbar-menu">
+        <li>
+            <a routerLink="/home" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">{{ 'NAVBAR.HOME' | translate }}</a>
+        </li>
+        <li>
+            <a routerLink="/tools" routerLinkActive="active">{{ 'NAVBAR.TOOLS' | translate }}</a>
+        </li>
+        <li>
+            <a routerLink="/guide/integrations" routerLinkActive="active">{{ 'NAVBAR.DOCS' | translate }}</a>
+        </li>
+        <li>
+            <a routerLink="/guide/mcp" routerLinkActive="active">{{ 'NAVBAR.SETUP_MCP' | translate }}</a>
+        </li>
+        <li>
+            <a routerLink="/tutoriales" routerLinkActive="active">{{ 'NAVBAR.TUTORIALS' | translate }}</a>
+        </li>
+        <li class="lang-switcher">
+            <button (click)="toggleLanguage()" class="btn-lang" title="Toggle Language">
+                <span class="lang-icon">🌐</span>
+                <span class="lang-text">{{ currentLang }}</span>
+            </button>
+        </li>
+    </ul>
+</nav>

@@ -1,0 +1,22 @@
+<div class="container tutorials-guide">
+  <header class="content-header">
+    <h1>{{ 'TUTORIALS.TITLE' | translate }}</h1>
+    <p class="subtitle">{{ 'TUTORIALS.SUBTITLE' | translate }}</p>
+  </header>
+
+  <main class="tutorials-grid">
+    <article class="card tutorial-card" *ngFor="let video of videos">
+      <a class="thumbnail-link" [href]="youtubeUrl(video.id)" target="_blank" rel="noopener noreferrer">
+        <img [src]="thumbnailUrl(video.id)" [alt]="(video.titleKey | translate)" loading="lazy" />
+      </a>
+
+      <div class="tutorial-body">
+        <h2>{{ video.titleKey | translate }}</h2>
+        <p>{{ video.descriptionKey | translate }}</p>
+        <a class="watch-link" [href]="youtubeUrl(video.id)" target="_blank" rel="noopener noreferrer">
+          {{ 'TUTORIALS.WATCH_ON_YOUTUBE' | translate }}
+        </a>
+      </div>
+    </article>
+  </main>
+</div>

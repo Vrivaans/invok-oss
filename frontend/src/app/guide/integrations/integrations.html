@@ -1,0 +1,60 @@
+<div class="container integrations-guide">
+  <header class="content-header">
+    <h1>{{ 'GUIDE.DOCS.TITLE' | translate }}</h1>
+    <p class="subtitle">{{ 'GUIDE.DOCS.SUBTITLE' | translate }}</p>
+  </header>
+
+  <div class="card" *ngIf="loading">
+    <p>{{ 'GUIDE.DOCS.LOADING' | translate }}</p>
+  </div>
+
+  <div class="card error" *ngIf="!loading && error">
+    <p>{{ error | translate }}</p>
+  </div>
+
+  <main *ngIf="!loading && guide">
+    <section class="card">
+      <h2>{{ 'GUIDE.DOCS.OVERVIEW' | translate }}</h2>
+      <p>{{ guide['purpose'] }}</p>
+      <p>
+        <strong>{{ 'GUIDE.DOCS.PUBLIC_ENDPOINT' | translate }}:</strong>
+        <code>{{ guide['public_docs_endpoint'] }}</code>
+      </p>
+      <p *ngIf="guide['agent_tool_available']">
+        <strong>{{ 'GUIDE.DOCS.AGENT_TOOL' | translate }}:</strong>
+        <code>{{ guide['agent_tool_available']?.name }}</code> - {{ guide['agent_tool_available']?.how_to_use }}
+      </p>
+    </section>
+
+    <section class="card">
+      <h2>{{ 'GUIDE.DOCS.CORE_RULES' | translate }}</h2>
+      <ul>
+        <li *ngFor="let rule of asList(guide['core_rules'])">{{ rule }}</li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>{{ 'GUIDE.DOCS.ADVANCED_CASES' | translate }}</h2>
+      <div *ngFor="let key of objectKeys(guide['advanced_cases'])">
+        <h3>{{ key }}</h3>
+        <ul>
+          <li *ngFor="let item of advancedCase(key)">{{ item }}</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>{{ 'GUIDE.DOCS.AUTHORING_FLOW' | translate }}</h2>
+      <ul>
+        <li *ngFor="let step of asList(guide['recommended_authoring_flow'])">{{ step }}</li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>{{ 'GUIDE.DOCS.CHECKLIST' | translate }}</h2>
+      <ul>
+        <li *ngFor="let item of asList(guide['checklist'])">{{ item }}</li>
+      </ul>
+    </section>
+  </main>
+</div>

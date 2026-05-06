@@ -1,0 +1,55 @@
+.integrations-guide {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.content-header {
+  margin-bottom: 1.5rem;
+}
+
+.subtitle {
+  color: var(--text-muted);
+}
+
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.card.error {
+  border-color: rgba(240, 74, 74, 0.45);
+}
+
+h2 {
+  margin: 0 0 0.75rem 0;
+  font-family: 'DM Serif Display', Georgia, serif;
+  font-weight: 400;
+  color: var(--accent-primary);
+}
+
+h3 {
+  margin: 0.75rem 0 0.5rem 0;
+  color: var(--text-color);
+}
+
+ul {
+  margin: 0;
+  padding-left: 1.25rem;
+}
+
+li {
+  margin-bottom: 0.4rem;
+}
+
+pre {
+  background: var(--bg-color);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 1rem;
+  overflow-x: auto;
+  margin: 0;
+}

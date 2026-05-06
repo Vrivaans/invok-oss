@@ -1,0 +1,108 @@
+[
+    {
+        "name": "Coinbase Public (precios)",
+        "code": "coinbase-public",
+        "baseUrl": "https://api.coinbase.com",
+        "authenticationType": "NONE",
+        "apiKeyLocation": "NONE",
+        "apiKeyName": "",
+        "apiKeyValue": "",
+        "isDynamicAuth": false,
+        "customHeaders": {
+            "Accept": "application/json",
+            "User-Agent": "Invok/1.0"
+        },
+        "tools": [
+            {
+                "name": "Precio spot Coinbase",
+                "code": "coinbase-spot-price",
+                "description": "Precio de mercado (spot) de un par en Coinbase. API pública, sin API key. Pares típicos: BTC-USD, ETH-USD, SOL-USD.",
+                "endpointPath": "/v2/prices/{currency_pair}/spot",
+                "httpMethod": "GET",
+                "enabled": true,
+                "isExportable": true,
+                "parameters": [
+                    {
+                        "name": "currency_pair",
+                        "type": "STRING",
+                        "description": "Par de divisas con guión (ej. BTC-USD, ETH-EUR).",
+                        "required": true,
+                        "defaultValue": "BTC-USD"
+                    }
+                ]
+            },
+            {
+                "name": "Listar monedas Coinbase",
+                "code": "coinbase-currencies",
+                "description": "Lista de monedas soportadas por Coinbase (códigos e información básica). Sin autenticación.",
+                "endpointPath": "/v2/currencies",
+                "httpMethod": "GET",
+                "enabled": true,
+                "isExportable": true,
+                "parameters": []
+            }
+        ]
+    },
+    {
+        "name": "Binance Public (mercado spot)",
+        "code": "binance-public-data",
+        "baseUrl": "https://data-api.binance.vision",
+        "authenticationType": "NONE",
+        "apiKeyLocation": "NONE",
+        "apiKeyName": "",
+        "apiKeyValue": "",
+        "isDynamicAuth": false,
+        "customHeaders": {
+            "Accept": "application/json",
+            "User-Agent": "Invok/1.0"
+        },
+        "tools": [
+            {
+                "name": "Hora del servidor Binance",
+                "code": "binance-server-time",
+                "description": "Comprueba conectividad y obtiene la hora del servidor Binance (endpoint público).",
+                "endpointPath": "/api/v3/time",
+                "httpMethod": "GET",
+                "enabled": true,
+                "isExportable": true,
+                "parameters": []
+            },
+            {
+                "name": "Precio actual Binance",
+                "code": "binance-ticker-price",
+                "description": "Precio actual de un símbolo spot (ej. BTCUSDT). Datos públicos vía data-api.binance.vision.",
+                "endpointPath": "/api/v3/ticker/price",
+                "httpMethod": "GET",
+                "enabled": true,
+                "isExportable": true,
+                "parameters": [
+                    {
+                        "name": "symbol",
+                        "type": "STRING",
+                        "description": "Símbolo en mayúsculas sin separador (ej. BTCUSDT, ETHUSDT).",
+                        "required": true,
+                        "defaultValue": "BTCUSDT"
+                    }
+                ]
+            },
+            {
+                "name": "Ticker 24h Binance",
+                "code": "binance-ticker-24h",
+                "description": "Estadísticas de ventana 24h para un símbolo (volumen, high, low, último precio, etc.).",
+                "endpointPath": "/api/v3/ticker/24hr",
+                "httpMethod": "GET",
+                "enabled": true,
+                "isExportable": true,
+                "parameters": [
+                    {
+                        "name": "symbol",
+                        "type": "STRING",
+                        "description": "Símbolo (ej. BTCUSDT). Si se omite en la API oficial se listan todos los pares (respuesta muy grande); aquí se recomienda siempre indicar un símbolo.",
+                        "required": true,
+                        "defaultValue": "BTCUSDT"
+                    }
+                ]
+            }
+        ]
+    }
+]

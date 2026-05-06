@@ -1,0 +1,9 @@
+services:
+  invok:
+    build: .
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./data:/app/data
+    environment:
+      - JASYPT_ENCRYPTOR_PASSWORD=change-me-in-production

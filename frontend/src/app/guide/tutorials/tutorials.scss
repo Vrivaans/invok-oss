@@ -1,0 +1,67 @@
+.tutorials-guide {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.content-header {
+  margin-bottom: 1.5rem;
+}
+
+.subtitle {
+  color: var(--text-muted);
+}
+
+.tutorials-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1rem;
+}
+
+.tutorial-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.thumbnail-link {
+  display: block;
+}
+
+.thumbnail-link img {
+  width: 100%;
+  height: auto;
+  display: block;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+}
+
+.tutorial-body {
+  padding: 1rem 1.1rem 1.2rem;
+}
+
+.tutorial-body h2 {
+  margin: 0 0 0.55rem 0;
+  font-family: 'DM Serif Display', Georgia, serif;
+  font-weight: 400;
+  color: var(--accent-primary);
+}
+
+.tutorial-body p {
+  margin: 0 0 0.9rem 0;
+  color: var(--text-color);
+  line-height: 1.55;
+}
+
+.watch-link {
+  color: var(--accent-primary);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.watch-link:hover {
+  text-decoration: underline;
+}

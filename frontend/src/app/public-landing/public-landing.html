@@ -1,0 +1,254 @@
+<div class="landing-shell">
+  <nav class="landing-nav" [class.scrolled]="isNavScrolled">
+    <button type="button" class="nav-logo nav-button" (click)="scrollToTop()">Inv<span>ok</span></button>
+    <ul class="nav-links">
+      <li><button type="button" class="nav-button" (click)="scrollToSection('philosophy')">{{ 'LANDING.NAV.PHILOSOPHY' | translate }}</button></li>
+      <li><button type="button" class="nav-button" (click)="scrollToSection('features')">{{ 'LANDING.NAV.FEATURES' | translate }}</button></li>
+      <li><button type="button" class="nav-button" (click)="scrollToSection('packs')">{{ 'LANDING.NAV.PACKS' | translate }}</button></li>
+      <li><button type="button" class="nav-button" (click)="scrollToSection('security')">{{ 'LANDING.NAV.SECURITY' | translate }}</button></li>
+      <li><button type="button" class="nav-button" (click)="scrollToSection('how')">{{ 'LANDING.NAV.HOW' | translate }}</button></li>
+      <li>
+        <button type="button" class="lang-toggle" (click)="toggleLanguage()">{{ nextLangLabel }}</button>
+      </li>
+    </ul>
+  </nav>
+
+  <section class="hero landing-section">
+    <div class="hero-bg"></div>
+    <div class="hero-grid"></div>
+    <div class="hero-content">
+      <div class="hero-badge">
+        <span class="dot"></span>
+        {{ 'LANDING.HERO.BADGE' | translate }}
+      </div>
+
+      <h1>{{ 'LANDING.HERO.TITLE' | translate }}</h1>
+      <p class="hero-sub">{{ 'LANDING.HERO.SUBTITLE' | translate }}</p>
+      <p class="hero-hook">{{ 'LANDING.HERO.HOOK' | translate }}</p>
+
+      <div class="hero-actions">
+        <a routerLink="/home" class="btn btn-primary">{{ 'LANDING.HERO.CTA_PRIMARY' | translate }}</a>
+        <button type="button" class="btn btn-secondary" (click)="scrollToSection('features')">
+          {{ 'LANDING.HERO.CTA_SECONDARY' | translate }}
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <section class="philosophy landing-section" id="philosophy">
+    <div class="section-wrap philosophy-inner">
+      <p class="section-label">{{ 'LANDING.PHILOSOPHY.LABEL' | translate }}</p>
+      <h2>{{ 'LANDING.PHILOSOPHY.TITLE' | translate }}</h2>
+      <p class="philosophy-copy">{{ 'LANDING.PHILOSOPHY.SUBTITLE' | translate }}</p>
+
+      <div class="pillars">
+        <article class="pillar">
+          <div class="num">01</div>
+          <h4>{{ 'LANDING.PHILOSOPHY.PILLARS.NO_INTEGRATIONS.TITLE' | translate }}</h4>
+          <p>{{ 'LANDING.PHILOSOPHY.PILLARS.NO_INTEGRATIONS.DESC' | translate }}</p>
+        </article>
+        <article class="pillar">
+          <div class="num">02</div>
+          <h4>{{ 'LANDING.PHILOSOPHY.PILLARS.STACK.TITLE' | translate }}</h4>
+          <p>{{ 'LANDING.PHILOSOPHY.PILLARS.STACK.DESC' | translate }}</p>
+        </article>
+        <article class="pillar">
+          <div class="num">03</div>
+          <h4>{{ 'LANDING.PHILOSOPHY.PILLARS.EXECUTION.TITLE' | translate }}</h4>
+          <p>{{ 'LANDING.PHILOSOPHY.PILLARS.EXECUTION.DESC' | translate }}</p>
+        </article>
+        <article class="pillar">
+          <div class="num">04</div>
+          <h4>{{ 'LANDING.PHILOSOPHY.PILLARS.REUSE.TITLE' | translate }}</h4>
+          <p>{{ 'LANDING.PHILOSOPHY.PILLARS.REUSE.DESC' | translate }}</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="features landing-section" id="features">
+    <div class="section-wrap">
+      <p class="section-label">{{ 'LANDING.USE_CASES.LABEL' | translate }}</p>
+      <h2 class="section-title">{{ 'LANDING.USE_CASES.TITLE' | translate }}</h2>
+      <p class="section-desc">{{ 'LANDING.USE_CASES.SUBTITLE' | translate }}</p>
+
+      <div class="features-grid">
+        <article class="feature-card video-card" *ngFor="let video of useCaseVideos">
+          <a class="video-thumb" [href]="youtubeUrl(video.id)" target="_blank" rel="noopener noreferrer">
+            <img [src]="thumbnailUrl(video.id)" [alt]="(video.titleKey | translate)" loading="lazy" />
+          </a>
+          <div class="video-copy">
+            <span class="video-badge">{{ 'LANDING.USE_CASES.VIDEO_BADGE' | translate }}</span>
+            <h3>{{ video.titleKey | translate }}</h3>
+            <p>{{ video.descriptionKey | translate }}</p>
+            <p class="video-highlight">{{ video.highlightKey | translate }}</p>
+            <a class="video-link" [href]="youtubeUrl(video.id)" target="_blank" rel="noopener noreferrer">
+              {{ 'LANDING.USE_CASES.WATCH_DEMO' | translate }}
+            </a>
+          </div>
+        </article>
+
+        <article class="feature-card">
+          <div class="feature-icon">🌐</div>
+          <h3>{{ 'LANDING.USE_CASES.CARDS.INFRA.TITLE' | translate }}</h3>
+          <p>{{ 'LANDING.USE_CASES.CARDS.INFRA.DESC' | translate }}</p>
+        </article>
+
+        <article class="feature-card">
+          <div class="feature-icon">🧩</div>
+          <h3>{{ 'LANDING.USE_CASES.CARDS.PACKS.TITLE' | translate }}</h3>
+          <p>{{ 'LANDING.USE_CASES.CARDS.PACKS.DESC' | translate }}</p>
+        </article>
+
+        <article class="feature-card">
+          <div class="feature-icon">🤝</div>
+          <h3>{{ 'LANDING.USE_CASES.CARDS.MULTI_ACTION.TITLE' | translate }}</h3>
+          <p>{{ 'LANDING.USE_CASES.CARDS.MULTI_ACTION.DESC' | translate }}</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="packs landing-section" id="packs">
+    <div class="section-wrap">
+      <p class="section-label">{{ 'LANDING.PACKS.LABEL' | translate }}</p>
+      <h2 class="section-title">{{ 'LANDING.PACKS.TITLE' | translate }}</h2>
+      <p class="section-desc">{{ 'LANDING.PACKS.SUBTITLE' | translate }}</p>
+
+      <div class="packs-json-wrap">
+        <pre class="code-body"><code>&#123;
+  "name": "Invok Social Pack",
+  "tools": [
+    "create-post",
+    "publish-linkedin-post",
+    "publish-bluesky-post"
+  ]
+&#125;</code></pre>
+      </div>
+
+      <div class="packs-flow">
+        <article class="packs-step">
+          <div class="step-num">{{ 'LANDING.PACKS.STEPS.CREATE.LABEL' | translate }}</div>
+          <h3>{{ 'LANDING.PACKS.STEPS.CREATE.TITLE' | translate }}</h3>
+        </article>
+        <article class="packs-step">
+          <div class="step-num">{{ 'LANDING.PACKS.STEPS.EXPORT.LABEL' | translate }}</div>
+          <h3>{{ 'LANDING.PACKS.STEPS.EXPORT.TITLE' | translate }}</h3>
+        </article>
+        <article class="packs-step">
+          <div class="step-num">{{ 'LANDING.PACKS.STEPS.IMPORT.LABEL' | translate }}</div>
+          <h3>{{ 'LANDING.PACKS.STEPS.IMPORT.TITLE' | translate }}</h3>
+        </article>
+      </div>
+
+      <div class="insight packs-insight">
+        <span class="bullet">🎯</span>
+        <p [innerHTML]="'LANDING.PACKS.INSIGHT' | translate"></p>
+      </div>
+
+      <p class="packs-tagline">{{ 'LANDING.PACKS.TAGLINE' | translate }}</p>
+    </div>
+  </section>
+
+  <section class="security landing-section" id="security">
+    <div class="section-wrap">
+      <p class="section-label">{{ 'LANDING.SECURITY.LABEL' | translate }}</p>
+      <h2 class="section-title">{{ 'LANDING.SECURITY.TITLE' | translate }}</h2>
+      <p class="section-desc">{{ 'LANDING.SECURITY.SUBTITLE' | translate }}</p>
+
+      <ul class="security-list">
+        <li>
+          <span class="check">01</span>
+          <div class="text">
+            <h4>{{ 'LANDING.SECURITY.ITEMS.CREDENTIALS.TITLE' | translate }}</h4>
+            <p>{{ 'LANDING.SECURITY.ITEMS.CREDENTIALS.DESC' | translate }}</p>
+          </div>
+        </li>
+        <li>
+          <span class="check">02</span>
+          <div class="text">
+            <h4>{{ 'LANDING.SECURITY.ITEMS.CONTROL.TITLE' | translate }}</h4>
+            <p>{{ 'LANDING.SECURITY.ITEMS.CONTROL.DESC' | translate }}</p>
+          </div>
+        </li>
+        <li>
+          <span class="check">03</span>
+          <div class="text">
+            <h4>{{ 'LANDING.SECURITY.ITEMS.SAFE_EXECUTION.TITLE' | translate }}</h4>
+            <p>{{ 'LANDING.SECURITY.ITEMS.SAFE_EXECUTION.DESC' | translate }}</p>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="flow landing-section" id="how">
+    <div class="section-wrap">
+      <p class="section-label">{{ 'LANDING.HOW.LABEL' | translate }}</p>
+      <h2 class="section-title">{{ 'LANDING.HOW.TITLE' | translate }}</h2>
+      <p class="section-desc">{{ 'LANDING.HOW.SUBTITLE' | translate }}</p>
+
+      <div class="features-grid flow-grid">
+        <article class="feature-card">
+          <div class="feature-icon">📄</div>
+          <h3>{{ 'LANDING.HOW.STEPS.DOCS.TITLE' | translate }}</h3>
+          <p>{{ 'LANDING.HOW.STEPS.DOCS.DESC' | translate }}</p>
+        </article>
+        <article class="feature-card">
+          <div class="feature-icon">🔑</div>
+          <h3>{{ 'LANDING.HOW.STEPS.KEY.TITLE' | translate }}</h3>
+          <p>{{ 'LANDING.HOW.STEPS.KEY.DESC' | translate }}</p>
+        </article>
+        <article class="feature-card">
+          <div class="feature-icon">⚡</div>
+          <h3>{{ 'LANDING.HOW.STEPS.GENERATE.TITLE' | translate }}</h3>
+          <p>{{ 'LANDING.HOW.STEPS.GENERATE.DESC' | translate }}</p>
+        </article>
+        <article class="feature-card">
+          <div class="feature-icon">🤖</div>
+          <h3>{{ 'LANDING.HOW.STEPS.ACT.TITLE' | translate }}</h3>
+          <p>{{ 'LANDING.HOW.STEPS.ACT.DESC' | translate }}</p>
+        </article>
+      </div>
+
+      <div class="insight">
+        <span class="bullet">💡</span>
+        <p>{{ 'LANDING.HOW.INSIGHT' | translate }}</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="pricing landing-section">
+    <div class="section-wrap">
+      <p class="section-label">{{ 'LANDING.PRICING.LABEL' | translate }}</p>
+      <h2 class="section-title">{{ 'LANDING.PRICING.TITLE' | translate }}</h2>
+
+      <div class="features-grid pricing-grid">
+        <article class="feature-card">
+          <h3>{{ 'LANDING.PRICING.FREE.TITLE' | translate }}</h3>
+          <p [innerHTML]="'LANDING.PRICING.FREE.DESC' | translate"></p>
+        </article>
+
+        <article class="feature-card featured-plan">
+          <h3>{{ 'LANDING.PRICING.PRO.TITLE' | translate }}</h3>
+          <p [innerHTML]="'LANDING.PRICING.PRO.DESC' | translate"></p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta landing-section">
+    <div class="section-wrap cta-inner">
+      <h2>{{ 'LANDING.CTA.TITLE' | translate }}</h2>
+      <p>{{ 'LANDING.CTA.SUBTITLE' | translate }}</p>
+      <div class="cta-actions">
+        <a routerLink="/home" class="btn btn-primary">{{ 'LANDING.CTA.BUTTON' | translate }}</a>
+      </div>
+    </div>
+  </section>
+
+  <footer class="landing-footer">
+    <div class="logo">Inv<span>ok</span></div>
+    <p>{{ 'LANDING.FOOTER.TEXT' | translate }}</p>
+  </footer>
+</div>
