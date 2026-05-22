@@ -16,9 +16,9 @@
     },
     "tools": [
       {
-        "name": "CRM - Listar oportunidades",
+        "name": "CRM - List leads",
         "code": "odoo-crm-list",
-        "description": "Lista las oportunidades del CRM de Odoo. Devuelve nombre, empresa, email, etapa y probabilidad de cierre.",
+        "description": "Lists the leads/opportunities from Odoo CRM. Returns name, company, email, stage, and probability of closing.",
         "endpointPath": "/json/2/crm.lead/search_read",
         "httpMethod": "POST",
         "enabled": true,
@@ -28,16 +28,16 @@
           {
             "name": "limit",
             "type": "NUMBER",
-            "description": "Cantidad máxima de oportunidades a devolver.",
+            "description": "Maximum number of leads to return.",
             "required": false,
             "defaultValue": "10"
           }
         ]
       },
       {
-        "name": "CRM - Crear lead",
+        "name": "CRM - Create lead",
         "code": "odoo-crm-create",
-        "description": "Crea una nueva oportunidad o lead en el CRM de Odoo.",
+        "description": "Creates a new opportunity or lead in Odoo CRM.",
         "endpointPath": "/json/2/crm.lead/create",
         "httpMethod": "POST",
         "enabled": true,
@@ -47,44 +47,44 @@
           {
             "name": "name",
             "type": "STRING",
-            "description": "Nombre de la oportunidad o lead.",
+            "description": "Name of the opportunity or lead.",
             "required": true,
             "defaultValue": ""
           },
           {
             "name": "partner_name",
             "type": "STRING",
-            "description": "Nombre de la empresa o contacto.",
+            "description": "Name of the company or contact.",
             "required": false,
             "defaultValue": ""
           },
           {
             "name": "email_from",
             "type": "STRING",
-            "description": "Email del contacto.",
+            "description": "Email of the contact.",
             "required": false,
             "defaultValue": ""
           },
           {
             "name": "description",
             "type": "STRING",
-            "description": "Descripción o notas del lead.",
+            "description": "Description or notes of the lead.",
             "required": false,
             "defaultValue": ""
           },
           {
             "name": "type",
             "type": "STRING",
-            "description": "Tipo de registro: 'lead' o 'opportunity'.",
+            "description": "Record type: 'lead' or 'opportunity'.",
             "required": true,
             "defaultValue": "lead"
           }
         ]
       },
       {
-        "name": "CRM - Actualizar oportunidad",
+        "name": "CRM - Update opportunity",
         "code": "odoo-crm-update",
-        "description": "Actualiza los campos de una oportunidad existente en el CRM de Odoo dado su ID.",
+        "description": "Updates the fields of an existing opportunity in Odoo CRM given its ID.",
         "endpointPath": "/json/2/crm.lead/write",
         "httpMethod": "POST",
         "enabled": true,
@@ -94,37 +94,37 @@
           {
             "name": "id",
             "type": "NUMBER",
-            "description": "ID de la oportunidad a actualizar.",
+            "description": "ID of the opportunity to update.",
             "required": true,
             "defaultValue": ""
           },
           {
             "name": "name",
             "type": "STRING",
-            "description": "Nuevo nombre de la oportunidad.",
+            "description": "New name of the opportunity.",
             "required": false,
             "defaultValue": ""
           },
           {
             "name": "probability",
             "type": "NUMBER",
-            "description": "Probabilidad de cierre en porcentaje (0-100).",
+            "description": "Closing probability in percentage (0-100).",
             "required": false,
             "defaultValue": ""
           },
           {
             "name": "stage_id",
             "type": "NUMBER",
-            "description": "ID de la nueva etapa del CRM.",
+            "description": "ID of the new CRM stage.",
             "required": false,
             "defaultValue": ""
           }
         ]
       },
       {
-        "name": "CRM - Eliminar oportunidad",
+        "name": "CRM - Delete opportunity",
         "code": "odoo-crm-delete",
-        "description": "Elimina un lead u oportunidad existente en el CRM de Odoo por su ID.",
+        "description": "Deletes an existing lead or opportunity in Odoo CRM by its ID.",
         "endpointPath": "/json/2/crm.lead/unlink",
         "httpMethod": "POST",
         "enabled": true,
@@ -134,16 +134,16 @@
           {
             "name": "id",
             "type": "NUMBER",
-            "description": "ID de la oportunidad o lead a eliminar.",
+            "description": "ID of the opportunity or lead to delete.",
             "required": true,
             "defaultValue": ""
           }
         ]
       },
       {
-        "name": "Project - Listar proyectos",
+        "name": "Project - List projects",
         "code": "odoo-project-list",
-        "description": "Lista todos los proyectos activos en Odoo con su nombre, descripción y fechas.",
+        "description": "Lists all active projects in Odoo with their name, description, and dates.",
         "endpointPath": "/json/2/project.project/search_read",
         "httpMethod": "POST",
         "enabled": true,
@@ -153,16 +153,16 @@
           {
             "name": "limit",
             "type": "NUMBER",
-            "description": "Cantidad máxima de proyectos a devolver.",
+            "description": "Maximum number of projects to return.",
             "required": false,
             "defaultValue": "10"
           }
         ]
       },
       {
-        "name": "Project - Listar tareas",
+        "name": "Project - List tasks",
         "code": "odoo-project-task-list",
-        "description": "Lista las tareas de proyectos en Odoo. Devuelve nombre, proyecto, etapa, responsable y fecha límite.",
+        "description": "Lists the project tasks in Odoo. Returns name, project, stage, assignee, and deadline.",
         "endpointPath": "/json/2/project.task/search_read",
         "httpMethod": "POST",
         "enabled": true,
@@ -172,16 +172,16 @@
           {
             "name": "limit",
             "type": "NUMBER",
-            "description": "Cantidad máxima de tareas a devolver.",
+            "description": "Maximum number of tasks to return.",
             "required": false,
             "defaultValue": "10"
           }
         ]
       },
       {
-        "name": "Project - Crear tarea",
+        "name": "Project - Create task",
         "code": "odoo-project-task-create",
-        "description": "Crea una nueva tarea en un proyecto de Odoo.",
+        "description": "Creates a new task in an Odoo project.",
         "endpointPath": "/json/2/project.task/create",
         "httpMethod": "POST",
         "enabled": true,
@@ -191,37 +191,37 @@
           {
             "name": "name",
             "type": "STRING",
-            "description": "Nombre de la tarea.",
+            "description": "Name of the task.",
             "required": true,
             "defaultValue": ""
           },
           {
             "name": "description",
             "type": "STRING",
-            "description": "Descripción o detalle de la tarea.",
+            "description": "Description or detail of the task.",
             "required": false,
             "defaultValue": ""
           },
           {
             "name": "project_id",
             "type": "NUMBER",
-            "description": "ID del proyecto al que pertenece la tarea.",
+            "description": "ID of the project to which the task belongs.",
             "required": false,
             "defaultValue": ""
           },
           {
             "name": "date_deadline",
             "type": "STRING",
-            "description": "Fecha límite en formato YYYY-MM-DD.",
+            "description": "Deadline date in YYYY-MM-DD format.",
             "required": false,
             "defaultValue": ""
           }
         ]
       },
       {
-        "name": "Project - Actualizar tarea",
+        "name": "Project - Update task",
         "code": "odoo-project-task-update",
-        "description": "Actualiza una tarea de proyecto existente en Odoo.",
+        "description": "Updates an existing project task in Odoo.",
         "endpointPath": "/json/2/project.task/write",
         "httpMethod": "POST",
         "enabled": true,
@@ -231,44 +231,44 @@
           {
             "name": "id",
             "type": "NUMBER",
-            "description": "ID de la tarea a actualizar.",
+            "description": "ID of the task to update.",
             "required": true,
             "defaultValue": ""
           },
           {
             "name": "name",
             "type": "STRING",
-            "description": "Nuevo nombre de la tarea.",
+            "description": "New name of the task.",
             "required": false,
             "defaultValue": ""
           },
           {
             "name": "description",
             "type": "STRING",
-            "description": "Nueva descripción de la tarea.",
+            "description": "New description of the task.",
             "required": false,
             "defaultValue": ""
           },
           {
             "name": "date_deadline",
             "type": "STRING",
-            "description": "Nueva fecha límite (YYYY-MM-DD).",
+            "description": "New deadline date (YYYY-MM-DD).",
             "required": false,
             "defaultValue": ""
           },
           {
             "name": "stage_id",
             "type": "NUMBER",
-            "description": "ID de la nueva etapa de la tarea.",
+            "description": "ID of the new stage of the task.",
             "required": false,
             "defaultValue": ""
           }
         ]
       },
       {
-        "name": "Project - Eliminar tarea",
+        "name": "Project - Delete task",
         "code": "odoo-project-task-delete",
-        "description": "Elimina una tarea de proyecto existente en Odoo por su ID.",
+        "description": "Deletes an existing project task in Odoo by its ID.",
         "endpointPath": "/json/2/project.task/unlink",
         "httpMethod": "POST",
         "enabled": true,
@@ -278,16 +278,16 @@
           {
             "name": "id",
             "type": "NUMBER",
-            "description": "ID de la tarea a eliminar.",
+            "description": "ID of the task to delete.",
             "required": true,
             "defaultValue": ""
           }
         ]
       },
       {
-        "name": "Producto - Listar productos",
+        "name": "Product - List products",
         "code": "odoo-product-list",
-        "description": "Lista los productos en Odoo. Devuelve nombre, tipo, precio y costo.",
+        "description": "Lists the products in Odoo. Returns name, type, price, and cost.",
         "endpointPath": "/json/2/product.template/search_read",
         "httpMethod": "POST",
         "enabled": true,
@@ -297,16 +297,16 @@
           {
             "name": "limit",
             "type": "NUMBER",
-            "description": "Cantidad máxima de productos a devolver.",
+            "description": "Maximum number of products to return.",
             "required": false,
             "defaultValue": "10"
           }
         ]
       },
       {
-        "name": "Producto - Crear producto",
+        "name": "Product - Create product",
         "code": "odoo-product-create",
-        "description": "Crea una nueva plantilla de producto en Odoo.",
+        "description": "Creates a new product template in Odoo.",
         "endpointPath": "/json/2/product.template/create",
         "httpMethod": "POST",
         "enabled": true,
@@ -316,30 +316,30 @@
           {
             "name": "name",
             "type": "STRING",
-            "description": "Nombre del producto.",
+            "description": "Name of the product.",
             "required": true,
             "defaultValue": ""
           },
           {
             "name": "type",
             "type": "STRING",
-            "description": "Tipo de producto: 'consu' (consumible), 'service' (servicio) o 'product' (almacenable).",
+            "description": "Product type: 'consu' (consumible), 'service' (service), or 'product' (storable).",
             "required": true,
             "defaultValue": "consu"
           },
           {
             "name": "list_price",
             "type": "NUMBER",
-            "description": "Precio de venta del producto.",
+            "description": "Sale price of the product.",
             "required": false,
             "defaultValue": "0.0"
           }
         ]
       },
       {
-        "name": "Producto - Actualizar producto",
+        "name": "Product - Update product",
         "code": "odoo-product-update",
-        "description": "Actualiza el precio, nombre o tipo de un producto en Odoo.",
+        "description": "Updates the price, name, or type of a product in Odoo.",
         "endpointPath": "/json/2/product.template/write",
         "httpMethod": "POST",
         "enabled": true,
@@ -349,37 +349,37 @@
           {
             "name": "id",
             "type": "NUMBER",
-            "description": "ID del producto a actualizar.",
+            "description": "ID of the product to update.",
             "required": true,
             "defaultValue": ""
           },
           {
             "name": "name",
             "type": "STRING",
-            "description": "Nuevo nombre del producto.",
+            "description": "New name of the product.",
             "required": false,
             "defaultValue": ""
           },
           {
             "name": "type",
             "type": "STRING",
-            "description": "Nuevo tipo de producto ('consu', 'service', 'product').",
+            "description": "New product type ('consu', 'service', 'product').",
             "required": false,
             "defaultValue": ""
           },
           {
             "name": "list_price",
             "type": "NUMBER",
-            "description": "Nuevo precio de venta.",
+            "description": "New sale price.",
             "required": false,
             "defaultValue": ""
           }
         ]
       },
       {
-        "name": "Calendar - Listar eventos",
+        "name": "Calendar - List events",
         "code": "odoo-calendar-event-list",
-        "description": "Lista los eventos y reuniones de calendario en Odoo.",
+        "description": "Lists the calendar events and meetings in Odoo.",
         "endpointPath": "/json/2/calendar.event/search_read",
         "httpMethod": "POST",
         "enabled": true,
@@ -389,16 +389,16 @@
           {
             "name": "limit",
             "type": "NUMBER",
-            "description": "Cantidad máxima de eventos a devolver.",
+            "description": "Maximum number of events to return.",
             "required": false,
             "defaultValue": "10"
           }
         ]
       },
       {
-        "name": "Calendar - Crear evento",
+        "name": "Calendar - Create event",
         "code": "odoo-calendar-event-create",
-        "description": "Crea un nuevo evento o reunión en el calendario de Odoo.",
+        "description": "Creates a new event or meeting in Odoo calendar.",
         "endpointPath": "/json/2/calendar.event/create",
         "httpMethod": "POST",
         "enabled": true,
@@ -408,37 +408,37 @@
           {
             "name": "name",
             "type": "STRING",
-            "description": "Título de la reunión o evento.",
+            "description": "Title of the meeting or event.",
             "required": true,
             "defaultValue": ""
           },
           {
             "name": "start",
             "type": "STRING",
-            "description": "Fecha y hora de inicio en formato UTC (YYYY-MM-DD HH:MM:SS).",
+            "description": "Start date and time in UTC format (YYYY-MM-DD HH:MM:SS).",
             "required": true,
             "defaultValue": ""
           },
           {
             "name": "stop",
             "type": "STRING",
-            "description": "Fecha y hora de finalización en formato UTC (YYYY-MM-DD HH:MM:SS).",
+            "description": "End date and time in UTC format (YYYY-MM-DD HH:MM:SS).",
             "required": true,
             "defaultValue": ""
           },
           {
             "name": "description",
             "type": "STRING",
-            "description": "Descripción o notas de la reunión.",
+            "description": "Description or notes of the meeting.",
             "required": false,
             "defaultValue": ""
           }
         ]
       },
       {
-        "name": "Calendar - Actualizar evento",
+        "name": "Calendar - Update event",
         "code": "odoo-calendar-event-update",
-        "description": "Actualiza los campos de un evento de calendario existente en Odoo.",
+        "description": "Updates fields of an existing calendar event in Odoo.",
         "endpointPath": "/json/2/calendar.event/write",
         "httpMethod": "POST",
         "enabled": true,
@@ -448,44 +448,44 @@
           {
             "name": "id",
             "type": "NUMBER",
-            "description": "ID del evento a actualizar.",
+            "description": "ID of the event to update.",
             "required": true,
             "defaultValue": ""
           },
           {
             "name": "name",
             "type": "STRING",
-            "description": "Nuevo título de la reunión.",
+            "description": "New title of the meeting.",
             "required": false,
             "defaultValue": ""
           },
           {
             "name": "start",
             "type": "STRING",
-            "description": "Nueva fecha y hora de inicio (YYYY-MM-DD HH:MM:SS).",
+            "description": "New start date and time (YYYY-MM-DD HH:MM:SS).",
             "required": false,
             "defaultValue": ""
           },
           {
             "name": "stop",
             "type": "STRING",
-            "description": "Nueva fecha y hora de fin (YYYY-MM-DD HH:MM:SS).",
+            "description": "New end date and time (YYYY-MM-DD HH:MM:SS).",
             "required": false,
             "defaultValue": ""
           },
           {
             "name": "description",
             "type": "STRING",
-            "description": "Nueva descripción de la reunión.",
+            "description": "New description of the meeting.",
             "required": false,
             "defaultValue": ""
           }
         ]
       },
       {
-        "name": "Mail - Listar actividades",
+        "name": "Mail - List activities",
         "code": "odoo-mail-activity-list",
-        "description": "Lista las actividades pendientes de correo en Odoo.",
+        "description": "Lists pending mail activities in Odoo.",
         "endpointPath": "/json/2/mail.activity/search_read",
         "httpMethod": "POST",
         "enabled": true,
@@ -495,16 +495,16 @@
           {
             "name": "limit",
             "type": "NUMBER",
-            "description": "Cantidad máxima de actividades a devolver.",
+            "description": "Maximum number of activities to return.",
             "required": false,
             "defaultValue": "10"
           }
         ]
       },
       {
-        "name": "Mail - Crear actividad",
+        "name": "Mail - Create activity",
         "code": "odoo-mail-activity-create",
-        "description": "Crea una actividad de seguimiento vinculada a un modelo y registro específico de Odoo.",
+        "description": "Creates a follow-up activity linked to a specific Odoo model and record.",
         "endpointPath": "/json/2/mail.activity/create",
         "httpMethod": "POST",
         "enabled": true,
@@ -514,44 +514,44 @@
           {
             "name": "res_model",
             "type": "STRING",
-            "description": "Nombre técnico del modelo objetivo (ej. 'crm.lead', 'project.task').",
+            "description": "Technical name of the target model (e.g., 'crm.lead', 'project.task').",
             "required": true,
             "defaultValue": ""
           },
           {
             "name": "res_id",
             "type": "NUMBER",
-            "description": "ID del registro objetivo en Odoo.",
+            "description": "ID of the target record in Odoo.",
             "required": true,
             "defaultValue": ""
           },
           {
             "name": "activity_type_id",
             "type": "NUMBER",
-            "description": "ID del tipo de actividad (ej. 1 para Correo, 2 para Llamada).",
+            "description": "ID of the activity type (e.g., 1 for Email, 2 for Call).",
             "required": true,
             "defaultValue": "1"
           },
           {
             "name": "summary",
             "type": "STRING",
-            "description": "Resumen o título corto de la actividad.",
+            "description": "Summary or short title of the activity.",
             "required": false,
             "defaultValue": ""
           },
           {
             "name": "date_deadline",
             "type": "STRING",
-            "description": "Fecha de vencimiento en formato YYYY-MM-DD.",
+            "description": "Due date in YYYY-MM-DD format.",
             "required": true,
             "defaultValue": ""
           }
         ]
       },
       {
-        "name": "Mail - Listar mensajes",
+        "name": "Mail - List messages",
         "code": "odoo-mail-message-list",
-        "description": "Lista los mensajes y notas del chatter en Odoo.",
+        "description": "Lists messages and notes from the chatter in Odoo.",
         "endpointPath": "/json/2/mail.message/search_read",
         "httpMethod": "POST",
         "enabled": true,
@@ -561,16 +561,16 @@
           {
             "name": "limit",
             "type": "NUMBER",
-            "description": "Cantidad máxima de mensajes a devolver.",
+            "description": "Maximum number of messages to return.",
             "required": false,
             "defaultValue": "10"
           }
         ]
       },
       {
-        "name": "Mail - Enviar mensaje",
+        "name": "Mail - Send message",
         "code": "odoo-mail-message-create",
-        "description": "Publica un mensaje (comentario) en el chatter de un registro de Odoo.",
+        "description": "Publishes a message (comment) on the chatter of an Odoo record.",
         "endpointPath": "/json/2/mail.message/create",
         "httpMethod": "POST",
         "enabled": true,
@@ -580,30 +580,30 @@
           {
             "name": "body",
             "type": "STRING",
-            "description": "Contenido del mensaje o comentario.",
+            "description": "Content of the message or comment.",
             "required": true,
             "defaultValue": ""
           },
           {
             "name": "model",
             "type": "STRING",
-            "description": "Modelo del registro objetivo (ej. 'crm.lead', 'project.task').",
+            "description": "Model of the target record (e.g., 'crm.lead', 'project.task').",
             "required": true,
             "defaultValue": ""
           },
           {
             "name": "res_id",
             "type": "NUMBER",
-            "description": "ID del registro objetivo.",
+            "description": "ID of the target record.",
             "required": true,
             "defaultValue": ""
           }
         ]
       },
       {
-        "name": "Res - Listar contactos",
+        "name": "Res - List contacts",
         "code": "odoo-res-partner-list",
-        "description": "Lista los contactos (clientes/proveedores) de Odoo.",
+        "description": "Lists contacts (customers/vendors) in Odoo.",
         "endpointPath": "/json/2/res.partner/search_read",
         "httpMethod": "POST",
         "enabled": true,
@@ -613,16 +613,16 @@
           {
             "name": "limit",
             "type": "NUMBER",
-            "description": "Cantidad máxima de contactos a devolver.",
+            "description": "Maximum number of contacts to return.",
             "required": false,
             "defaultValue": "10"
           }
         ]
       },
       {
-        "name": "Res - Crear contacto",
+        "name": "Res - Create contact",
         "code": "odoo-res-partner-create",
-        "description": "Crea un nuevo contacto o empresa en Odoo.",
+        "description": "Creates a new contact or company in Odoo.",
         "endpointPath": "/json/2/res.partner/create",
         "httpMethod": "POST",
         "enabled": true,
@@ -632,44 +632,44 @@
           {
             "name": "name",
             "type": "STRING",
-            "description": "Nombre completo del contacto o de la empresa.",
+            "description": "Full name of the contact or company.",
             "required": true,
             "defaultValue": ""
           },
           {
             "name": "email",
             "type": "STRING",
-            "description": "Dirección de correo electrónico.",
+            "description": "Email address.",
             "required": false,
             "defaultValue": ""
           },
           {
             "name": "phone",
             "type": "STRING",
-            "description": "Número de teléfono.",
+            "description": "Phone number.",
             "required": false,
             "defaultValue": ""
           },
           {
             "name": "street",
             "type": "STRING",
-            "description": "Dirección física (calle y número).",
+            "description": "Physical address (street and number).",
             "required": false,
             "defaultValue": ""
           },
           {
             "name": "city",
             "type": "STRING",
-            "description": "Ciudad de residencia.",
+            "description": "City of residence.",
             "required": false,
             "defaultValue": ""
           }
         ]
       },
       {
-        "name": "Res - Actualizar contacto",
+        "name": "Res - Update contact",
         "code": "odoo-res-partner-update",
-        "description": "Actualiza la información de un contacto en Odoo por su ID.",
+        "description": "Updates contact information in Odoo by its ID.",
         "endpointPath": "/json/2/res.partner/write",
         "httpMethod": "POST",
         "enabled": true,
@@ -679,51 +679,51 @@
           {
             "name": "id",
             "type": "NUMBER",
-            "description": "ID del contacto a actualizar.",
+            "description": "ID of the contact to update.",
             "required": true,
             "defaultValue": ""
           },
           {
             "name": "name",
             "type": "STRING",
-            "description": "Nuevo nombre del contacto.",
+            "description": "New name of the contact.",
             "required": false,
             "defaultValue": ""
           },
           {
             "name": "email",
             "type": "STRING",
-            "description": "Nuevo correo electrónico.",
+            "description": "New email address.",
             "required": false,
             "defaultValue": ""
           },
           {
             "name": "phone",
             "type": "STRING",
-            "description": "Nuevo teléfono.",
+            "description": "New phone number.",
             "required": false,
             "defaultValue": ""
           },
           {
             "name": "street",
             "type": "STRING",
-            "description": "Nueva calle.",
+            "description": "New street.",
             "required": false,
             "defaultValue": ""
           },
           {
             "name": "city",
             "type": "STRING",
-            "description": "Nueva ciudad.",
+            "description": "New city.",
             "required": false,
             "defaultValue": ""
           }
         ]
       },
       {
-        "name": "Sale - Listar pedidos",
+        "name": "Sale - List orders",
         "code": "odoo-sale-order-list",
-        "description": "Lista las órdenes de venta y cotizaciones en Odoo. Devuelve nombre, cliente, fecha, estado e importe total.",
+        "description": "Lists sales orders and quotations in Odoo. Returns name, customer, date, status, and total amount.",
         "endpointPath": "/json/2/sale.order/search_read",
         "httpMethod": "POST",
         "enabled": true,
@@ -733,16 +733,16 @@
           {
             "name": "limit",
             "type": "NUMBER",
-            "description": "Cantidad máxima de pedidos a devolver.",
+            "description": "Maximum number of orders to return.",
             "required": false,
             "defaultValue": "10"
           }
         ]
       },
       {
-        "name": "Sale - Crear pedido",
+        "name": "Sale - Create order",
         "code": "odoo-sale-order-create",
-        "description": "Crea una nueva cotización u orden de venta en Odoo.",
+        "description": "Creates a new quotation or sales order in Odoo.",
         "endpointPath": "/json/2/sale.order/create",
         "httpMethod": "POST",
         "enabled": true,
@@ -752,23 +752,23 @@
           {
             "name": "partner_id",
             "type": "NUMBER",
-            "description": "ID del cliente (res.partner) al que se asocia la orden.",
+            "description": "ID of the customer (res.partner) associated with the order.",
             "required": true,
             "defaultValue": ""
           },
           {
             "name": "date_order",
             "type": "STRING",
-            "description": "Fecha y hora del pedido en formato UTC (YYYY-MM-DD HH:MM:SS).",
+            "description": "Date and time of the order in UTC format (YYYY-MM-DD HH:MM:SS).",
             "required": false,
             "defaultValue": ""
           }
         ]
       },
       {
-        "name": "Sale - Actualizar pedido",
+        "name": "Sale - Update order",
         "code": "odoo-sale-order-update",
-        "description": "Actualiza el estado o el cliente de una orden de venta.",
+        "description": "Updates the status or customer of a sales order.",
         "endpointPath": "/json/2/sale.order/write",
         "httpMethod": "POST",
         "enabled": true,
@@ -778,30 +778,30 @@
           {
             "name": "id",
             "type": "NUMBER",
-            "description": "ID de la orden de venta a actualizar.",
+            "description": "ID of the sales order to update.",
             "required": true,
             "defaultValue": ""
           },
           {
             "name": "partner_id",
             "type": "NUMBER",
-            "description": "Nuevo ID del cliente.",
+            "description": "New ID of the customer.",
             "required": false,
             "defaultValue": ""
           },
           {
             "name": "state",
             "type": "STRING",
-            "description": "Nuevo estado (ej. 'draft', 'sent', 'sale', 'done', 'cancel').",
+            "description": "New status (e.g., 'draft', 'sent', 'sale', 'done', 'cancel').",
             "required": false,
             "defaultValue": ""
           }
         ]
       },
       {
-        "name": "Resource - Listar recursos",
+        "name": "Resource - List resources",
         "code": "odoo-resource-list",
-        "description": "Lista los recursos (humanos o materiales) disponibles en Odoo.",
+        "description": "Lists the resources (human or material) available in Odoo.",
         "endpointPath": "/json/2/resource.resource/search_read",
         "httpMethod": "POST",
         "enabled": true,
@@ -811,16 +811,16 @@
           {
             "name": "limit",
             "type": "NUMBER",
-            "description": "Cantidad máxima de recursos a devolver.",
+            "description": "Maximum number of resources to return.",
             "required": false,
             "defaultValue": "10"
           }
         ]
       },
       {
-        "name": "Account - Listar facturas",
+        "name": "Account - List invoices",
         "code": "odoo-account-move-list",
-        "description": "Lista las facturas de clientes, proveedores y apuntes contables en Odoo.",
+        "description": "Lists customer invoices, vendor bills, and journal entries in Odoo.",
         "endpointPath": "/json/2/account.move/search_read",
         "httpMethod": "POST",
         "enabled": true,
@@ -830,16 +830,16 @@
           {
             "name": "limit",
             "type": "NUMBER",
-            "description": "Cantidad máxima de facturas a devolver.",
+            "description": "Maximum number of invoices to return.",
             "required": false,
             "defaultValue": "10"
           }
         ]
       },
       {
-        "name": "Account - Crear factura",
+        "name": "Account - Create invoice",
         "code": "odoo-account-move-create",
-        "description": "Crea una nueva factura o asiento contable en Odoo.",
+        "description": "Creates a new invoice or journal entry in Odoo.",
         "endpointPath": "/json/2/account.move/create",
         "httpMethod": "POST",
         "enabled": true,
@@ -849,37 +849,37 @@
           {
             "name": "move_type",
             "type": "STRING",
-            "description": "Tipo de asiento: 'out_invoice' (factura de cliente), 'in_invoice' (factura de proveedor), etc.",
+            "description": "Entry type: 'out_invoice' (customer invoice), 'in_invoice' (vendor bill), etc.",
             "required": true,
             "defaultValue": "out_invoice"
           },
           {
             "name": "partner_id",
             "type": "NUMBER",
-            "description": "ID del contacto (cliente/proveedor) asociado.",
+            "description": "ID of the associated contact (customer/vendor).",
             "required": true,
             "defaultValue": ""
           },
           {
             "name": "journal_id",
             "type": "NUMBER",
-            "description": "ID del diario contable de destino.",
+            "description": "ID of the target journal.",
             "required": false,
             "defaultValue": ""
           },
           {
             "name": "date",
             "type": "STRING",
-            "description": "Fecha del movimiento contable (YYYY-MM-DD).",
+            "description": "Date of the journal entry (YYYY-MM-DD).",
             "required": false,
             "defaultValue": ""
           }
         ]
       },
       {
-        "name": "Account - Actualizar factura",
+        "name": "Account - Update invoice",
         "code": "odoo-account-move-update",
-        "description": "Actualiza la fecha, diario o contacto de una factura contable.",
+        "description": "Updates the date, journal, or contact of a customer invoice.",
         "endpointPath": "/json/2/account.move/write",
         "httpMethod": "POST",
         "enabled": true,
@@ -889,28 +889,28 @@
           {
             "name": "id",
             "type": "NUMBER",
-            "description": "ID de la factura contable a actualizar.",
+            "description": "ID of the customer invoice to update.",
             "required": true,
             "defaultValue": ""
           },
           {
             "name": "partner_id",
             "type": "NUMBER",
-            "description": "Nuevo ID del contacto.",
+            "description": "New contact ID.",
             "required": false,
             "defaultValue": ""
           },
           {
             "name": "date",
             "type": "STRING",
-            "description": "Nueva fecha de la factura (YYYY-MM-DD).",
+            "description": "New date of the invoice (YYYY-MM-DD).",
             "required": false,
             "defaultValue": ""
           },
           {
             "name": "journal_id",
             "type": "NUMBER",
-            "description": "Nuevo ID del diario contable.",
+            "description": "New journal ID.",
             "required": false,
             "defaultValue": ""
           }

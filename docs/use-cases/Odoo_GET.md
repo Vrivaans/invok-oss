@@ -16,9 +16,9 @@
     },
     "tools": [
       {
-        "name": "CRM - Listar oportunidades",
+        "name": "CRM - List leads",
         "code": "odoo-crm-list",
-        "description": "Lista las oportunidades del CRM de Odoo. Devuelve nombre, empresa, email, etapa y probabilidad de cierre.",
+        "description": "Lists the leads/opportunities from Odoo CRM. Returns name, company, email, stage, and probability of closing.",
         "endpointPath": "/json/2/crm.lead/search_read",
         "httpMethod": "POST",
         "enabled": true,
@@ -28,16 +28,16 @@
           {
             "name": "limit",
             "type": "NUMBER",
-            "description": "Cantidad máxima de oportunidades a devolver.",
+            "description": "Maximum number of leads to return.",
             "required": false,
             "defaultValue": "10"
           }
         ]
       },
       {
-        "name": "Project - Listar proyectos",
+        "name": "Project - List projects",
         "code": "odoo-project-list",
-        "description": "Lista todos los proyectos activos en Odoo con su nombre, descripción y fechas.",
+        "description": "Lists all active projects in Odoo with their name, description, and dates.",
         "endpointPath": "/json/2/project.project/search_read",
         "httpMethod": "POST",
         "enabled": true,
@@ -47,16 +47,16 @@
           {
             "name": "limit",
             "type": "NUMBER",
-            "description": "Cantidad máxima de proyectos a devolver.",
+            "description": "Maximum number of projects to return.",
             "required": false,
             "defaultValue": "10"
           }
         ]
       },
       {
-        "name": "Project - Listar tareas",
+        "name": "Project - List tasks",
         "code": "odoo-project-task-list",
-        "description": "Lista las tareas de proyectos en Odoo. Devuelve nombre, proyecto, etapa, responsable y fecha límite.",
+        "description": "Lists the project tasks in Odoo. Returns name, project, stage, assignee, and deadline.",
         "endpointPath": "/json/2/project.task/search_read",
         "httpMethod": "POST",
         "enabled": true,
@@ -66,16 +66,16 @@
           {
             "name": "limit",
             "type": "NUMBER",
-            "description": "Cantidad máxima de tareas a devolver.",
+            "description": "Maximum number of tasks to return.",
             "required": false,
             "defaultValue": "10"
           }
         ]
       },
       {
-        "name": "Producto - Listar productos",
+        "name": "Product - List products",
         "code": "odoo-product-list",
-        "description": "Lista los productos en Odoo. Devuelve nombre, tipo, precio y costo.",
+        "description": "Lists the products in Odoo. Returns name, type, price, and cost.",
         "endpointPath": "/json/2/product.template/search_read",
         "httpMethod": "POST",
         "enabled": true,
@@ -85,16 +85,16 @@
           {
             "name": "limit",
             "type": "NUMBER",
-            "description": "Cantidad máxima de productos a devolver.",
+            "description": "Maximum number of products to return.",
             "required": false,
             "defaultValue": "10"
           }
         ]
       },
       {
-        "name": "Calendar - Listar eventos",
+        "name": "Calendar - List events",
         "code": "odoo-calendar-event-list",
-        "description": "Lista los eventos y reuniones de calendario en Odoo.",
+        "description": "Lists the calendar events and meetings in Odoo.",
         "endpointPath": "/json/2/calendar.event/search_read",
         "httpMethod": "POST",
         "enabled": true,
@@ -104,16 +104,16 @@
           {
             "name": "limit",
             "type": "NUMBER",
-            "description": "Cantidad máxima de eventos a devolver.",
+            "description": "Maximum number of events to return.",
             "required": false,
             "defaultValue": "10"
           }
         ]
       },
       {
-        "name": "Mail - Listar actividades",
+        "name": "Mail - List activities",
         "code": "odoo-mail-activity-list",
-        "description": "Lista las actividades pendientes de correo en Odoo.",
+        "description": "Lists the pending mail activities in Odoo.",
         "endpointPath": "/json/2/mail.activity/search_read",
         "httpMethod": "POST",
         "enabled": true,
@@ -123,16 +123,16 @@
           {
             "name": "limit",
             "type": "NUMBER",
-            "description": "Cantidad máxima de actividades a devolver.",
+            "description": "Maximum number of activities to return.",
             "required": false,
             "defaultValue": "10"
           }
         ]
       },
       {
-        "name": "Mail - Listar mensajes",
+        "name": "Mail - List messages",
         "code": "odoo-mail-message-list",
-        "description": "Lista los mensajes y notas del chatter en Odoo.",
+        "description": "Lists the messages and notes from the chatter in Odoo.",
         "endpointPath": "/json/2/mail.message/search_read",
         "httpMethod": "POST",
         "enabled": true,
@@ -142,16 +142,16 @@
           {
             "name": "limit",
             "type": "NUMBER",
-            "description": "Cantidad máxima de mensajes a devolver.",
+            "description": "Maximum number of messages to return.",
             "required": false,
             "defaultValue": "10"
           }
         ]
       },
       {
-        "name": "Res - Listar contactos",
+        "name": "Res - List contacts",
         "code": "odoo-res-partner-list",
-        "description": "Lista los contactos (clientes/proveedores) de Odoo.",
+        "description": "Lists the contacts (customers/vendors) in Odoo.",
         "endpointPath": "/json/2/res.partner/search_read",
         "httpMethod": "POST",
         "enabled": true,
@@ -161,16 +161,16 @@
           {
             "name": "limit",
             "type": "NUMBER",
-            "description": "Cantidad máxima de contactos a devolver.",
+            "description": "Maximum number of contacts to return.",
             "required": false,
             "defaultValue": "10"
           }
         ]
       },
       {
-        "name": "Sale - Listar pedidos",
+        "name": "Sale - List orders",
         "code": "odoo-sale-order-list",
-        "description": "Lista las órdenes de venta y cotizaciones en Odoo. Devuelve nombre, cliente, fecha, estado e importe total.",
+        "description": "Lists the sales orders and quotations in Odoo. Returns name, customer, date, status, and total amount.",
         "endpointPath": "/json/2/sale.order/search_read",
         "httpMethod": "POST",
         "enabled": true,
@@ -180,16 +180,16 @@
           {
             "name": "limit",
             "type": "NUMBER",
-            "description": "Cantidad máxima de pedidos a devolver.",
+            "description": "Maximum number of orders to return.",
             "required": false,
             "defaultValue": "10"
           }
         ]
       },
       {
-        "name": "Resource - Listar recursos",
+        "name": "Resource - List resources",
         "code": "odoo-resource-list",
-        "description": "Lista los recursos (humanos o materiales) disponibles en Odoo.",
+        "description": "Lists the resources (human or material) available in Odoo.",
         "endpointPath": "/json/2/resource.resource/search_read",
         "httpMethod": "POST",
         "enabled": true,
@@ -199,16 +199,16 @@
           {
             "name": "limit",
             "type": "NUMBER",
-            "description": "Cantidad máxima de recursos a devolver.",
+            "description": "Maximum number of resources to return.",
             "required": false,
             "defaultValue": "10"
           }
         ]
       },
       {
-        "name": "Account - Listar facturas",
+        "name": "Account - List invoices",
         "code": "odoo-account-move-list",
-        "description": "Lista las facturas de clientes, proveedores y apuntes contables en Odoo.",
+        "description": "Lists the customer invoices, vendor bills, and journal entries in Odoo.",
         "endpointPath": "/json/2/account.move/search_read",
         "httpMethod": "POST",
         "enabled": true,
@@ -218,7 +218,7 @@
           {
             "name": "limit",
             "type": "NUMBER",
-            "description": "Cantidad máxima de facturas a devolver.",
+            "description": "Maximum number of invoices to return.",
             "required": false,
             "defaultValue": "10"
           }
