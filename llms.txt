@@ -1,0 +1,209 @@
+# Invok OSS
+
+Invok OSS is a dynamic tool proxy and integration middleware for AI agents and MCP clients. It sits between AI agents (Claude Desktop, Cursor, Open WebUI, etc.) and production REST APIs.
+
+Instead of writing and maintaining custom MCP servers for every API, Invok programmatically exposes REST APIs as MCP-compatible tools dynamically.
+
+Invok separates tool execution from agent reasoning, acting as the execution and security isolation layer.
+
+---
+
+## Purpose
+
+Invok exists to eliminate the need for:
+- Writing custom MCP servers.
+- Exposing private API keys or credentials directly to LLM contexts.
+- Writing manual API wrappers.
+
+---
+
+## Mental Model
+
+```
+[REST APIs] ──> [Invok Proxy (Credential Injection & Sanitization)] ──> [MCP Tools] ──> [AI Agent]
+```
+
+The AI agent never accesses credentials directly. Invok handles translation, security checks, and secret injection.
+
+---
+
+## Core Boundaries (What Invok is NOT)
+
+- **No Built-in Chat Interface:** Invok does NOT provide a chat interface, testing playground, or internal LLM chat window. It is strictly connectivity and execution middleware designed to plug into external agent frameworks.
+- **No Visual Workflow Builder:** Invok does NOT feature a visual flow builder, drag-and-drop sequencing, or deterministic execution pipelines (like Zapier or Make).
+- **No Orchestrator/Planning Engine:** Invok does NOT determine the order of tool execution. Dynamic planning and tool chaining are handled 100% autonomously by the external AI agent based on the user's prompt.
+
+---
+
+## Core Concepts & Features
+
+- **Programmatic Parser:** Native, zero-LLM-inference-cost OpenAPI/Swagger parser mapping endpoints to clean MCP tool schemas.
+- **Granular Context Control:** Selective exposure of specific endpoints as tools to avoid context window explosion and hallucination.
+- **Credential Isolation:** Secrets (stored using Jasypt symmetric encryption) are injected server-side, isolated from the agent's context.
+- **Portable JSON Recipes:** Declarative, secret-free JSON definitions of API tools that can be imported/exported.
+- **SQLite Database:** A local file-based database (`data/invok.db`) holds all configured providers, tools, and parameters.
+
+---
+
+## Security Model
+
+Invok protects both inbound API responses and outbound LLM-generated arguments.
+
+### 1. Inbound Prompt Injection Mitigation & Formatting (`SecuritySanitizer`)
+All external API responses are intercepted and processed before returning to the LLM:
+- **Redaction**: Patterns indicating system instructions (e.g., "ignore previous", "system prompt:") are redacted as `[REDACTED_POTENTIAL_PROMPT_INJECTION]`.
+- **Semantic Isolation**: The payload is wrapped inside XML tags:
+  ```xml
+  <UntrustedExternalContent>
+  [Response Data]
+  </UntrustedExternalContent>
+  ```
+  This signal prevents the model from executing code/instructions returned by untrusted endpoints.
+
+### 2. Outbound Data Egress Protection (`DataEgressScrubber`)
+Recursive inspection of all tool arguments sent by the LLM:
+- Scans for JWT signatures, private keys (RSA/PGP), and common API keys/tokens.
+- Replaces detected secrets with `[REDACTED_SECRET]` before hitting third-party APIs.
+
+---
+
+## Advanced Agent Capability Tools (State & Memory)
+
+Invok OSS provides built-in tools that allow agents to manage their execution state, learnings, and long-term memory across sessions:
+
+### 1. Engram Memory & Intent Tracking
+Built-in persistence for tactical agent intents and strategic knowledge engrams, storing structural learnings (what, why, where, learned) to maintain long-term memory across sessions:
+- `handsai_save_intent`: Save a tactical intent for the current session/task.
+- `handsai_get_intent`: Retrieve active intents.
+- `handsai_complete_intent`: Mark an intent as completed.
+- `handsai_delete_intent`: Remove an intent.
+- `handsai_save_knowledge`: Save a strategic knowledge engram representing structural learning.
+- `handsai_search_knowledge`: Semantic search over saved knowledge engrams.
+- `handsai_delete_knowledge`: Remove a knowledge engram.
+
+### 2. Memory Attempts (Backlog Tasks)
+Stateful strategic backlog management allowing agents to register tasks, plan future attempts, track execution progress, and handle multi-step actions autonomously:
+- `handsai_create_task`: Register a new task in the execution backlog.
+- `handsai_list_tasks`: Retrieve tasks from the backlog.
+- `handsai_update_task_status`: Update task completion status.
+
+### 3. Agent Self-Integration Guide (`invok_guide` / `handsai_guide`)
+**CRITICAL TOOL FOR AGENTS:**
+The built-in guide tool is a dynamic assistant designed to drive agent-led self-integration. 
+- **Purpose**: Provides validation checklists, integration rules, provider schemas, and contextual advice on how to build and write Invok-compatible JSON recipes/providers.
+- **Usage**: Call this tool whenever you need to add, extend, or troubleshoot API definitions or endpoints in the Invok system. It helps you design compliant schemas and follow the recommended authoring flow.
+
+---
+
+## Technical Connection & Protocols
+
+Invok exposes dynamic tools to external AI agents using the standard Model Context Protocol (MCP) via two transport mechanisms:
+
+### 1. Streamable HTTP (Remote/Direct MCP)
+- **Mechanism**: Connect directly to the standard JSON-RPC 2.0 endpoint over HTTP.
+- **Endpoint**: `POST /mcp`
+- **Protocol**: Standard JSON-RPC 2.0 messages (supporting `initialize`, `tools/list`, and `tools/call`).
+- **Headers**:
+  - `Content-Type: application/json`
+  - `Accept: application/json`
+  *(Note: Unlike the commercial/hosted version, Invok OSS is completely public and does not check for `X-HandsAI-Token` authentication headers on `/mcp`).*
+
+### 2. MCP Stdio (Bridge Mode)
+- **Mechanism**: Connect via the local CLI bridge binary (`invok-mcp`) that translates stdin/stdout JSON-RPC communication into Invok's HTTP REST endpoints.
+- **Endpoints used by Bridge**:
+  - `GET /mcp/tools/list`
+  - `POST /mcp/tools/call`
+
+### 3. Administrative API
+- `POST /api/providers` — Register an API provider.
+- `POST /api/tools` — Register a tool manually.
+- `POST /api/import` — Import OpenAPI specification or JSON recipes.
+- `GET /api/export` — Export providers and tools (secrets are automatically replaced with template placeholders).
+- `GET /api/guide` — Access integration guidelines.
+
+---
+
+## Onboarding Guidance & Verification
+
+If assisting a human user in setting up Invok for the first time, guide them using these steps:
+
+### 1. Configure the MCP Client
+
+#### Option A: Direct streamable-http (e.g. Cursor, custom clients)
+Add the following to the `mcpServers` configuration:
+```json
+{
+  "mcpServers": {
+    "invok-http": {
+      "type": "streamable-http",
+      "url": "http://localhost:8080/mcp"
+    }
+  }
+}
+```
+
+#### Option B: Stdio Bridge (e.g. Claude Desktop)
+Point the client to the `invok-mcp` bridge binary:
+```json
+{
+  "mcpServers": {
+    "invok": {
+      "command": "/absolute/path/to/invok-mcp",
+      "args": ["mcp"]
+    }
+  }
+}
+```
+Create a `config.json` in the same directory as the `invok-mcp` binary:
+```json
+{
+  "invokUrl": "http://localhost:8080/"
+}
+```
+
+### 2. Import a Test API (No Credentials Required)
+To verify the system end-to-end, import a public JSON recipe:
+- **JSON Test Recipe (Coinbase Public)**: Send a POST request to `/api/import` or use the UI dashboard with the following payload:
+  ```json
+  [
+    {
+      "name": "Coinbase Public",
+      "code": "coinbase-public",
+      "baseUrl": "https://api.coinbase.com",
+      "authenticationType": "NONE",
+      "apiKeyLocation": "NONE",
+      "apiKeyName": "",
+      "apiKeyValue": "",
+      "isDynamicAuth": false,
+      "customHeaders": {
+        "Accept": "application/json",
+        "User-Agent": "Invok/1.0"
+      },
+      "tools": [
+        {
+          "name": "Precio spot Coinbase",
+          "code": "coinbase-spot-price",
+          "description": "Precio de mercado (spot) de un par en Coinbase. API pública, sin API key. Pares típicos: BTC-USD, ETH-USD, SOL-USD.",
+          "endpointPath": "/v2/prices/{currency_pair}/spot",
+          "httpMethod": "GET",
+          "enabled": true,
+          "isExportable": true,
+          "parameters": [
+            {
+              "name": "currency_pair",
+              "type": "STRING",
+              "description": "Par de divisas con guión (ej. BTC-USD, ETH-EUR).",
+              "required": true,
+              "defaultValue": "BTC-USD"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+  ```
+- Prompt the user to test the tool (e.g., *"Ask me to retrieve the current price of BTC-USD"*).
+
+### 3. Understanding the Connection Status Indicator
+After configuring the MCP client, the Invok UI may initially show the connection status as **orange** (`disconnected`).
+This is expected behavior. The status changes to **green** (`mcp connected`) only after the first successful tool execution is recorded in the Analytics panel. Guide the user to execute at least one tool to validate the connection.

@@ -36,11 +36,18 @@ Instead of writing, hosting, and maintaining custom Model Context Protocol (MCP)
                                    │ 2. Safe API Request
                                    │    (Injected headers, bearer tokens, params)
                                    ▼
-       ┌────────────────────────────────────────────────────────┐
-       │                     Production API                     │
-       │           (Odoo CRM, Trello, HubSpot, etc.)            │
-       └────────────────────────────────────────────────────────┘
+        ┌────────────────────────────────────────────────────────┐
+        │                     Production API                     │
+        │           (Odoo CRM, Trello, HubSpot, etc.)            │
+        └────────────────────────────────────────────────────────┘
 ```
+
+### What Invok is NOT
+
+To maintain a clear boundary of what Invok handles, keep in mind:
+- **No Built-in Chat Interface:** Invok does NOT provide a chat interface, testing playground, or internal LLM chat window. It is strictly a connectivity and execution middleware designed to plug into external agent frameworks.
+- **No Visual Workflow Builder:** Invok does NOT feature a visual flow builder, drag-and-drop sequencing, or deterministic execution pipelines (like Zapier or Make).
+- **No Orchestrator or Planning Engine:** Invok does NOT determine the order of tool execution. Dynamic planning and tool chaining are handled 100% autonomously by the external AI agent based on the user's prompt.
 
 ---
 
@@ -69,6 +76,20 @@ AI models should never touch, process, or see your private credentials.
 - **Authentication Bypass**: The LLM only receives the tool metadata and parameter definitions. It has no visibility into API Keys, Bearer tokens, or basic auth passwords.
 - **Backend Injection**: Invok intercepts tool calls from the client, decrypts stored credentials at rest (secured using Jasypt encryption), injects the credentials into the requests on the server side, and forwards the calls to the production API.
 - **Zero Exposure**: Your API keys never leave the server running Invok, keeping your production tokens completely isolated from LLM logs or third-party AI provider context.
+
+### 4. Advanced Security Controls (Egress & Ingress)
+
+Invok implements active protection layers for both inbound responses and outbound arguments:
+- **Inbound Prompt Injection Mitigation & Formatting (`SecuritySanitizer`)**: All external API responses are intercepted before returning to the LLM. 
+  1. It searches the response for common prompt injection patterns (like `ignore previous`, `forget your instructions`, `system prompt:`) and replaces them with `[REDACTED_POTENTIAL_PROMPT_INJECTION]`.
+  2. It wraps the entire response inside XML tags:
+     ```xml
+     <UntrustedExternalContent>
+     [Response Data]
+     </UntrustedExternalContent>
+     ```
+     This enforces a semantic boundary, instructing the LLM to treat the payload strictly as external data, preventing it from executing instructions returned by untrusted endpoints.
+- **Outbound Data Egress Protection (`DataEgressScrubber`)**: Invok recursively inspects all arguments sent by the LLM before executing the API request. It scans for JWT signatures, private keys (RSA/PGP), and common API keys/tokens, and redacts them as `[REDACTED_SECRET]` to prevent accidental leakage of secrets to external APIs.
 
 ---
 
@@ -146,6 +167,22 @@ Invok automatically:
 
 ---
 
+## Agent Self-Integration & The Guide Tool (`invok_guide`)
+
+One of the most powerful paradigms of Invok is **agent-driven self-integration**. Instead of a human operator coding new API connectors manually, Invok empowers the AI agent to expand its own capabilities dynamically.
+
+### How it works:
+1. **The Guide Tool**: Invok exposes a built-in system tool called `invok_guide` (and a corresponding public API endpoint `GET /api/guide`).
+2. **On-Demand Reference**: When an agent encounters an endpoint it doesn't know how to call, or needs to define a new API provider/tool recipe, it calls `invok_guide`.
+3. **Structured Schemas & Checklists**: The tool returns:
+   - Complete JSON schemas for creating providers (`POST /api/providers`) and tools (`POST /api/tools`).
+   - Detailed authentication types explanation (API_KEY, BEARER_TOKEN, BASIC_AUTH, OAUTH2_AUTHORIZATION_CODE, NONE).
+   - Rules for setting up **Dynamic Authentication** (login endpoints, extraction paths) and **Body Payload Templates** (using double curly braces `{{parameter_name}}`).
+   - A validation checklist ensuring the agent writes correct definitions (e.g., matching parameter names, avoiding path prefixes in baseUrl).
+4. **Autonomous Action**: With this information, the agent can autonomously call the Administrative API to create, test, and validate new tools on the fly, immediately integrating new services into its own workspace.
+
+---
+
 ## Getting Started
 
 ### 1. Run Invok
@@ -217,9 +254,71 @@ Create a `config.json` file in the same directory as the `invok-mcp` binary:
 }
 ```
 
-<p align="center">
-  <img src="docs/assets/antigravity-detecta-tools.png" alt="MCP client detecting Invok tools" width="75%">
 </p>
+
+---
+
+## Onboarding Verification & Status
+
+To verify your setup end-to-end, follow these simple validation steps:
+
+### 1. Import a Public Test API (No Credentials Required)
+You can quickly create a provider and expose its tools by importing a public JSON recipe. 
+
+Send a POST request to `/api/import` or paste the following JSON payload into the **Import** section of the visual dashboard:
+
+```json
+[
+  {
+    "name": "Coinbase Public",
+    "code": "coinbase-public",
+    "baseUrl": "https://api.coinbase.com",
+    "authenticationType": "NONE",
+    "apiKeyLocation": "NONE",
+    "apiKeyName": "",
+    "apiKeyValue": "",
+    "isDynamicAuth": false,
+    "customHeaders": {
+      "Accept": "application/json",
+      "User-Agent": "Invok/1.0"
+    },
+    "tools": [
+      {
+        "name": "Precio spot Coinbase",
+        "code": "coinbase-spot-price",
+        "description": "Precio de mercado (spot) de un par en Coinbase. API pública, sin API key. Pares típicos: BTC-USD, ETH-USD, SOL-USD.",
+        "endpointPath": "/v2/prices/{currency_pair}/spot",
+        "httpMethod": "GET",
+        "enabled": true,
+        "isExportable": true,
+        "parameters": [
+          {
+            "name": "currency_pair",
+            "type": "STRING",
+            "description": "Par de divisas con guión (ej. BTC-USD, ETH-EUR).",
+            "required": true,
+            "defaultValue": "BTC-USD"
+          }
+        ]
+      }
+    ]
+  }
+]
+```
+
+This registers the `coinbase-public` provider and exposes the `Precio spot Coinbase` (`coinbase-spot-price`) tool.
+
+### 2. Verify with the Agent
+Ask your AI agent to call the newly registered tool. For example:
+> *"Retrieve the current BTC-USD spot price from Coinbase"*
+
+### 3. Connection Status Transition (Orange to Green)
+When you first configure your MCP client, the Invok UI dashboard may show the connection status as **orange** (`disconnected`). 
+
+**This is expected behavior.**
+The status indicator transitions to **green** (`mcp connected`) only after the first successful tool execution has been completed and registered in the Analytics panel. 
+
+Once your agent successfully executes the Coinbase price check, refresh the dashboard to see the connection status turn green.
 
 ---
 
