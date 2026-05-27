@@ -47,6 +47,7 @@ Invok is one server for all of them.
 | [▶ Invok + Odoo CRM](https://youtu.be/7seKdWbP6U0) | Control an ERP via natural language through a single MCP tool |
 | [▶ LinkedIn + Bluesky with one prompt](https://youtu.be/pvSSlQ3orAQ) | Post to two platforms simultaneously — one agent, two APIs, zero extra servers |
 | [▶ Export & Import Recipes](https://youtu.be/bXTKyPiqpLc) | Build an integration once, export it as JSON, share it with anyone |
+| [▶ Agent-assisted recipe creation with invok_guide](https://www.youtube.com/watch?v=TaQCede3fg0) | Agent generates a ready-to-import recipe from API docs — human reviews and imports |
 
 ---
 
