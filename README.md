@@ -1,212 +1,145 @@
 # Invok
 
-**Stop writing boilerplate MCP servers and exposing private API keys to LLMs.** Invok is a language-agnostic dynamic tool proxy that instantly connects any AI agent to any REST API with native execution, zero-LLM-cost parsing, secure credential isolation, and granular context control.
+**One MCP server. Every API you own.**
 
-<p align="center">
-  <img src="docs/assets/lista-herramientas-home.png" alt="Invok Dashboard" width="85%">
-</p>
+Invok is a self-hosteable dynamic tool proxy that turns any REST API into MCP tools — instantly, without writing a single line of server code. Connect your internal systems, third-party services, or any API with a spec to any AI agent in minutes.
+
+```
+  Claude Desktop · Cursor · Claude Code · Open WebUI · Any MCP Client
+                              │
+                              ▼
+                    ┌─────────────────┐
+                    │   Invok Server  │  ← single MCP endpoint
+                    │                 │
+                    │  [Parser]       │  zero LLM token cost
+                    │  [Auth Inject]  │  credentials never reach the LLM
+                    │  [Context Filter│  expose only what the agent needs
+                    └────────┬────────┘
+                             │
+           ┌─────────────────┼─────────────────┐
+           ▼                 ▼                 ▼
+      Your Internal      HubSpot API      Any REST API
+         API                                you define
+```
 
 ---
 
-## What is Invok?
+## Why Invok?
 
-Invok is a lightweight, high-performance middleware that sits between AI agents/MCP clients (Claude Desktop, Claude Code, Cursor, Open WebUI, Hermes, Openclaw, etc.) and your production REST APIs. 
+Most teams end up writing a custom MCP server for every API they want agents to use. That means maintaining N servers, managing credentials in N places, and hoping none of them drift out of sync.
 
-Instead of writing, hosting, and maintaining custom Model Context Protocol (MCP) servers for every API you want your agent to use, Invok serves as a single, universal bridge. You define the target API structure via Swagger/OpenAPI or JSON recipes, and Invok exposes them to your agent dynamically.
+Invok is one server for all of them.
 
-```
-       ┌────────────────────────────────────────────────────────┐
-       │                       AI Client                        │
-       │ (Claude Desktop, Cursor, Claude Code, Open WebUI, etc.)│
-       └───────────────────────────┬────────────────────────────┘
-                                   │
-                                   │ 1. Discover Tools / Call Tool
-                                   │    (Standard MCP over Stdio/HTTP)
-                                   ▼
-       ┌────────────────────────────────────────────────────────┐
-       │                   Invok Proxy/Server                   │
-       │                                                        │
-       │  [Programmatic Parser]  [Granular Context Filter]      │
-       │  (0% LLM Token Cost)     (Reduce prompt noise)         │
-       │                                                        │
-       │  [Jasypt Secure Credential Injector]                   │
-       │  (Tokens isolated from LLM context)                    │
-       └───────────────────────────┬────────────────────────────┘
-                                   │
-                                   │ 2. Safe API Request
-                                   │    (Injected headers, bearer tokens, params)
-                                   ▼
-        ┌────────────────────────────────────────────────────────┐
-        │                     Production API                     │
-        │           (Odoo CRM, Trello, HubSpot, etc.)            │
-        └────────────────────────────────────────────────────────┘
-```
-
-### What Invok is NOT
-
-To maintain a clear boundary of what Invok handles, keep in mind:
-- **No Built-in Chat Interface:** Invok does NOT provide a chat interface, testing playground, or internal LLM chat window. It is strictly a connectivity and execution middleware designed to plug into external agent frameworks.
-- **No Visual Workflow Builder:** Invok does NOT feature a visual flow builder, drag-and-drop sequencing, or deterministic execution pipelines (like Zapier or Make).
-- **No Orchestrator or Planning Engine:** Invok does NOT determine the order of tool execution. Dynamic planning and tool chaining are handled 100% autonomously by the external AI agent based on the user's prompt.
+| | Traditional approach | Invok |
+|---|---|---|
+| Add a new API | Write & deploy a new MCP server | Import an OpenAPI spec or JSON recipe |
+| Credentials | Exposed or hardcoded per server | Encrypted at rest, injected server-side |
+| Context control | All-or-nothing | Toggle specific endpoints as tools |
+| Share integrations | Copy-paste code | Export a secret-free JSON recipe |
+| Self-hosted | Per-server setup | Single Docker container |
 
 ---
 
-## Invok Cloud (Hosted & Analytics)
+## See It In Action
 
-Need detailed execution analytics, full request/response traceability, team collaboration, and hosted infrastructure? Try **[Invok Cloud](https://useinvok.run)**—the commercial, production-ready version of Invok.
+| Demo | Description |
+|------|-------------|
+| [▶ Invok + Odoo CRM](https://youtu.be/7seKdWbP6U0) | Control an ERP via natural language through a single MCP tool |
+| [▶ LinkedIn + Bluesky with one prompt](https://youtu.be/pvSSlQ3orAQ) | Post to two platforms simultaneously — one agent, two APIs, zero extra servers |
+| [▶ Export & Import Recipes](https://youtu.be/bXTKyPiqpLc) | Build an integration once, export it as JSON, share it with anyone |
 
 ---
 
 ## How It Works
 
-### 1. Programmatic Parser (0% LLM Token Cost)
-Unlike setups that feed raw API documentation or JSON-LD files into an LLM to let the model figure out how to structure requests, Invok handles parsing **entirely in native code**. 
-- It reads OpenAPI/Swagger specifications programmatically and maps them to clean tool schemas.
-- It compiles tool definitions instantly with **zero LLM inference overhead**.
-- The AI agent receives standard, pre-formatted JSON schemas for tool definitions, ensuring sub-millisecond local execution without wasting model tokens.
+### 1. Zero-cost Parsing
+Invok parses OpenAPI/Swagger specs programmatically — not by feeding them into an LLM. The agent receives clean, pre-formatted tool schemas with zero token overhead.
 
-### 2. Granular Context Control
-Exposing a complete enterprise API (e.g., Odoo, HubSpot) with hundreds of endpoints to an LLM will quickly blow past its context window, inflate prompt billing, and cause tool-calling hallucinations.
-- Invok lets you selectively toggle which endpoints are exposed as tools.
-- Curate exactly what your agent sees (e.g., exposing only 15 critical CRM endpoints out of 100).
-- This keeps the agent's prompt clean, lowers token usage costs dramatically, and keeps tool calling highly accurate.
+### 2. Credential Isolation
+API keys, bearer tokens, and passwords are encrypted at rest with Jasypt and injected server-side on every request. The LLM never sees them — not in the prompt, not in logs.
 
-### 3. Security and Token Isolation
-AI models should never touch, process, or see your private credentials.
-- **Authentication Bypass**: The LLM only receives the tool metadata and parameter definitions. It has no visibility into API Keys, Bearer tokens, or basic auth passwords.
-- **Backend Injection**: Invok intercepts tool calls from the client, decrypts stored credentials at rest (secured using Jasypt encryption), injects the credentials into the requests on the server side, and forwards the calls to the production API.
-- **Zero Exposure**: Your API keys never leave the server running Invok, keeping your production tokens completely isolated from LLM logs or third-party AI provider context.
+### 3. Granular Context Control
+A full Odoo or HubSpot API can have hundreds of endpoints. Exposing all of them to an LLM inflates token costs and causes hallucinations. Invok lets you selectively toggle which endpoints become tools, so the agent only sees what it needs.
 
-### 4. Advanced Security Controls (Egress & Ingress)
+### 4. Portable JSON Recipes
+Once you configure an integration, export it as a clean, credential-free JSON file. Anyone on your team can import it in 30 seconds with their own credentials.
 
-Invok implements active protection layers for both inbound responses and outbound arguments:
-- **Inbound Prompt Injection Mitigation & Formatting (`SecuritySanitizer`)**: All external API responses are intercepted before returning to the LLM. 
-  1. It searches the response for common prompt injection patterns (like `ignore previous`, `forget your instructions`, `system prompt:`) and replaces them with `[REDACTED_POTENTIAL_PROMPT_INJECTION]`.
-  2. It wraps the entire response inside XML tags:
-     ```xml
-     <UntrustedExternalContent>
-     [Response Data]
-     </UntrustedExternalContent>
-     ```
-     This enforces a semantic boundary, instructing the LLM to treat the payload strictly as external data, preventing it from executing instructions returned by untrusted endpoints.
-- **Outbound Data Egress Protection (`DataEgressScrubber`)**: Invok recursively inspects all arguments sent by the LLM before executing the API request. It scans for JWT signatures, private keys (RSA/PGP), and common API keys/tokens, and redacts them as `[REDACTED_SECRET]` to prevent accidental leakage of secrets to external APIs.
+```
+  [ Configure tools in dashboard ]
+              │
+              ▼
+  [ Export recipe (secrets stripped) ]
+              │
+     ┌────────┴────────┐
+     ▼                 ▼
+  Share with team   Commit to git
+     │                 │
+     ▼                 ▼
+  Import in 30s    Run in CI/CD
+```
+
+### 5. Prompt Injection Protection
+External API responses are sanitized before reaching the LLM. Injection patterns like `ignore previous instructions` are redacted, and all external content is wrapped in semantic XML isolation tags so the model treats it as data, not instructions.
 
 ---
 
-## Portability & Distribution (JSON Recipes)
+## Agent-Assisted Recipe Creation (Human-in-the-Loop)
 
-Invok introduces the concept of **Portable Tool Recipes**. 
-Once you curate a set of tools for a complex API (mapping JSON-RPC structures, parameter descriptions, and custom headers), you can export the configuration as a clean, secret-free JSON file.
+One of the most powerful workflows in Invok is using your agent to **generate integration recipes** — while keeping a human in control of what actually gets imported.
+
+Invok exposes a built-in tool called `invok_guide`. When called, it returns the full JSON schema, authentication patterns, validation checklist, and authoring rules needed to build a valid recipe.
+
+**The workflow:**
 
 ```
-                  [ Curate Tools in Invok UI ]
-                               │
-                               ▼
-               [ Export Tool Recipe (JSON) ]
-                (Automatically strips keys)
-                               │
-              ┌────────────────┴────────────────┐
-              ▼                                 ▼
-      [ Share with Team ]              [ Version in Git ]
-              │                                 │
-              ▼                                 ▼
-    [ Import in 30 Seconds ]         [ Run in CI/CD / Prod ]
-   (Input local private keys)
+  You: "Generate a recipe to integrate the GitHub API"
+              │
+              ▼
+  Agent calls invok_guide → gets schema + rules
+              │
+              ▼
+  Agent analyzes the API docs → produces ready-to-import JSON
+              │
+              ▼
+  You review the recipe → you decide to import it
+              │
+              ▼
+  POST /api/import → tools are now available to the agent
 ```
 
-This allows teams to:
-- Share pre-configured integrations for internal tools instantly.
-- Version-control agent capabilities inside the git repository.
-- Distribute ready-to-use API bundles to clients without exposing production credentials.
+**Why the human does the import — not the agent:**
+
+An agent that can register its own tools is an agent that can be manipulated into registering malicious ones. A prompt injection attack from an external API response could instruct the agent to silently add a rogue tool pointing to an attacker-controlled endpoint.
+
+Invok's design is explicit: **you decide what the agent can do**. The agent helps you build integrations faster, but it never expands its own capabilities without your approval. This is consistent with the rest of Invok's security model — credential isolation, response sanitization, and context control all serve the same principle.
+
+In practice this means:
+- You ask the agent to generate a recipe for any API
+- The agent produces the JSON using `invok_guide` as reference
+- You review it, add your credentials, and import it
+- The agent now has access to exactly what you approved
 
 ---
 
-## Highlighted Use Case: Odoo CRM
+## Quick Start
 
-Odoo utilizes a complex JSON-RPC structure for database operations. Feeding these raw POST payloads to an LLM is error-prone. 
-
-Invok abstracts this complexity. For example, Odoo's CRM query endpoint (`/json/2/crm.lead/search_read`) requires a database header, database name, and structural JSON payload. 
-
-With Invok, this is mapped into a single, clean tool `odoo-crm-list`. 
-
-### The Tool Definition Recipe:
-```json
-{
-  "name": "CRM - List Opportunities",
-  "code": "odoo-crm-list",
-  "description": "Lists active CRM opportunities returning name, company, stage, and probability.",
-  "endpointPath": "/json/2/crm.lead/search_read",
-  "httpMethod": "POST",
-  "bodyPayloadTemplate": "{\"domain\": [], \"fields\": [\"name\", \"partner_name\", \"email_from\", \"stage_id\", \"probability\", \"expected_revenue\"], \"limit\": {{limit}}}",
-  "parameters": [
-    {
-      "name": "limit",
-      "type": "NUMBER",
-      "description": "Maximum number of opportunities to retrieve.",
-      "required": false,
-      "defaultValue": "10"
-    }
-  ]
-}
-```
-
-### The LLM Interaction:
-Instead of writing complex JSON-RPC structures, the LLM simply calls:
-```json
-{
-  "name": "odoo-crm-list",
-  "arguments": { "limit": 5 }
-}
-```
-Invok automatically:
-1. Intercepts the call.
-2. Injects custom database headers (e.g., `X-Odoo-Database`).
-3. Injects the Bearer Authorization token securely.
-4. Renders the body payload template: replacing `{{limit}}` with `5`.
-5. Executes the request against Odoo, parsing and returning the raw JSON response to the agent.
-
----
-
-## Agent Self-Integration & The Guide Tool (`invok_guide`)
-
-One of the most powerful paradigms of Invok is **agent-driven self-integration**. Instead of a human operator coding new API connectors manually, Invok empowers the AI agent to expand its own capabilities dynamically.
-
-### How it works:
-1. **The Guide Tool**: Invok exposes a built-in system tool called `invok_guide` (and a corresponding public API endpoint `GET /api/guide`).
-2. **On-Demand Reference**: When an agent encounters an endpoint it doesn't know how to call, or needs to define a new API provider/tool recipe, it calls `invok_guide`.
-3. **Structured Schemas & Checklists**: The tool returns:
-   - Complete JSON schemas for creating providers (`POST /api/providers`) and tools (`POST /api/tools`).
-   - Detailed authentication types explanation (API_KEY, BEARER_TOKEN, BASIC_AUTH, OAUTH2_AUTHORIZATION_CODE, NONE).
-   - Rules for setting up **Dynamic Authentication** (login endpoints, extraction paths) and **Body Payload Templates** (using double curly braces `{{parameter_name}}`).
-   - A validation checklist ensuring the agent writes correct definitions (e.g., matching parameter names, avoiding path prefixes in baseUrl).
-4. **Autonomous Action**: With this information, the agent can autonomously call the Administrative API to create, test, and validate new tools on the fly, immediately integrating new services into its own workspace.
-
----
-
-## Getting Started
-
-### 1. Run Invok
-You can run Invok locally or via Docker. The server runs on `http://localhost:8080` and configures a local SQLite database at `data/invok.db` automatically.
-
-#### Using Docker
+### Run with Docker
 ```bash
 docker compose up
 ```
 
-#### Running Locally (Java 21 required)
+### Run locally (Java 21 required)
 ```bash
 ./mvnw spring-boot:run
 ```
 
-Once running, navigate to `http://localhost:8080` to manage your providers and tools via the visual dashboard.
+Server starts at `http://localhost:8080`. A SQLite database is created automatically at `data/invok.db`.
 
 ---
 
-## Connect to an MCP Client
+## Connect to Your MCP Client
 
-### Method A: Streamable HTTP (Remote / Direct)
-Most modern MCP clients support Streamable HTTP. Configure your agent to connect directly to the HTTP server:
-
+### Streamable HTTP (Cursor, Claude Code, Open WebUI, most modern clients)
 ```json
 {
   "mcpServers": {
@@ -218,8 +151,8 @@ Most modern MCP clients support Streamable HTTP. Configure your agent to connect
 }
 ```
 
-### Method B: Stdio Bridge (Local CLI)
-If your client only supports stdio-based subprocess communication (like Claude Desktop or Cursor), download the [Invok Bridge Release](https://github.com/Vrivaans/handsai-bridge/releases) for your OS and configure it.
+### Stdio Bridge (Claude Desktop, VS Code)
+Download the [Invok Bridge binary](https://github.com/Vrivaans/handsai-bridge/releases) for your OS.
 
 **Claude Desktop** (`claude_desktop_config.json`):
 ```json
@@ -247,166 +180,132 @@ If your client only supports stdio-based subprocess communication (like Claude D
 }
 ```
 
-Create a `config.json` file in the same directory as the `invok-mcp` binary:
+Create a `config.json` in the same directory as the binary:
 ```json
 {
   "invokUrl": "http://localhost:8080/"
 }
 ```
 
-</p>
-
 ---
 
-## Onboarding Verification & Status
+## Verify Your Setup
 
-To verify your setup end-to-end, follow these simple validation steps:
+Import this public test recipe (no credentials required) to confirm everything works end-to-end:
 
-### 1. Import a Public Test API (No Credentials Required)
-You can quickly create a provider and expose its tools by importing a public JSON recipe. 
-
-Send a POST request to `/api/import` or paste the following JSON payload into the **Import** section of the visual dashboard:
-
-```json
-[
-  {
-    "name": "Coinbase Public",
-    "code": "coinbase-public",
-    "baseUrl": "https://api.coinbase.com",
-    "authenticationType": "NONE",
-    "apiKeyLocation": "NONE",
-    "apiKeyName": "",
-    "apiKeyValue": "",
-    "isDynamicAuth": false,
-    "customHeaders": {
-      "Accept": "application/json",
-      "User-Agent": "Invok/1.0"
-    },
-    "tools": [
-      {
-        "name": "Precio spot Coinbase",
-        "code": "coinbase-spot-price",
-        "description": "Precio de mercado (spot) de un par en Coinbase. API pública, sin API key. Pares típicos: BTC-USD, ETH-USD, SOL-USD.",
-        "endpointPath": "/v2/prices/{currency_pair}/spot",
-        "httpMethod": "GET",
-        "enabled": true,
-        "isExportable": true,
-        "parameters": [
-          {
-            "name": "currency_pair",
-            "type": "STRING",
-            "description": "Par de divisas con guión (ej. BTC-USD, ETH-EUR).",
-            "required": true,
-            "defaultValue": "BTC-USD"
-          }
-        ]
-      }
-    ]
-  }
-]
-```
-
-This registers the `coinbase-public` provider and exposes the `Precio spot Coinbase` (`coinbase-spot-price`) tool.
-
-### 2. Verify with the Agent
-Ask your AI agent to call the newly registered tool. For example:
-> *"Retrieve the current BTC-USD spot price from Coinbase"*
-
-### 3. Connection Status Transition (Orange to Green)
-When you first configure your MCP client, the Invok UI dashboard may show the connection status as **orange** (`disconnected`). 
-
-**This is expected behavior.**
-The status indicator transitions to **green** (`mcp connected`) only after the first successful tool execution has been completed and registered in the Analytics panel. 
-
-Once your agent successfully executes the Coinbase price check, refresh the dashboard to see the connection status turn green.
-
----
-
-## Declarative API Management
-
-### Create a Provider
-```bash
-curl -X POST http://localhost:8080/api/providers \
-  -H "Content-Type: application/json" \
-  -d '{
-    "name": "HubSpot",
-    "code": "hubspot",
-    "baseUrl": "https://api.hubapi.com",
-    "authenticationType": "BEARER_TOKEN",
-    "apiKeyLocation": "HEADER",
-    "apiKeyName": "Authorization",
-    "apiKeyValue": "your-bearer-token"
-  }'
-```
-
-### Create a Tool manually
-```bash
-curl -X POST http://localhost:8080/api/tools \
-  -H "Content-Type: application/json" \
-  -d '{
-    "name": "Get Contacts",
-    "code": "get_contacts",
-    "description": "Retrieve contact records from HubSpot CRM",
-    "providerId": 1,
-    "endpointPath": "/crm/v3/objects/contacts",
-    "httpMethod": "GET",
-    "parameters": [
-      { "name": "limit", "type": "NUMBER", "required": false }
-    ]
-  }'
-```
-
-### Import from Swagger / OpenAPI spec
-Paste raw OpenAPI/Swagger schemas directly to batch-generate tools. Invok programmatically parses and registers all paths, parameters, and query options.
 ```bash
 curl -X POST http://localhost:8080/api/import \
   -H "Content-Type: application/json" \
-  -d @openapi-spec.json
+  -d '[
+    {
+      "name": "Coinbase Public",
+      "code": "coinbase-public",
+      "baseUrl": "https://api.coinbase.com",
+      "authenticationType": "NONE",
+      "apiKeyLocation": "NONE",
+      "isDynamicAuth": false,
+      "customHeaders": {
+        "Accept": "application/json",
+        "User-Agent": "Invok/1.0"
+      },
+      "tools": [
+        {
+          "name": "Get Spot Price",
+          "code": "coinbase-spot-price",
+          "description": "Get the spot market price for a currency pair. Common pairs: BTC-USD, ETH-USD, SOL-USD.",
+          "endpointPath": "/v2/prices/{currency_pair}/spot",
+          "httpMethod": "GET",
+          "enabled": true,
+          "parameters": [
+            {
+              "name": "currency_pair",
+              "type": "STRING",
+              "description": "Currency pair with hyphen (e.g. BTC-USD, ETH-EUR).",
+              "required": true,
+              "defaultValue": "BTC-USD"
+            }
+          ]
+        }
+      ]
+    }
+  ]'
 ```
 
-<p align="center">
-  <img src="docs/assets/importacion-multiple-png.png" alt="Batch import from OpenAPI" width="75%">
-</p>
+Then ask your agent: *"What is the current BTC-USD price?"*
+
+> **Note:** The dashboard shows an orange status indicator until the first successful tool execution is recorded. After your agent calls the Coinbase tool, it will turn green.
 
 ---
 
-## Portable Use-Cases
+## Real-World Example: Odoo CRM
 
-Invok ships with pre-configured templates under [`docs/casos-de-uso/`](docs/casos-de-uso/):
+Odoo uses a JSON-RPC structure that's difficult to feed directly to an LLM. Invok wraps it into a clean tool the agent can call naturally.
 
-| Integration | File / Guide | Description |
-|-------------|--------------|-------------|
-| **Odoo** | [Odoo Integration](docs/casos-de-uso/Odoo.md) | Standard CRM/ERP actions operated via natural language |
-| **Trello** | [Trello Integration](docs/casos-de-uso/Trello.md) | Manage boards, lists, and cards dynamically |
-| **Crypto APIs** | [APIs Crypto JSON](docs/casos-de-uso/APIS_PUBLICAS_CRYPTO.json) | Direct import for Coinbase, Binance, and CoinGecko |
-| **VPS Management**| [VPS Status JSON](docs/casos-de-uso/CUBEPATH_VPS_STATUS.json) | Monitor VPS status and performance directly from agents |
-| **Weather** | [Weather API](docs/casos-de-uso/CLIMA.md) | Multi-provider weather retrieval |
+**Recipe definition:**
+```json
+{
+  "name": "CRM - List Opportunities",
+  "code": "odoo-crm-list",
+  "description": "Lists active CRM opportunities returning name, company, stage, and probability.",
+  "endpointPath": "/json/2/crm.lead/search_read",
+  "httpMethod": "POST",
+  "bodyPayloadTemplate": "{\"domain\": [], \"fields\": [\"name\", \"partner_name\", \"email_from\", \"stage_id\", \"probability\", \"expected_revenue\"], \"limit\": {{limit}}}",
+  "parameters": [
+    {
+      "name": "limit",
+      "type": "NUMBER",
+      "description": "Maximum number of opportunities to retrieve.",
+      "required": false,
+      "defaultValue": "10"
+    }
+  ]
+}
+```
 
-*To import any of these, simply run `POST /api/import` containing the raw JSON content of the recipe.*
+**What the agent calls:**
+```json
+{ "name": "odoo-crm-list", "arguments": { "limit": 5 } }
+```
+
+Invok handles the rest: injects auth headers, renders the body template, executes the request, returns the response.
 
 ---
 
-## API Endpoint Reference
+## Pre-built Recipes
+
+| Integration | File | Description |
+|-------------|------|-------------|
+| **Odoo** | [Odoo.md](docs/use-cases/Odoo.md) | CRM and ERP actions via natural language |
+| **Trello** | [Trello.md](docs/use-cases/Trello.md) | Boards, lists, and cards |
+| **Crypto APIs** | [APIS_PUBLICAS_CRYPTO.json](docs/use-cases/APIS_PUBLICAS_CRYPTO.json) | Coinbase, Binance, CoinGecko — no API key needed |
+| **VPS Management** | [CUBEPATH_VPS_STATUS.json](docs/use-cases/CUBEPATH_VPS_STATUS.json) | Monitor and manage VPS instances |
+| **Weather** | [CLIMA.md](docs/use-cases/CLIMA.md) | Multi-provider weather retrieval |
+
+Import any of these via `POST /api/import`.
+
+---
+
+## API Reference
 
 | Method | Endpoint | Description |
 |--------|----------|-------------|
-| `GET` | `/api/providers` | List all registered API providers |
-| `POST` | `/api/providers` | Register a new API provider |
-| `PUT` | `/api/providers/{id}` | Update provider details |
+| `GET` | `/api/providers` | List registered API providers |
+| `POST` | `/api/providers` | Register a new provider |
+| `PUT` | `/api/providers/{id}` | Update a provider |
 | `DELETE` | `/api/providers/{id}` | Remove a provider |
-| `GET` | `/api/tools` | List all registered tools |
-| `POST` | `/api/tools` | Register a new tool |
-| `PUT` | `/api/tools/{id}` | Update tool parameters or metadata |
+| `GET` | `/api/tools` | List registered tools |
+| `POST` | `/api/tools` | Register a tool |
+| `PUT` | `/api/tools/{id}` | Update a tool |
 | `DELETE` | `/api/tools/{id}` | Remove a tool |
-| `POST` | `/api/tools/{id}/validate` | Perform health check on a tool endpoint |
-| `POST` | `/api/tools/batch` | Batch register multiple tools |
-| `POST` | `/api/tools/call` | Directly execute a tool (internal testing) |
-| `POST` | `/api/import` | Import tool recipes or OpenAPI specs |
-| `GET` | `/api/export` | Export entire tool configuration as a recipe |
-| `GET` | `/api/guide` | Access integration guidelines (`invok_guide` tool schema) |
-| `POST` | `/mcp` | Standard JSON-RPC Endpoint (Streamable HTTP) |
-| `GET` | `/mcp/tools/list` | Legacy bridge tools listing |
-| `POST` | `/mcp/tools/call` | Legacy bridge tools execution |
+| `POST` | `/api/tools/{id}/validate` | Health check a tool endpoint |
+| `POST` | `/api/tools/batch` | Batch register tools |
+| `POST` | `/api/tools/call` | Execute a tool directly (for testing) |
+| `POST` | `/api/import` | Import recipes or OpenAPI specs |
+| `GET` | `/api/export` | Export full configuration as a recipe |
+| `GET` | `/api/guide` | Integration guidelines for agent self-integration |
+| `POST` | `/mcp` | Standard JSON-RPC endpoint (Streamable HTTP) |
+| `GET` | `/mcp/tools/list` | List tools (stdio bridge) |
+| `POST` | `/mcp/tools/call` | Execute a tool (stdio bridge) |
 
 ---
 
@@ -415,23 +314,51 @@ Invok ships with pre-configured templates under [`docs/casos-de-uso/`](docs/caso
 | Variable | Default | Description |
 |----------|---------|-------------|
 | `PORT` | `8080` | Server port |
-| `JASYPT_ENCRYPTOR_PASSWORD` | `invok-oss-default-key` | Secret key used for Jasypt symmetric encryption of stored credentials |
-| `invok.health-check.enabled` | `false` | Enable periodic background health checking of registered endpoints |
+| `JASYPT_ENCRYPTOR_PASSWORD` | `invok-oss-default-key` | Encryption key for stored credentials |
+| `invok.health-check.enabled` | `false` | Enable periodic background health checks |
 
 ---
 
 ## Tech Stack
 
-- **Java 21 LTS** with Virtual Threads support enabled
-- **Spring Boot 3.5.4** framework
-- **SQLite Database** managed via Hibernate Community Dialects
-- **Jasypt** for symmetric encryption of credentials at rest
-- **Angular 19** clean administration Dashboard with English and Spanish locale support
-- **GraalVM Native Image** compatibility for native sub-second execution
-- **Docker** support out of the box
+- **Java 21** with Virtual Threads
+- **Spring Boot 3.5.4**
+- **SQLite** via Hibernate Community Dialects
+- **Jasypt** for symmetric credential encryption
+- **Angular 19** dashboard (English and Spanish)
+- **GraalVM Native Image** compatible
+- **Docker** support included
+
+---
+
+### Invok OSS vs Invok Cloud
+
+| Feature | OSS | Cloud |
+| :--- | :---: | :---: |
+| REST API → MCP tools | ✅ | ✅ |
+| OpenAPI/Swagger parser | ✅ | ✅ |
+| Admin dashboard | ✅ | ✅ |
+| Credential isolation (Jasypt) | ✅ | ✅ |
+| Prompt injection protection | ✅ | ✅ |
+| JSON Recipes (import/export) | ✅ | ✅ |
+| `invok_guide` tool | ✅ | ✅ |
+| Session tokens / authentication | ❌ | ✅ |
+| TOON response compression | ❌ | ✅ |
+| Execution analytics & traceability | ❌ | ✅ |
+| Multi-tenancy | ❌ | ✅ |
+| Hosted infrastructure | ❌ | ✅ |
+
+The OSS version is fully functional for self-hosted setups. The admin API has no session-based authentication, so it should run in a trusted environment (local machine or private network).
+
+
+## Invok Cloud
+
+Need analytics, full request/response traceability, team collaboration, and hosted infrastructure?
+
+**[Invok Cloud →](https://useinvok.run)** is the production-ready hosted version with everything included.
 
 ---
 
 ## License
 
-This project is licensed under the **GNU Affero General Public License v3 (AGPL-3.0)**.
+GNU Affero General Public License v3 (AGPL-3.0)
