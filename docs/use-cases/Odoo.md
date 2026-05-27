@@ -502,6 +502,25 @@
         ]
       },
       {
+        "name": "Base - List Models",
+        "code": "odoo-ir-model-list",
+        "description": "Lists the technical models registered in Odoo (needed to find model IDs for activities, etc.).",
+        "endpointPath": "/json/2/ir.model/search_read",
+        "httpMethod": "POST",
+        "enabled": true,
+        "isExportable": true,
+        "bodyPayloadTemplate": "{\"domain\": [[\"model\", \"=\", \"{{model_name}}\"]], \"fields\": [\"id\", \"model\", \"name\"], \"limit\": 1}",
+        "parameters": [
+          {
+            "name": "model_name",
+            "type": "STRING",
+            "description": "Technical name of the model (e.g., 'crm.lead', 'project.task').",
+            "required": true,
+            "defaultValue": ""
+          }
+        ]
+      },
+      {
         "name": "Mail - Create activity",
         "code": "odoo-mail-activity-create",
         "description": "Creates a follow-up activity linked to a specific Odoo model and record.",
@@ -509,12 +528,12 @@
         "httpMethod": "POST",
         "enabled": true,
         "isExportable": true,
-        "bodyPayloadTemplate": "{\"vals_list\": [{\"res_model\": \"{{res_model}}\", \"res_id\": {{res_id}}, \"activity_type_id\": {{activity_type_id}}, \"summary\": \"{{summary}}\", \"date_deadline\": \"{{date_deadline}}\"}]}",
+        "bodyPayloadTemplate": "{\"vals_list\": [{\"res_model_id\": {{res_model_id}}, \"res_id\": {{res_id}}, \"activity_type_id\": {{activity_type_id}}, \"summary\": \"{{summary}}\", \"date_deadline\": \"{{date_deadline}}\"}]}",
         "parameters": [
           {
-            "name": "res_model",
-            "type": "STRING",
-            "description": "Technical name of the target model (e.g., 'crm.lead', 'project.task').",
+            "name": "res_model_id",
+            "type": "NUMBER",
+            "description": "Database ID of the target model (retrieve it using odoo-ir-model-list).",
             "required": true,
             "defaultValue": ""
           },
@@ -913,6 +932,1957 @@
             "description": "New journal ID.",
             "required": false,
             "defaultValue": ""
+          }
+        ]
+      },
+      {
+        "name": "Inventory - List Stock Levels",
+        "code": "odoo-inventory-stock-list",
+        "description": "Lists the current stock levels of products across different locations.",
+        "endpointPath": "/json/2/stock.quant/search_read",
+        "httpMethod": "POST",
+        "enabled": true,
+        "isExportable": true,
+        "bodyPayloadTemplate": "{\"domain\": [[\"quantity\", \">\", 0]], \"fields\": [\"product_id\", \"location_id\", \"quantity\", \"reserved_quantity\"], \"limit\": {{limit}}}",
+        "parameters": [
+          {
+            "name": "limit",
+            "type": "NUMBER",
+            "description": "Maximum number of stock records to return.",
+            "required": false,
+            "defaultValue": "10"
+          }
+        ]
+      },
+      {
+        "name": "Inventory - List Transfers",
+        "code": "odoo-inventory-transfer-list",
+        "description": "Lists inventory transfers (delivery orders, incoming receipts, internal transfers) and their states.",
+        "endpointPath": "/json/2/stock.picking/search_read",
+        "httpMethod": "POST",
+        "enabled": true,
+        "isExportable": true,
+        "bodyPayloadTemplate": "{\"domain\": [], \"fields\": [\"name\", \"partner_id\", \"picking_type_id\", \"state\", \"origin\"], \"limit\": {{limit}}}",
+        "parameters": [
+          {
+            "name": "limit",
+            "type": "NUMBER",
+            "description": "Maximum number of transfers to return.",
+            "required": false,
+            "defaultValue": "10"
+          }
+        ]
+      },
+      {
+        "name": "Stock - List Justificador de AVCO de inventario",
+        "code": "odoo-stock-avco-report-list",
+        "description": "Lists records of 'stock.avco.report' (Justificador de AVCO de inventario) with filters and limits.",
+        "endpointPath": "/json/2/stock.avco.report/search_read",
+        "httpMethod": "POST",
+        "enabled": true,
+        "isExportable": true,
+        "bodyPayloadTemplate": "{\"domain\": [], \"fields\": [\"company_id\", \"value\", \"reference\", \"quantity\", \"res_model_name\", \"user_id\", \"date\", \"product_id\", \"id\", \"description\", \"display_name\"], \"limit\": {{limit}}}",
+        "parameters": [
+          {
+            "name": "limit",
+            "type": "NUMBER",
+            "description": "Maximum number of records to return.",
+            "required": false,
+            "defaultValue": "10"
+          }
+        ]
+      },
+      {
+        "name": "Stock - List Confirmación de orden parcial",
+        "code": "odoo-stock-backorder-confirmation-list",
+        "description": "Lists records of 'stock.backorder.confirmation' (Confirmación de orden parcial) with filters and limits.",
+        "endpointPath": "/json/2/stock.backorder.confirmation/search_read",
+        "httpMethod": "POST",
+        "enabled": true,
+        "isExportable": true,
+        "bodyPayloadTemplate": "{\"domain\": [], \"fields\": [\"display_name\", \"create_date\", \"id\"], \"limit\": {{limit}}}",
+        "parameters": [
+          {
+            "name": "limit",
+            "type": "NUMBER",
+            "description": "Maximum number of records to return.",
+            "required": false,
+            "defaultValue": "10"
+          }
+        ]
+      },
+      {
+        "name": "Stock - List Línea de confirmación de órdenes parciales",
+        "code": "odoo-stock-backorder-confirmation-line-list",
+        "description": "Lists records of 'stock.backorder.confirmation.line' (Línea de confirmación de órdenes parciales) with filters and limits.",
+        "endpointPath": "/json/2/stock.backorder.confirmation.line/search_read",
+        "httpMethod": "POST",
+        "enabled": true,
+        "isExportable": true,
+        "bodyPayloadTemplate": "{\"domain\": [], \"fields\": [\"display_name\", \"create_date\", \"id\"], \"limit\": {{limit}}}",
+        "parameters": [
+          {
+            "name": "limit",
+            "type": "NUMBER",
+            "description": "Maximum number of records to return.",
+            "required": false,
+            "defaultValue": "10"
+          }
+        ]
+      },
+      {
+        "name": "Stock - List Referencia/motivo del ajuste de inventario",
+        "code": "odoo-stock-inventory-adjustment-name-list",
+        "description": "Lists records of 'stock.inventory.adjustment.name' (Referencia/motivo del ajuste de inventario) with filters and limits.",
+        "endpointPath": "/json/2/stock.inventory.adjustment.name/search_read",
+        "httpMethod": "POST",
+        "enabled": true,
+        "isExportable": true,
+        "bodyPayloadTemplate": "{\"domain\": [], \"fields\": [\"display_name\", \"create_date\", \"id\"], \"limit\": {{limit}}}",
+        "parameters": [
+          {
+            "name": "limit",
+            "type": "NUMBER",
+            "description": "Maximum number of records to return.",
+            "required": false,
+            "defaultValue": "10"
+          }
+        ]
+      },
+      {
+        "name": "Stock - List Conflicto en el inventario",
+        "code": "odoo-stock-inventory-conflict-list",
+        "description": "Lists records of 'stock.inventory.conflict' (Conflicto en el inventario) with filters and limits.",
+        "endpointPath": "/json/2/stock.inventory.conflict/search_read",
+        "httpMethod": "POST",
+        "enabled": true,
+        "isExportable": true,
+        "bodyPayloadTemplate": "{\"domain\": [], \"fields\": [\"display_name\", \"create_date\", \"id\"], \"limit\": {{limit}}}",
+        "parameters": [
+          {
+            "name": "limit",
+            "type": "NUMBER",
+            "description": "Maximum number of records to return.",
+            "required": false,
+            "defaultValue": "10"
+          }
+        ]
+      },
+      {
+        "name": "Stock - List Advertencia del ajuste de inventario",
+        "code": "odoo-stock-inventory-warning-list",
+        "description": "Lists records of 'stock.inventory.warning' (Advertencia del ajuste de inventario) with filters and limits.",
+        "endpointPath": "/json/2/stock.inventory.warning/search_read",
+        "httpMethod": "POST",
+        "enabled": true,
+        "isExportable": true,
+        "bodyPayloadTemplate": "{\"domain\": [], \"fields\": [\"display_name\", \"create_date\", \"id\"], \"limit\": {{limit}}}",
+        "parameters": [
+          {
+            "name": "limit",
+            "type": "NUMBER",
+            "description": "Maximum number of records to return.",
+            "required": false,
+            "defaultValue": "10"
+          }
+        ]
+      },
+      {
+        "name": "Stock - List Ubicaciones de inventario",
+        "code": "odoo-stock-location-list",
+        "description": "Lists records of 'stock.location' (Ubicaciones de inventario) with filters and limits.",
+        "endpointPath": "/json/2/stock.location/search_read",
+        "httpMethod": "POST",
+        "enabled": true,
+        "isExportable": true,
+        "bodyPayloadTemplate": "{\"domain\": [], \"fields\": [\"location_id\", \"name\", \"warehouse_id\", \"id\", \"display_name\", \"usage\", \"create_date\"], \"limit\": {{limit}}}",
+        "parameters": [
+          {
+            "name": "limit",
+            "type": "NUMBER",
+            "description": "Maximum number of records to return.",
+            "required": false,
+            "defaultValue": "10"
+          }
+        ]
+      },
+      {
+        "name": "Stock - Create Ubicaciones de inventario",
+        "code": "odoo-stock-location-create",
+        "description": "Creates a new record of 'stock.location' (Ubicaciones de inventario).",
+        "endpointPath": "/json/2/stock.location/create",
+        "httpMethod": "POST",
+        "enabled": true,
+        "isExportable": true,
+        "bodyPayloadTemplate": "{\"vals_list\": [{\"name\": \"{{name}}\", \"usage\": \"{{usage}}\", \"location_id\": {{location_id}}}]}",
+        "parameters": [
+          {
+            "name": "name",
+            "type": "STRING",
+            "description": "Nombre de la ubicación",
+            "required": true,
+            "defaultValue": ""
+          },
+          {
+            "name": "usage",
+            "type": "STRING",
+            "description": "Tipo de ubicación",
+            "required": true,
+            "defaultValue": ""
+          },
+          {
+            "name": "location_id",
+            "type": "NUMBER",
+            "description": "Ubicación principal",
+            "required": false,
+            "defaultValue": ""
+          }
+        ]
+      },
+      {
+        "name": "Stock - Update Ubicaciones de inventario",
+        "code": "odoo-stock-location-update",
+        "description": "Updates fields of an existing record of 'stock.location' (Ubicaciones de inventario) by ID.",
+        "endpointPath": "/json/2/stock.location/write",
+        "httpMethod": "POST",
+        "enabled": true,
+        "isExportable": true,
+        "bodyPayloadTemplate": "{\"ids\": [{{id}}], \"vals\": {\"name\": \"{{name}}\", \"usage\": \"{{usage}}\", \"location_id\": {{location_id}}}}",
+        "parameters": [
+          {
+            "name": "id",
+            "type": "NUMBER",
+            "description": "ID of the record to update.",
+            "required": true,
+            "defaultValue": ""
+          },
+          {
+            "name": "name",
+            "type": "STRING",
+            "description": "Nombre de la ubicación (leave empty to not modify)",
+            "required": false,
+            "defaultValue": ""
+          },
+          {
+            "name": "usage",
+            "type": "STRING",
+            "description": "Tipo de ubicación (leave empty to not modify)",
+            "required": false,
+            "defaultValue": ""
+          },
+          {
+            "name": "location_id",
+            "type": "NUMBER",
+            "description": "Ubicación principal (leave empty to not modify)",
+            "required": false,
+            "defaultValue": ""
+          }
+        ]
+      },
+      {
+        "name": "Stock - Delete Ubicaciones de inventario",
+        "code": "odoo-stock-location-delete",
+        "description": "Deletes an existing record of 'stock.location' (Ubicaciones de inventario) by ID.",
+        "endpointPath": "/json/2/stock.location/unlink",
+        "httpMethod": "POST",
+        "enabled": true,
+        "isExportable": true,
+        "bodyPayloadTemplate": "{\"ids\": [{{id}}]}",
+        "parameters": [
+          {
+            "name": "id",
+            "type": "NUMBER",
+            "description": "ID of the record to delete.",
+            "required": true,
+            "defaultValue": ""
+          }
+        ]
+      },
+      {
+        "name": "Stock - List Número de serie/lote",
+        "code": "odoo-stock-lot-list",
+        "description": "Lists records of 'stock.lot' (Número de serie/lote) with filters and limits.",
+        "endpointPath": "/json/2/stock.lot/search_read",
+        "httpMethod": "POST",
+        "enabled": true,
+        "isExportable": true,
+        "bodyPayloadTemplate": "{\"domain\": [], \"fields\": [\"location_id\", \"name\", \"product_id\", \"id\", \"display_name\", \"create_date\"], \"limit\": {{limit}}}",
+        "parameters": [
+          {
+            "name": "limit",
+            "type": "NUMBER",
+            "description": "Maximum number of records to return.",
+            "required": false,
+            "defaultValue": "10"
+          }
+        ]
+      },
+      {
+        "name": "Stock - Create Número de serie/lote",
+        "code": "odoo-stock-lot-create",
+        "description": "Creates a new record of 'stock.lot' (Número de serie/lote).",
+        "endpointPath": "/json/2/stock.lot/create",
+        "httpMethod": "POST",
+        "enabled": true,
+        "isExportable": true,
+        "bodyPayloadTemplate": "{\"vals_list\": [{\"name\": \"{{name}}\", \"product_id\": {{product_id}}, \"location_id\": {{location_id}}}]}",
+        "parameters": [
+          {
+            "name": "name",
+            "type": "STRING",
+            "description": "Número de serie/lote",
+            "required": true,
+            "defaultValue": ""
+          },
+          {
+            "name": "product_id",
+            "type": "NUMBER",
+            "description": "Producto",
+            "required": true,
+            "defaultValue": ""
+          },
+          {
+            "name": "location_id",
+            "type": "NUMBER",
+            "description": "Ubicación",
+            "required": false,
+            "defaultValue": ""
+          }
+        ]
+      },
+      {
+        "name": "Stock - Update Número de serie/lote",
+        "code": "odoo-stock-lot-update",
+        "description": "Updates fields of an existing record of 'stock.lot' (Número de serie/lote) by ID.",
+        "endpointPath": "/json/2/stock.lot/write",
+        "httpMethod": "POST",
+        "enabled": true,
+        "isExportable": true,
+        "bodyPayloadTemplate": "{\"ids\": [{{id}}], \"vals\": {\"name\": \"{{name}}\", \"product_id\": {{product_id}}, \"location_id\": {{location_id}}}}",
+        "parameters": [
+          {
+            "name": "id",
+            "type": "NUMBER",
+            "description": "ID of the record to update.",
+            "required": true,
+            "defaultValue": ""
+          },
+          {
+            "name": "name",
+            "type": "STRING",
+            "description": "Número de serie/lote (leave empty to not modify)",
+            "required": false,
+            "defaultValue": ""
+          },
+          {
+            "name": "product_id",
+            "type": "NUMBER",
+            "description": "Producto (leave empty to not modify)",
+            "required": false,
+            "defaultValue": ""
+          },
+          {
+            "name": "location_id",
+            "type": "NUMBER",
+            "description": "Ubicación (leave empty to not modify)",
+            "required": false,
+            "defaultValue": ""
+          }
+        ]
+      },
+      {
+        "name": "Stock - Delete Número de serie/lote",
+        "code": "odoo-stock-lot-delete",
+        "description": "Deletes an existing record of 'stock.lot' (Número de serie/lote) by ID.",
+        "endpointPath": "/json/2/stock.lot/unlink",
+        "httpMethod": "POST",
+        "enabled": true,
+        "isExportable": true,
+        "bodyPayloadTemplate": "{\"ids\": [{{id}}]}",
+        "parameters": [
+          {
+            "name": "id",
+            "type": "NUMBER",
+            "description": "ID of the record to delete.",
+            "required": true,
+            "defaultValue": ""
+          }
+        ]
+      },
+      {
+        "name": "Stock - List Movimiento de stock",
+        "code": "odoo-stock-move-list",
+        "description": "Lists records of 'stock.move' (Movimiento de stock) with filters and limits.",
+        "endpointPath": "/json/2/stock.move/search_read",
+        "httpMethod": "POST",
+        "enabled": true,
+        "isExportable": true,
+        "bodyPayloadTemplate": "{\"domain\": [], \"fields\": [\"company_id\", \"product_uom_qty\", \"state\", \"location_id\", \"quantity\", \"product_uom\", \"date\", \"procure_method\", \"product_id\", \"warehouse_id\", \"id\", \"location_dest_id\", \"display_name\", \"create_date\"], \"limit\": {{limit}}}",
+        "parameters": [
+          {
+            "name": "limit",
+            "type": "NUMBER",
+            "description": "Maximum number of records to return.",
+            "required": false,
+            "defaultValue": "10"
+          }
+        ]
+      },
+      {
+        "name": "Stock - Create Movimiento de stock",
+        "code": "odoo-stock-move-create",
+        "description": "Creates a new record of 'stock.move' (Movimiento de stock).",
+        "endpointPath": "/json/2/stock.move/create",
+        "httpMethod": "POST",
+        "enabled": true,
+        "isExportable": true,
+        "bodyPayloadTemplate": "{\"vals_list\": [{\"company_id\": {{company_id}}, \"date\": \"{{date}}\", \"location_dest_id\": {{location_dest_id}}, \"location_id\": {{location_id}}, \"procure_method\": \"{{procure_method}}\", \"product_id\": {{product_id}}, \"product_uom\": {{product_uom}}, \"product_uom_qty\": {{product_uom_qty}}}]}",
+        "parameters": [
+          {
+            "name": "company_id",
+            "type": "NUMBER",
+            "description": "Empresa",
+            "required": true,
+            "defaultValue": ""
+          },
+          {
+            "name": "date",
+            "type": "STRING",
+            "description": "Fecha programada",
+            "required": true,
+            "defaultValue": ""
+          },
+          {
+            "name": "location_dest_id",
+            "type": "NUMBER",
+            "description": "Ubicación intermedia",
+            "required": true,
+            "defaultValue": ""
+          },
+          {
+            "name": "location_id",
+            "type": "NUMBER",
+            "description": "Ubicación de origen",
+            "required": true,
+            "defaultValue": ""
+          },
+          {
+            "name": "procure_method",
+            "type": "STRING",
+            "description": "Método de suministro",
+            "required": true,
+            "defaultValue": ""
+          },
+          {
+            "name": "product_id",
+            "type": "NUMBER",
+            "description": "Producto",
+            "required": true,
+            "defaultValue": ""
+          },
+          {
+            "name": "product_uom",
+            "type": "NUMBER",
+            "description": "Unidad",
+            "required": true,
+            "defaultValue": ""
+          },
+          {
+            "name": "product_uom_qty",
+            "type": "NUMBER",
+            "description": "Demanda",
+            "required": true,
+            "defaultValue": ""
+          }
+        ]
+      },
+      {
+        "name": "Stock - Update Movimiento de stock",
+        "code": "odoo-stock-move-update",
+        "description": "Updates fields of an existing record of 'stock.move' (Movimiento de stock) by ID.",
+        "endpointPath": "/json/2/stock.move/write",
+        "httpMethod": "POST",
+        "enabled": true,
+        "isExportable": true,
+        "bodyPayloadTemplate": "{\"ids\": [{{id}}], \"vals\": {\"company_id\": {{company_id}}, \"date\": \"{{date}}\", \"location_dest_id\": {{location_dest_id}}, \"location_id\": {{location_id}}, \"procure_method\": \"{{procure_method}}\", \"product_id\": {{product_id}}, \"product_uom\": {{product_uom}}, \"product_uom_qty\": {{product_uom_qty}}}}",
+        "parameters": [
+          {
+            "name": "id",
+            "type": "NUMBER",
+            "description": "ID of the record to update.",
+            "required": true,
+            "defaultValue": ""
+          },
+          {
+            "name": "company_id",
+            "type": "NUMBER",
+            "description": "Empresa (leave empty to not modify)",
+            "required": false,
+            "defaultValue": ""
+          },
+          {
+            "name": "date",
+            "type": "STRING",
+            "description": "Fecha programada (leave empty to not modify)",
+            "required": false,
+            "defaultValue": ""
+          },
+          {
+            "name": "location_dest_id",
+            "type": "NUMBER",
+            "description": "Ubicación intermedia (leave empty to not modify)",
+            "required": false,
+            "defaultValue": ""
+          },
+          {
+            "name": "location_id",
+            "type": "NUMBER",
+            "description": "Ubicación de origen (leave empty to not modify)",
+            "required": false,
+            "defaultValue": ""
+          },
+          {
+            "name": "procure_method",
+            "type": "STRING",
+            "description": "Método de suministro (leave empty to not modify)",
+            "required": false,
+            "defaultValue": ""
+          },
+          {
+            "name": "product_id",
+            "type": "NUMBER",
+            "description": "Producto (leave empty to not modify)",
+            "required": false,
+            "defaultValue": ""
+          },
+          {
+            "name": "product_uom",
+            "type": "NUMBER",
+            "description": "Unidad (leave empty to not modify)",
+            "required": false,
+            "defaultValue": ""
+          },
+          {
+            "name": "product_uom_qty",
+            "type": "NUMBER",
+            "description": "Demanda (leave empty to not modify)",
+            "required": false,
+            "defaultValue": ""
+          }
+        ]
+      },
+      {
+        "name": "Stock - Delete Movimiento de stock",
+        "code": "odoo-stock-move-delete",
+        "description": "Deletes an existing record of 'stock.move' (Movimiento de stock) by ID.",
+        "endpointPath": "/json/2/stock.move/unlink",
+        "httpMethod": "POST",
+        "enabled": true,
+        "isExportable": true,
+        "bodyPayloadTemplate": "{\"ids\": [{{id}}]}",
+        "parameters": [
+          {
+            "name": "id",
+            "type": "NUMBER",
+            "description": "ID of the record to delete.",
+            "required": true,
+            "defaultValue": ""
+          }
+        ]
+      },
+      {
+        "name": "Stock - List Movimientos de producto (línea de movimiento de stock)",
+        "code": "odoo-stock-move-line-list",
+        "description": "Lists records of 'stock.move.line' (Movimientos de producto (línea de movimiento de stock)) with filters and limits.",
+        "endpointPath": "/json/2/stock.move.line/search_read",
+        "httpMethod": "POST",
+        "enabled": true,
+        "isExportable": true,
+        "bodyPayloadTemplate": "{\"domain\": [], \"fields\": [\"company_id\", \"state\", \"location_id\", \"product_uom_id\", \"quantity\", \"date\", \"lot_id\", \"product_id\", \"id\", \"location_dest_id\", \"display_name\", \"create_date\"], \"limit\": {{limit}}}",
+        "parameters": [
+          {
+            "name": "limit",
+            "type": "NUMBER",
+            "description": "Maximum number of records to return.",
+            "required": false,
+            "defaultValue": "10"
+          }
+        ]
+      },
+      {
+        "name": "Stock - Create Movimientos de producto (línea de movimiento de stock)",
+        "code": "odoo-stock-move-line-create",
+        "description": "Creates a new record of 'stock.move.line' (Movimientos de producto (línea de movimiento de stock)).",
+        "endpointPath": "/json/2/stock.move.line/create",
+        "httpMethod": "POST",
+        "enabled": true,
+        "isExportable": true,
+        "bodyPayloadTemplate": "{\"vals_list\": [{\"company_id\": {{company_id}}, \"date\": \"{{date}}\", \"location_dest_id\": {{location_dest_id}}, \"location_id\": {{location_id}}, \"product_uom_id\": {{product_uom_id}}}]}",
+        "parameters": [
+          {
+            "name": "company_id",
+            "type": "NUMBER",
+            "description": "Empresa",
+            "required": true,
+            "defaultValue": ""
+          },
+          {
+            "name": "date",
+            "type": "STRING",
+            "description": "Fecha",
+            "required": true,
+            "defaultValue": ""
+          },
+          {
+            "name": "location_dest_id",
+            "type": "NUMBER",
+            "description": "A",
+            "required": true,
+            "defaultValue": ""
+          },
+          {
+            "name": "location_id",
+            "type": "NUMBER",
+            "description": "Desde",
+            "required": true,
+            "defaultValue": ""
+          },
+          {
+            "name": "product_uom_id",
+            "type": "NUMBER",
+            "description": "Unidad",
+            "required": true,
+            "defaultValue": ""
+          }
+        ]
+      },
+      {
+        "name": "Stock - Update Movimientos de producto (línea de movimiento de stock)",
+        "code": "odoo-stock-move-line-update",
+        "description": "Updates fields of an existing record of 'stock.move.line' (Movimientos de producto (línea de movimiento de stock)) by ID.",
+        "endpointPath": "/json/2/stock.move.line/write",
+        "httpMethod": "POST",
+        "enabled": true,
+        "isExportable": true,
+        "bodyPayloadTemplate": "{\"ids\": [{{id}}], \"vals\": {\"company_id\": {{company_id}}, \"date\": \"{{date}}\", \"location_dest_id\": {{location_dest_id}}, \"location_id\": {{location_id}}, \"product_uom_id\": {{product_uom_id}}}}",
+        "parameters": [
+          {
+            "name": "id",
+            "type": "NUMBER",
+            "description": "ID of the record to update.",
+            "required": true,
+            "defaultValue": ""
+          },
+          {
+            "name": "company_id",
+            "type": "NUMBER",
+            "description": "Empresa (leave empty to not modify)",
+            "required": false,
+            "defaultValue": ""
+          },
+          {
+            "name": "date",
+            "type": "STRING",
+            "description": "Fecha (leave empty to not modify)",
+            "required": false,
+            "defaultValue": ""
+          },
+          {
+            "name": "location_dest_id",
+            "type": "NUMBER",
+            "description": "A (leave empty to not modify)",
+            "required": false,
+            "defaultValue": ""
+          },
+          {
+            "name": "location_id",
+            "type": "NUMBER",
+            "description": "Desde (leave empty to not modify)",
+            "required": false,
+            "defaultValue": ""
+          },
+          {
+            "name": "product_uom_id",
+            "type": "NUMBER",
+            "description": "Unidad (leave empty to not modify)",
+            "required": false,
+            "defaultValue": ""
+          }
+        ]
+      },
+      {
+        "name": "Stock - Delete Movimientos de producto (línea de movimiento de stock)",
+        "code": "odoo-stock-move-line-delete",
+        "description": "Deletes an existing record of 'stock.move.line' (Movimientos de producto (línea de movimiento de stock)) by ID.",
+        "endpointPath": "/json/2/stock.move.line/unlink",
+        "httpMethod": "POST",
+        "enabled": true,
+        "isExportable": true,
+        "bodyPayloadTemplate": "{\"ids\": [{{id}}]}",
+        "parameters": [
+          {
+            "name": "id",
+            "type": "NUMBER",
+            "description": "ID of the record to delete.",
+            "required": true,
+            "defaultValue": ""
+          }
+        ]
+      },
+      {
+        "name": "Stock - List Posponer punto de orden",
+        "code": "odoo-stock-orderpoint-snooze-list",
+        "description": "Lists records of 'stock.orderpoint.snooze' (Posponer punto de orden) with filters and limits.",
+        "endpointPath": "/json/2/stock.orderpoint.snooze/search_read",
+        "httpMethod": "POST",
+        "enabled": true,
+        "isExportable": true,
+        "bodyPayloadTemplate": "{\"domain\": [], \"fields\": [\"display_name\", \"create_date\", \"id\"], \"limit\": {{limit}}}",
+        "parameters": [
+          {
+            "name": "limit",
+            "type": "NUMBER",
+            "description": "Maximum number of records to return.",
+            "required": false,
+            "defaultValue": "10"
+          }
+        ]
+      },
+      {
+        "name": "Stock - List Paquete",
+        "code": "odoo-stock-package-list",
+        "description": "Lists records of 'stock.package' (Paquete) with filters and limits.",
+        "endpointPath": "/json/2/stock.package/search_read",
+        "httpMethod": "POST",
+        "enabled": true,
+        "isExportable": true,
+        "bodyPayloadTemplate": "{\"domain\": [], \"fields\": [\"location_id\", \"name\", \"id\", \"display_name\", \"create_date\"], \"limit\": {{limit}}}",
+        "parameters": [
+          {
+            "name": "limit",
+            "type": "NUMBER",
+            "description": "Maximum number of records to return.",
+            "required": false,
+            "defaultValue": "10"
+          }
+        ]
+      },
+      {
+        "name": "Stock - Create Paquete",
+        "code": "odoo-stock-package-create",
+        "description": "Creates a new record of 'stock.package' (Paquete).",
+        "endpointPath": "/json/2/stock.package/create",
+        "httpMethod": "POST",
+        "enabled": true,
+        "isExportable": true,
+        "bodyPayloadTemplate": "{\"vals_list\": [{\"name\": \"{{name}}\", \"location_id\": {{location_id}}}]}",
+        "parameters": [
+          {
+            "name": "name",
+            "type": "STRING",
+            "description": "Referencia del paquete",
+            "required": true,
+            "defaultValue": ""
+          },
+          {
+            "name": "location_id",
+            "type": "NUMBER",
+            "description": "Ubicación",
+            "required": false,
+            "defaultValue": ""
+          }
+        ]
+      },
+      {
+        "name": "Stock - Update Paquete",
+        "code": "odoo-stock-package-update",
+        "description": "Updates fields of an existing record of 'stock.package' (Paquete) by ID.",
+        "endpointPath": "/json/2/stock.package/write",
+        "httpMethod": "POST",
+        "enabled": true,
+        "isExportable": true,
+        "bodyPayloadTemplate": "{\"ids\": [{{id}}], \"vals\": {\"name\": \"{{name}}\", \"location_id\": {{location_id}}}}",
+        "parameters": [
+          {
+            "name": "id",
+            "type": "NUMBER",
+            "description": "ID of the record to update.",
+            "required": true,
+            "defaultValue": ""
+          },
+          {
+            "name": "name",
+            "type": "STRING",
+            "description": "Referencia del paquete (leave empty to not modify)",
+            "required": false,
+            "defaultValue": ""
+          },
+          {
+            "name": "location_id",
+            "type": "NUMBER",
+            "description": "Ubicación (leave empty to not modify)",
+            "required": false,
+            "defaultValue": ""
+          }
+        ]
+      },
+      {
+        "name": "Stock - Delete Paquete",
+        "code": "odoo-stock-package-delete",
+        "description": "Deletes an existing record of 'stock.package' (Paquete) by ID.",
+        "endpointPath": "/json/2/stock.package/unlink",
+        "httpMethod": "POST",
+        "enabled": true,
+        "isExportable": true,
+        "bodyPayloadTemplate": "{\"ids\": [{{id}}]}",
+        "parameters": [
+          {
+            "name": "id",
+            "type": "NUMBER",
+            "description": "ID of the record to delete.",
+            "required": true,
+            "defaultValue": ""
+          }
+        ]
+      },
+      {
+        "name": "Stock - List Destino del paquete de existencias",
+        "code": "odoo-stock-package-destination-list",
+        "description": "Lists records of 'stock.package.destination' (Destino del paquete de existencias) with filters and limits.",
+        "endpointPath": "/json/2/stock.package.destination/search_read",
+        "httpMethod": "POST",
+        "enabled": true,
+        "isExportable": true,
+        "bodyPayloadTemplate": "{\"domain\": [], \"fields\": [\"move_line_ids\", \"id\", \"location_dest_id\", \"display_name\", \"create_date\"], \"limit\": {{limit}}}",
+        "parameters": [
+          {
+            "name": "limit",
+            "type": "NUMBER",
+            "description": "Maximum number of records to return.",
+            "required": false,
+            "defaultValue": "10"
+          }
+        ]
+      },
+      {
+        "name": "Stock - List Historial del paquete en stock",
+        "code": "odoo-stock-package-history-list",
+        "description": "Lists records of 'stock.package.history' (Historial del paquete en stock) with filters and limits.",
+        "endpointPath": "/json/2/stock.package.history/search_read",
+        "httpMethod": "POST",
+        "enabled": true,
+        "isExportable": true,
+        "bodyPayloadTemplate": "{\"domain\": [], \"fields\": [\"company_id\", \"location_id\", \"package_id\", \"move_line_ids\", \"id\", \"display_name\", \"package_name\", \"create_date\"], \"limit\": {{limit}}}",
+        "parameters": [
+          {
+            "name": "limit",
+            "type": "NUMBER",
+            "description": "Maximum number of records to return.",
+            "required": false,
+            "defaultValue": "10"
+          }
+        ]
+      },
+      {
+        "name": "Stock - List Tipo de paquete de existencias",
+        "code": "odoo-stock-package-type-list",
+        "description": "Lists records of 'stock.package.type' (Tipo de paquete de existencias) with filters and limits.",
+        "endpointPath": "/json/2/stock.package.type/search_read",
+        "httpMethod": "POST",
+        "enabled": true,
+        "isExportable": true,
+        "bodyPayloadTemplate": "{\"domain\": [], \"fields\": [\"package_use\", \"name\", \"id\", \"display_name\", \"create_date\"], \"limit\": {{limit}}}",
+        "parameters": [
+          {
+            "name": "limit",
+            "type": "NUMBER",
+            "description": "Maximum number of records to return.",
+            "required": false,
+            "defaultValue": "10"
+          }
+        ]
+      },
+      {
+        "name": "Stock - List Transferir",
+        "code": "odoo-stock-picking-list",
+        "description": "Lists records of 'stock.picking' (Transferir) with filters and limits.",
+        "endpointPath": "/json/2/stock.picking/search_read",
+        "httpMethod": "POST",
+        "enabled": true,
+        "isExportable": true,
+        "bodyPayloadTemplate": "{\"domain\": [], \"fields\": [\"state\", \"location_id\", \"name\", \"lot_id\", \"picking_type_id\", \"product_id\", \"id\", \"move_type\", \"location_dest_id\", \"display_name\", \"create_date\"], \"limit\": {{limit}}}",
+        "parameters": [
+          {
+            "name": "limit",
+            "type": "NUMBER",
+            "description": "Maximum number of records to return.",
+            "required": false,
+            "defaultValue": "10"
+          }
+        ]
+      },
+      {
+        "name": "Stock - Create Transferir",
+        "code": "odoo-stock-picking-create",
+        "description": "Creates a new record of 'stock.picking' (Transferir).",
+        "endpointPath": "/json/2/stock.picking/create",
+        "httpMethod": "POST",
+        "enabled": true,
+        "isExportable": true,
+        "bodyPayloadTemplate": "{\"vals_list\": [{\"location_dest_id\": {{location_dest_id}}, \"location_id\": {{location_id}}, \"move_type\": \"{{move_type}}\", \"picking_type_id\": {{picking_type_id}}}]}",
+        "parameters": [
+          {
+            "name": "location_dest_id",
+            "type": "NUMBER",
+            "description": "Ubicación de destino",
+            "required": true,
+            "defaultValue": ""
+          },
+          {
+            "name": "location_id",
+            "type": "NUMBER",
+            "description": "Ubicación de origen",
+            "required": true,
+            "defaultValue": ""
+          },
+          {
+            "name": "move_type",
+            "type": "STRING",
+            "description": "Política de envío",
+            "required": true,
+            "defaultValue": ""
+          },
+          {
+            "name": "picking_type_id",
+            "type": "NUMBER",
+            "description": "Tipo de operación",
+            "required": true,
+            "defaultValue": ""
+          }
+        ]
+      },
+      {
+        "name": "Stock - Update Transferir",
+        "code": "odoo-stock-picking-update",
+        "description": "Updates fields of an existing record of 'stock.picking' (Transferir) by ID.",
+        "endpointPath": "/json/2/stock.picking/write",
+        "httpMethod": "POST",
+        "enabled": true,
+        "isExportable": true,
+        "bodyPayloadTemplate": "{\"ids\": [{{id}}], \"vals\": {\"location_dest_id\": {{location_dest_id}}, \"location_id\": {{location_id}}, \"move_type\": \"{{move_type}}\", \"picking_type_id\": {{picking_type_id}}}}",
+        "parameters": [
+          {
+            "name": "id",
+            "type": "NUMBER",
+            "description": "ID of the record to update.",
+            "required": true,
+            "defaultValue": ""
+          },
+          {
+            "name": "location_dest_id",
+            "type": "NUMBER",
+            "description": "Ubicación de destino (leave empty to not modify)",
+            "required": false,
+            "defaultValue": ""
+          },
+          {
+            "name": "location_id",
+            "type": "NUMBER",
+            "description": "Ubicación de origen (leave empty to not modify)",
+            "required": false,
+            "defaultValue": ""
+          },
+          {
+            "name": "move_type",
+            "type": "STRING",
+            "description": "Política de envío (leave empty to not modify)",
+            "required": false,
+            "defaultValue": ""
+          },
+          {
+            "name": "picking_type_id",
+            "type": "NUMBER",
+            "description": "Tipo de operación (leave empty to not modify)",
+            "required": false,
+            "defaultValue": ""
+          }
+        ]
+      },
+      {
+        "name": "Stock - Delete Transferir",
+        "code": "odoo-stock-picking-delete",
+        "description": "Deletes an existing record of 'stock.picking' (Transferir) by ID.",
+        "endpointPath": "/json/2/stock.picking/unlink",
+        "httpMethod": "POST",
+        "enabled": true,
+        "isExportable": true,
+        "bodyPayloadTemplate": "{\"ids\": [{{id}}]}",
+        "parameters": [
+          {
+            "name": "id",
+            "type": "NUMBER",
+            "description": "ID of the record to delete.",
+            "required": true,
+            "defaultValue": ""
+          }
+        ]
+      },
+      {
+        "name": "Stock - List Tipo de recolección",
+        "code": "odoo-stock-picking-type-list",
+        "description": "Lists records of 'stock.picking.type' (Tipo de recolección) with filters and limits.",
+        "endpointPath": "/json/2/stock.picking.type/search_read",
+        "httpMethod": "POST",
+        "enabled": true,
+        "isExportable": true,
+        "bodyPayloadTemplate": "{\"domain\": [], \"fields\": [\"company_id\", \"sequence_code\", \"create_backorder\", \"default_location_dest_id\", \"reservation_method\", \"code\", \"default_location_src_id\", \"name\", \"warehouse_id\", \"id\", \"move_type\", \"display_name\", \"create_date\"], \"limit\": {{limit}}}",
+        "parameters": [
+          {
+            "name": "limit",
+            "type": "NUMBER",
+            "description": "Maximum number of records to return.",
+            "required": false,
+            "defaultValue": "10"
+          }
+        ]
+      },
+      {
+        "name": "Stock - List Asistente para incluir en el paquete",
+        "code": "odoo-stock-put-in-pack-list",
+        "description": "Lists records of 'stock.put.in.pack' (Asistente para incluir en el paquete) with filters and limits.",
+        "endpointPath": "/json/2/stock.put.in.pack/search_read",
+        "httpMethod": "POST",
+        "enabled": true,
+        "isExportable": true,
+        "bodyPayloadTemplate": "{\"domain\": [], \"fields\": [\"display_name\", \"create_date\", \"id\"], \"limit\": {{limit}}}",
+        "parameters": [
+          {
+            "name": "limit",
+            "type": "NUMBER",
+            "description": "Maximum number of records to return.",
+            "required": false,
+            "defaultValue": "10"
+          }
+        ]
+      },
+      {
+        "name": "Stock - List Regla de almacenamiento",
+        "code": "odoo-stock-putaway-rule-list",
+        "description": "Lists records of 'stock.putaway.rule' (Regla de almacenamiento) with filters and limits.",
+        "endpointPath": "/json/2/stock.putaway.rule/search_read",
+        "httpMethod": "POST",
+        "enabled": true,
+        "isExportable": true,
+        "bodyPayloadTemplate": "{\"domain\": [], \"fields\": [\"company_id\", \"location_out_id\", \"product_id\", \"id\", \"location_in_id\", \"display_name\", \"create_date\"], \"limit\": {{limit}}}",
+        "parameters": [
+          {
+            "name": "limit",
+            "type": "NUMBER",
+            "description": "Maximum number of records to return.",
+            "required": false,
+            "defaultValue": "10"
+          }
+        ]
+      },
+      {
+        "name": "Stock - List Reporte de cantidad de existencias",
+        "code": "odoo-stock-quant-list",
+        "description": "Lists records of 'stock.quant' (Reporte de cantidad de existencias) with filters and limits.",
+        "endpointPath": "/json/2/stock.quant/search_read",
+        "httpMethod": "POST",
+        "enabled": true,
+        "isExportable": true,
+        "bodyPayloadTemplate": "{\"domain\": [], \"fields\": [\"display_name\", \"product_id\", \"location_id\", \"quantity\", \"reserved_quantity\", \"id\"], \"limit\": {{limit}}}",
+        "parameters": [
+          {
+            "name": "limit",
+            "type": "NUMBER",
+            "description": "Maximum number of records to return.",
+            "required": false,
+            "defaultValue": "10"
+          }
+        ]
+      },
+      {
+        "name": "Stock - Create Reporte de cantidad de existencias",
+        "code": "odoo-stock-quant-create",
+        "description": "Creates a new record of 'stock.quant' (Reporte de cantidad de existencias).",
+        "endpointPath": "/json/2/stock.quant/create",
+        "httpMethod": "POST",
+        "enabled": true,
+        "isExportable": true,
+        "bodyPayloadTemplate": "{\"vals_list\": [{\"product_id\": {{product_id}}}]}",
+        "parameters": [
+          {
+            "name": "product_id",
+            "type": "NUMBER",
+            "description": "Producto",
+            "required": false,
+            "defaultValue": ""
+          }
+        ]
+      },
+      {
+        "name": "Stock - Update Reporte de cantidad de existencias",
+        "code": "odoo-stock-quant-update",
+        "description": "Updates fields of an existing record of 'stock.quant' (Reporte de cantidad de existencias) by ID.",
+        "endpointPath": "/json/2/stock.quant/write",
+        "httpMethod": "POST",
+        "enabled": true,
+        "isExportable": true,
+        "bodyPayloadTemplate": "{\"ids\": [{{id}}], \"vals\": {\"product_id\": {{product_id}}}}",
+        "parameters": [
+          {
+            "name": "id",
+            "type": "NUMBER",
+            "description": "ID of the record to update.",
+            "required": true,
+            "defaultValue": ""
+          },
+          {
+            "name": "product_id",
+            "type": "NUMBER",
+            "description": "Producto (leave empty to not modify)",
+            "required": false,
+            "defaultValue": ""
+          }
+        ]
+      },
+      {
+        "name": "Stock - Delete Reporte de cantidad de existencias",
+        "code": "odoo-stock-quant-delete",
+        "description": "Deletes an existing record of 'stock.quant' (Reporte de cantidad de existencias) by ID.",
+        "endpointPath": "/json/2/stock.quant/unlink",
+        "httpMethod": "POST",
+        "enabled": true,
+        "isExportable": true,
+        "bodyPayloadTemplate": "{\"ids\": [{{id}}]}",
+        "parameters": [
+          {
+            "name": "id",
+            "type": "NUMBER",
+            "description": "ID of the record to delete.",
+            "required": true,
+            "defaultValue": ""
+          }
+        ]
+      },
+      {
+        "name": "Stock - List Traslado de las cantidades de existencias",
+        "code": "odoo-stock-quant-relocate-list",
+        "description": "Lists records of 'stock.quant.relocate' (Traslado de las cantidades de existencias) with filters and limits.",
+        "endpointPath": "/json/2/stock.quant.relocate/search_read",
+        "httpMethod": "POST",
+        "enabled": true,
+        "isExportable": true,
+        "bodyPayloadTemplate": "{\"domain\": [], \"fields\": [\"display_name\", \"create_date\", \"id\"], \"limit\": {{limit}}}",
+        "parameters": [
+          {
+            "name": "limit",
+            "type": "NUMBER",
+            "description": "Maximum number of records to return.",
+            "required": false,
+            "defaultValue": "10"
+          }
+        ]
+      },
+      {
+        "name": "Stock - List Historial de cantidad de existencias",
+        "code": "odoo-stock-quantity-history-list",
+        "description": "Lists records of 'stock.quantity.history' (Historial de cantidad de existencias) with filters and limits.",
+        "endpointPath": "/json/2/stock.quantity.history/search_read",
+        "httpMethod": "POST",
+        "enabled": true,
+        "isExportable": true,
+        "bodyPayloadTemplate": "{\"domain\": [], \"fields\": [\"display_name\", \"create_date\", \"id\"], \"limit\": {{limit}}}",
+        "parameters": [
+          {
+            "name": "limit",
+            "type": "NUMBER",
+            "description": "Maximum number of records to return.",
+            "required": false,
+            "defaultValue": "10"
+          }
+        ]
+      },
+      {
+        "name": "Stock - List Referencia entre documentos de inventario",
+        "code": "odoo-stock-reference-list",
+        "description": "Lists records of 'stock.reference' (Referencia entre documentos de inventario) with filters and limits.",
+        "endpointPath": "/json/2/stock.reference/search_read",
+        "httpMethod": "POST",
+        "enabled": true,
+        "isExportable": true,
+        "bodyPayloadTemplate": "{\"domain\": [], \"fields\": [\"name\", \"display_name\", \"create_date\", \"id\"], \"limit\": {{limit}}}",
+        "parameters": [
+          {
+            "name": "limit",
+            "type": "NUMBER",
+            "description": "Maximum number of records to return.",
+            "required": false,
+            "defaultValue": "10"
+          }
+        ]
+      },
+      {
+        "name": "Stock - List Información de reabastecimiento del proveedor de inventario",
+        "code": "odoo-stock-replenishment-info-list",
+        "description": "Lists records of 'stock.replenishment.info' (Información de reabastecimiento del proveedor de inventario) with filters and limits.",
+        "endpointPath": "/json/2/stock.replenishment.info/search_read",
+        "httpMethod": "POST",
+        "enabled": true,
+        "isExportable": true,
+        "bodyPayloadTemplate": "{\"domain\": [], \"fields\": [\"product_min_qty\", \"product_max_qty\", \"id\", \"product_id\", \"percent_factor\", \"based_on\", \"display_name\", \"create_date\"], \"limit\": {{limit}}}",
+        "parameters": [
+          {
+            "name": "limit",
+            "type": "NUMBER",
+            "description": "Maximum number of records to return.",
+            "required": false,
+            "defaultValue": "10"
+          }
+        ]
+      },
+      {
+        "name": "Stock - List Opción de reabastecimiento de almacén de existencias",
+        "code": "odoo-stock-replenishment-option-list",
+        "description": "Lists records of 'stock.replenishment.option' (Opción de reabastecimiento de almacén de existencias) with filters and limits.",
+        "endpointPath": "/json/2/stock.replenishment.option/search_read",
+        "httpMethod": "POST",
+        "enabled": true,
+        "isExportable": true,
+        "bodyPayloadTemplate": "{\"domain\": [], \"fields\": [\"location_id\", \"product_id\", \"warehouse_id\", \"id\", \"display_name\", \"create_date\"], \"limit\": {{limit}}}",
+        "parameters": [
+          {
+            "name": "limit",
+            "type": "NUMBER",
+            "description": "Maximum number of records to return.",
+            "required": false,
+            "defaultValue": "10"
+          }
+        ]
+      },
+      {
+        "name": "Stock - List Solicitar un recuento de inventario",
+        "code": "odoo-stock-request-count-list",
+        "description": "Lists records of 'stock.request.count' (Solicitar un recuento de inventario) with filters and limits.",
+        "endpointPath": "/json/2/stock.request.count/search_read",
+        "httpMethod": "POST",
+        "enabled": true,
+        "isExportable": true,
+        "bodyPayloadTemplate": "{\"domain\": [], \"fields\": [\"inventory_date\", \"display_name\", \"create_date\", \"id\"], \"limit\": {{limit}}}",
+        "parameters": [
+          {
+            "name": "limit",
+            "type": "NUMBER",
+            "description": "Maximum number of records to return.",
+            "required": false,
+            "defaultValue": "10"
+          }
+        ]
+      },
+      {
+        "name": "Stock - List Recolección de devolución",
+        "code": "odoo-stock-return-picking-list",
+        "description": "Lists records of 'stock.return.picking' (Recolección de devolución) with filters and limits.",
+        "endpointPath": "/json/2/stock.return.picking/search_read",
+        "httpMethod": "POST",
+        "enabled": true,
+        "isExportable": true,
+        "bodyPayloadTemplate": "{\"domain\": [], \"fields\": [\"display_name\", \"create_date\", \"id\"], \"limit\": {{limit}}}",
+        "parameters": [
+          {
+            "name": "limit",
+            "type": "NUMBER",
+            "description": "Maximum number of records to return.",
+            "required": false,
+            "defaultValue": "10"
+          }
+        ]
+      },
+      {
+        "name": "Stock - List Línea de recolección de devolución",
+        "code": "odoo-stock-return-picking-line-list",
+        "description": "Lists records of 'stock.return.picking.line' (Línea de recolección de devolución) with filters and limits.",
+        "endpointPath": "/json/2/stock.return.picking.line/search_read",
+        "httpMethod": "POST",
+        "enabled": true,
+        "isExportable": true,
+        "bodyPayloadTemplate": "{\"domain\": [], \"fields\": [\"quantity\", \"product_id\", \"id\", \"display_name\", \"create_date\"], \"limit\": {{limit}}}",
+        "parameters": [
+          {
+            "name": "limit",
+            "type": "NUMBER",
+            "description": "Maximum number of records to return.",
+            "required": false,
+            "defaultValue": "10"
+          }
+        ]
+      },
+      {
+        "name": "Stock - List Rutas de inventario",
+        "code": "odoo-stock-route-list",
+        "description": "Lists records of 'stock.route' (Rutas de inventario) with filters and limits.",
+        "endpointPath": "/json/2/stock.route/search_read",
+        "httpMethod": "POST",
+        "enabled": true,
+        "isExportable": true,
+        "bodyPayloadTemplate": "{\"domain\": [], \"fields\": [\"name\", \"display_name\", \"create_date\", \"id\"], \"limit\": {{limit}}}",
+        "parameters": [
+          {
+            "name": "limit",
+            "type": "NUMBER",
+            "description": "Maximum number of records to return.",
+            "required": false,
+            "defaultValue": "10"
+          }
+        ]
+      },
+      {
+        "name": "Stock - List Regla de inventario",
+        "code": "odoo-stock-rule-list",
+        "description": "Lists records of 'stock.rule' (Regla de inventario) with filters and limits.",
+        "endpointPath": "/json/2/stock.rule/search_read",
+        "httpMethod": "POST",
+        "enabled": true,
+        "isExportable": true,
+        "bodyPayloadTemplate": "{\"domain\": [], \"fields\": [\"action\", \"name\", \"procure_method\", \"auto\", \"picking_type_id\", \"id\", \"warehouse_id\", \"route_id\", \"location_dest_id\", \"display_name\", \"create_date\"], \"limit\": {{limit}}}",
+        "parameters": [
+          {
+            "name": "limit",
+            "type": "NUMBER",
+            "description": "Maximum number of records to return.",
+            "required": false,
+            "defaultValue": "10"
+          }
+        ]
+      },
+      {
+        "name": "Stock - List Reporte de reglas de existencias",
+        "code": "odoo-stock-rules-report-list",
+        "description": "Lists records of 'stock.rules.report' (Reporte de reglas de existencias) with filters and limits.",
+        "endpointPath": "/json/2/stock.rules.report/search_read",
+        "httpMethod": "POST",
+        "enabled": true,
+        "isExportable": true,
+        "bodyPayloadTemplate": "{\"domain\": [], \"fields\": [\"warehouse_ids\", \"product_tmpl_id\", \"product_id\", \"product_has_variants\", \"id\", \"display_name\", \"create_date\"], \"limit\": {{limit}}}",
+        "parameters": [
+          {
+            "name": "limit",
+            "type": "NUMBER",
+            "description": "Maximum number of records to return.",
+            "required": false,
+            "defaultValue": "10"
+          }
+        ]
+      },
+      {
+        "name": "Stock - List Desechar",
+        "code": "odoo-stock-scrap-list",
+        "description": "Lists records of 'stock.scrap' (Desechar) with filters and limits.",
+        "endpointPath": "/json/2/stock.scrap/search_read",
+        "httpMethod": "POST",
+        "enabled": true,
+        "isExportable": true,
+        "bodyPayloadTemplate": "{\"domain\": [], \"fields\": [\"company_id\", \"state\", \"location_id\", \"product_uom_id\", \"scrap_location_id\", \"name\", \"lot_id\", \"product_id\", \"id\", \"scrap_qty\", \"display_name\", \"create_date\"], \"limit\": {{limit}}}",
+        "parameters": [
+          {
+            "name": "limit",
+            "type": "NUMBER",
+            "description": "Maximum number of records to return.",
+            "required": false,
+            "defaultValue": "10"
+          }
+        ]
+      },
+      {
+        "name": "Stock - Create Desechar",
+        "code": "odoo-stock-scrap-create",
+        "description": "Creates a new record of 'stock.scrap' (Desechar).",
+        "endpointPath": "/json/2/stock.scrap/create",
+        "httpMethod": "POST",
+        "enabled": true,
+        "isExportable": true,
+        "bodyPayloadTemplate": "{\"vals_list\": [{\"company_id\": {{company_id}}, \"location_id\": {{location_id}}, \"name\": \"{{name}}\", \"product_id\": {{product_id}}, \"product_uom_id\": {{product_uom_id}}, \"scrap_location_id\": {{scrap_location_id}}, \"scrap_qty\": {{scrap_qty}}}]}",
+        "parameters": [
+          {
+            "name": "company_id",
+            "type": "NUMBER",
+            "description": "Empresa",
+            "required": true,
+            "defaultValue": ""
+          },
+          {
+            "name": "location_id",
+            "type": "NUMBER",
+            "description": "Ubicación de origen",
+            "required": true,
+            "defaultValue": ""
+          },
+          {
+            "name": "name",
+            "type": "STRING",
+            "description": "Referencia",
+            "required": true,
+            "defaultValue": ""
+          },
+          {
+            "name": "product_id",
+            "type": "NUMBER",
+            "description": "Producto",
+            "required": true,
+            "defaultValue": ""
+          },
+          {
+            "name": "product_uom_id",
+            "type": "NUMBER",
+            "description": "Unidad",
+            "required": true,
+            "defaultValue": ""
+          },
+          {
+            "name": "scrap_location_id",
+            "type": "NUMBER",
+            "description": "Ubicación de desecho",
+            "required": true,
+            "defaultValue": ""
+          },
+          {
+            "name": "scrap_qty",
+            "type": "NUMBER",
+            "description": "Cantidad",
+            "required": true,
+            "defaultValue": ""
+          }
+        ]
+      },
+      {
+        "name": "Stock - Update Desechar",
+        "code": "odoo-stock-scrap-update",
+        "description": "Updates fields of an existing record of 'stock.scrap' (Desechar) by ID.",
+        "endpointPath": "/json/2/stock.scrap/write",
+        "httpMethod": "POST",
+        "enabled": true,
+        "isExportable": true,
+        "bodyPayloadTemplate": "{\"ids\": [{{id}}], \"vals\": {\"company_id\": {{company_id}}, \"location_id\": {{location_id}}, \"name\": \"{{name}}\", \"product_id\": {{product_id}}, \"product_uom_id\": {{product_uom_id}}, \"scrap_location_id\": {{scrap_location_id}}, \"scrap_qty\": {{scrap_qty}}}}",
+        "parameters": [
+          {
+            "name": "id",
+            "type": "NUMBER",
+            "description": "ID of the record to update.",
+            "required": true,
+            "defaultValue": ""
+          },
+          {
+            "name": "company_id",
+            "type": "NUMBER",
+            "description": "Empresa (leave empty to not modify)",
+            "required": false,
+            "defaultValue": ""
+          },
+          {
+            "name": "location_id",
+            "type": "NUMBER",
+            "description": "Ubicación de origen (leave empty to not modify)",
+            "required": false,
+            "defaultValue": ""
+          },
+          {
+            "name": "name",
+            "type": "STRING",
+            "description": "Referencia (leave empty to not modify)",
+            "required": false,
+            "defaultValue": ""
+          },
+          {
+            "name": "product_id",
+            "type": "NUMBER",
+            "description": "Producto (leave empty to not modify)",
+            "required": false,
+            "defaultValue": ""
+          },
+          {
+            "name": "product_uom_id",
+            "type": "NUMBER",
+            "description": "Unidad (leave empty to not modify)",
+            "required": false,
+            "defaultValue": ""
+          },
+          {
+            "name": "scrap_location_id",
+            "type": "NUMBER",
+            "description": "Ubicación de desecho (leave empty to not modify)",
+            "required": false,
+            "defaultValue": ""
+          },
+          {
+            "name": "scrap_qty",
+            "type": "NUMBER",
+            "description": "Cantidad (leave empty to not modify)",
+            "required": false,
+            "defaultValue": ""
+          }
+        ]
+      },
+      {
+        "name": "Stock - Delete Desechar",
+        "code": "odoo-stock-scrap-delete",
+        "description": "Deletes an existing record of 'stock.scrap' (Desechar) by ID.",
+        "endpointPath": "/json/2/stock.scrap/unlink",
+        "httpMethod": "POST",
+        "enabled": true,
+        "isExportable": true,
+        "bodyPayloadTemplate": "{\"ids\": [{{id}}]}",
+        "parameters": [
+          {
+            "name": "id",
+            "type": "NUMBER",
+            "description": "ID of the record to delete.",
+            "required": true,
+            "defaultValue": ""
+          }
+        ]
+      },
+      {
+        "name": "Stock - List Etiqueta del motivo de descarte",
+        "code": "odoo-stock-scrap-reason-tag-list",
+        "description": "Lists records of 'stock.scrap.reason.tag' (Etiqueta del motivo de descarte) with filters and limits.",
+        "endpointPath": "/json/2/stock.scrap.reason.tag/search_read",
+        "httpMethod": "POST",
+        "enabled": true,
+        "isExportable": true,
+        "bodyPayloadTemplate": "{\"domain\": [], \"fields\": [\"name\", \"display_name\", \"create_date\", \"id\"], \"limit\": {{limit}}}",
+        "parameters": [
+          {
+            "name": "limit",
+            "type": "NUMBER",
+            "description": "Maximum number of records to return.",
+            "required": false,
+            "defaultValue": "10"
+          }
+        ]
+      },
+      {
+        "name": "Stock - List Categoría de almacenamiento",
+        "code": "odoo-stock-storage-category-list",
+        "description": "Lists records of 'stock.storage.category' (Categoría de almacenamiento) with filters and limits.",
+        "endpointPath": "/json/2/stock.storage.category/search_read",
+        "httpMethod": "POST",
+        "enabled": true,
+        "isExportable": true,
+        "bodyPayloadTemplate": "{\"domain\": [], \"fields\": [\"allow_new_product\", \"name\", \"id\", \"display_name\", \"create_date\"], \"limit\": {{limit}}}",
+        "parameters": [
+          {
+            "name": "limit",
+            "type": "NUMBER",
+            "description": "Maximum number of records to return.",
+            "required": false,
+            "defaultValue": "10"
+          }
+        ]
+      },
+      {
+        "name": "Stock - List Capacidad de la categoría de almacenamiento",
+        "code": "odoo-stock-storage-category-capacity-list",
+        "description": "Lists records of 'stock.storage.category.capacity' (Capacidad de la categoría de almacenamiento) with filters and limits.",
+        "endpointPath": "/json/2/stock.storage.category.capacity/search_read",
+        "httpMethod": "POST",
+        "enabled": true,
+        "isExportable": true,
+        "bodyPayloadTemplate": "{\"domain\": [], \"fields\": [\"quantity\", \"storage_category_id\", \"product_id\", \"id\", \"display_name\", \"create_date\"], \"limit\": {{limit}}}",
+        "parameters": [
+          {
+            "name": "limit",
+            "type": "NUMBER",
+            "description": "Maximum number of records to return.",
+            "required": false,
+            "defaultValue": "10"
+          }
+        ]
+      },
+      {
+        "name": "Stock - List Reporte de trazabilidad",
+        "code": "odoo-stock-traceability-report-list",
+        "description": "Lists records of 'stock.traceability.report' (Reporte de trazabilidad) with filters and limits.",
+        "endpointPath": "/json/2/stock.traceability.report/search_read",
+        "httpMethod": "POST",
+        "enabled": true,
+        "isExportable": true,
+        "bodyPayloadTemplate": "{\"domain\": [], \"fields\": [\"display_name\", \"create_date\", \"id\"], \"limit\": {{limit}}}",
+        "parameters": [
+          {
+            "name": "limit",
+            "type": "NUMBER",
+            "description": "Maximum number of records to return.",
+            "required": false,
+            "defaultValue": "10"
+          }
+        ]
+      },
+      {
+        "name": "Stock - List Almacén",
+        "code": "odoo-stock-warehouse-list",
+        "description": "Lists records of 'stock.warehouse' (Almacén) with filters and limits.",
+        "endpointPath": "/json/2/stock.warehouse/search_read",
+        "httpMethod": "POST",
+        "enabled": true,
+        "isExportable": true,
+        "bodyPayloadTemplate": "{\"domain\": [], \"fields\": [\"company_id\", \"view_location_id\", \"reception_steps\", \"delivery_steps\", \"lot_stock_id\", \"code\", \"name\", \"id\", \"display_name\", \"create_date\"], \"limit\": {{limit}}}",
+        "parameters": [
+          {
+            "name": "limit",
+            "type": "NUMBER",
+            "description": "Maximum number of records to return.",
+            "required": false,
+            "defaultValue": "10"
+          }
+        ]
+      },
+      {
+        "name": "Stock - Create Almacén",
+        "code": "odoo-stock-warehouse-create",
+        "description": "Creates a new record of 'stock.warehouse' (Almacén).",
+        "endpointPath": "/json/2/stock.warehouse/create",
+        "httpMethod": "POST",
+        "enabled": true,
+        "isExportable": true,
+        "bodyPayloadTemplate": "{\"vals_list\": [{\"code\": \"{{code}}\", \"company_id\": {{company_id}}, \"delivery_steps\": \"{{delivery_steps}}\", \"lot_stock_id\": {{lot_stock_id}}, \"name\": \"{{name}}\", \"reception_steps\": \"{{reception_steps}}\", \"view_location_id\": {{view_location_id}}}]}",
+        "parameters": [
+          {
+            "name": "code",
+            "type": "STRING",
+            "description": "Nombre corto",
+            "required": true,
+            "defaultValue": ""
+          },
+          {
+            "name": "company_id",
+            "type": "NUMBER",
+            "description": "Empresa",
+            "required": true,
+            "defaultValue": ""
+          },
+          {
+            "name": "delivery_steps",
+            "type": "STRING",
+            "description": "Envíos salientes",
+            "required": true,
+            "defaultValue": ""
+          },
+          {
+            "name": "lot_stock_id",
+            "type": "NUMBER",
+            "description": "Ubicación de existencias",
+            "required": true,
+            "defaultValue": ""
+          },
+          {
+            "name": "name",
+            "type": "STRING",
+            "description": "Almacén",
+            "required": true,
+            "defaultValue": ""
+          },
+          {
+            "name": "reception_steps",
+            "type": "STRING",
+            "description": "Envíos entrantes",
+            "required": true,
+            "defaultValue": ""
+          },
+          {
+            "name": "view_location_id",
+            "type": "NUMBER",
+            "description": "Ver ubicación",
+            "required": true,
+            "defaultValue": ""
+          }
+        ]
+      },
+      {
+        "name": "Stock - Update Almacén",
+        "code": "odoo-stock-warehouse-update",
+        "description": "Updates fields of an existing record of 'stock.warehouse' (Almacén) by ID.",
+        "endpointPath": "/json/2/stock.warehouse/write",
+        "httpMethod": "POST",
+        "enabled": true,
+        "isExportable": true,
+        "bodyPayloadTemplate": "{\"ids\": [{{id}}], \"vals\": {\"code\": \"{{code}}\", \"company_id\": {{company_id}}, \"delivery_steps\": \"{{delivery_steps}}\", \"lot_stock_id\": {{lot_stock_id}}, \"name\": \"{{name}}\", \"reception_steps\": \"{{reception_steps}}\", \"view_location_id\": {{view_location_id}}}}",
+        "parameters": [
+          {
+            "name": "id",
+            "type": "NUMBER",
+            "description": "ID of the record to update.",
+            "required": true,
+            "defaultValue": ""
+          },
+          {
+            "name": "code",
+            "type": "STRING",
+            "description": "Nombre corto (leave empty to not modify)",
+            "required": false,
+            "defaultValue": ""
+          },
+          {
+            "name": "company_id",
+            "type": "NUMBER",
+            "description": "Empresa (leave empty to not modify)",
+            "required": false,
+            "defaultValue": ""
+          },
+          {
+            "name": "delivery_steps",
+            "type": "STRING",
+            "description": "Envíos salientes (leave empty to not modify)",
+            "required": false,
+            "defaultValue": ""
+          },
+          {
+            "name": "lot_stock_id",
+            "type": "NUMBER",
+            "description": "Ubicación de existencias (leave empty to not modify)",
+            "required": false,
+            "defaultValue": ""
+          },
+          {
+            "name": "name",
+            "type": "STRING",
+            "description": "Almacén (leave empty to not modify)",
+            "required": false,
+            "defaultValue": ""
+          },
+          {
+            "name": "reception_steps",
+            "type": "STRING",
+            "description": "Envíos entrantes (leave empty to not modify)",
+            "required": false,
+            "defaultValue": ""
+          },
+          {
+            "name": "view_location_id",
+            "type": "NUMBER",
+            "description": "Ver ubicación (leave empty to not modify)",
+            "required": false,
+            "defaultValue": ""
+          }
+        ]
+      },
+      {
+        "name": "Stock - Delete Almacén",
+        "code": "odoo-stock-warehouse-delete",
+        "description": "Deletes an existing record of 'stock.warehouse' (Almacén) by ID.",
+        "endpointPath": "/json/2/stock.warehouse/unlink",
+        "httpMethod": "POST",
+        "enabled": true,
+        "isExportable": true,
+        "bodyPayloadTemplate": "{\"ids\": [{{id}}]}",
+        "parameters": [
+          {
+            "name": "id",
+            "type": "NUMBER",
+            "description": "ID of the record to delete.",
+            "required": true,
+            "defaultValue": ""
+          }
+        ]
+      },
+      {
+        "name": "Stock - List Regla de inventario mínimo",
+        "code": "odoo-stock-warehouse-orderpoint-list",
+        "description": "Lists records of 'stock.warehouse.orderpoint' (Regla de inventario mínimo) with filters and limits.",
+        "endpointPath": "/json/2/stock.warehouse.orderpoint/search_read",
+        "httpMethod": "POST",
+        "enabled": true,
+        "isExportable": true,
+        "bodyPayloadTemplate": "{\"domain\": [], \"fields\": [\"company_id\", \"product_min_qty\", \"product_max_qty\", \"location_id\", \"name\", \"trigger\", \"product_id\", \"warehouse_id\", \"id\", \"display_name\", \"create_date\"], \"limit\": {{limit}}}",
+        "parameters": [
+          {
+            "name": "limit",
+            "type": "NUMBER",
+            "description": "Maximum number of records to return.",
+            "required": false,
+            "defaultValue": "10"
+          }
+        ]
+      },
+      {
+        "name": "Stock - Create Regla de inventario mínimo",
+        "code": "odoo-stock-warehouse-orderpoint-create",
+        "description": "Creates a new record of 'stock.warehouse.orderpoint' (Regla de inventario mínimo).",
+        "endpointPath": "/json/2/stock.warehouse.orderpoint/create",
+        "httpMethod": "POST",
+        "enabled": true,
+        "isExportable": true,
+        "bodyPayloadTemplate": "{\"vals_list\": [{\"company_id\": {{company_id}}, \"location_id\": {{location_id}}, \"name\": \"{{name}}\", \"product_id\": {{product_id}}, \"product_max_qty\": {{product_max_qty}}, \"product_min_qty\": {{product_min_qty}}, \"trigger\": \"{{trigger}}\", \"warehouse_id\": {{warehouse_id}}}]}",
+        "parameters": [
+          {
+            "name": "company_id",
+            "type": "NUMBER",
+            "description": "Empresa",
+            "required": true,
+            "defaultValue": ""
+          },
+          {
+            "name": "location_id",
+            "type": "NUMBER",
+            "description": "Ubicación",
+            "required": true,
+            "defaultValue": ""
+          },
+          {
+            "name": "name",
+            "type": "STRING",
+            "description": "Nombre",
+            "required": true,
+            "defaultValue": ""
+          },
+          {
+            "name": "product_id",
+            "type": "NUMBER",
+            "description": "Producto",
+            "required": true,
+            "defaultValue": ""
+          },
+          {
+            "name": "product_max_qty",
+            "type": "NUMBER",
+            "description": "Cantidad máxima",
+            "required": true,
+            "defaultValue": ""
+          },
+          {
+            "name": "product_min_qty",
+            "type": "NUMBER",
+            "description": "Cantidad mínima",
+            "required": true,
+            "defaultValue": ""
+          },
+          {
+            "name": "trigger",
+            "type": "STRING",
+            "description": "Activar",
+            "required": true,
+            "defaultValue": ""
+          },
+          {
+            "name": "warehouse_id",
+            "type": "NUMBER",
+            "description": "Almacén",
+            "required": true,
+            "defaultValue": ""
+          }
+        ]
+      },
+      {
+        "name": "Stock - Update Regla de inventario mínimo",
+        "code": "odoo-stock-warehouse-orderpoint-update",
+        "description": "Updates fields of an existing record of 'stock.warehouse.orderpoint' (Regla de inventario mínimo) by ID.",
+        "endpointPath": "/json/2/stock.warehouse.orderpoint/write",
+        "httpMethod": "POST",
+        "enabled": true,
+        "isExportable": true,
+        "bodyPayloadTemplate": "{\"ids\": [{{id}}], \"vals\": {\"company_id\": {{company_id}}, \"location_id\": {{location_id}}, \"name\": \"{{name}}\", \"product_id\": {{product_id}}, \"product_max_qty\": {{product_max_qty}}, \"product_min_qty\": {{product_min_qty}}, \"trigger\": \"{{trigger}}\", \"warehouse_id\": {{warehouse_id}}}}",
+        "parameters": [
+          {
+            "name": "id",
+            "type": "NUMBER",
+            "description": "ID of the record to update.",
+            "required": true,
+            "defaultValue": ""
+          },
+          {
+            "name": "company_id",
+            "type": "NUMBER",
+            "description": "Empresa (leave empty to not modify)",
+            "required": false,
+            "defaultValue": ""
+          },
+          {
+            "name": "location_id",
+            "type": "NUMBER",
+            "description": "Ubicación (leave empty to not modify)",
+            "required": false,
+            "defaultValue": ""
+          },
+          {
+            "name": "name",
+            "type": "STRING",
+            "description": "Nombre (leave empty to not modify)",
+            "required": false,
+            "defaultValue": ""
+          },
+          {
+            "name": "product_id",
+            "type": "NUMBER",
+            "description": "Producto (leave empty to not modify)",
+            "required": false,
+            "defaultValue": ""
+          },
+          {
+            "name": "product_max_qty",
+            "type": "NUMBER",
+            "description": "Cantidad máxima (leave empty to not modify)",
+            "required": false,
+            "defaultValue": ""
+          },
+          {
+            "name": "product_min_qty",
+            "type": "NUMBER",
+            "description": "Cantidad mínima (leave empty to not modify)",
+            "required": false,
+            "defaultValue": ""
+          },
+          {
+            "name": "trigger",
+            "type": "STRING",
+            "description": "Activar (leave empty to not modify)",
+            "required": false,
+            "defaultValue": ""
+          },
+          {
+            "name": "warehouse_id",
+            "type": "NUMBER",
+            "description": "Almacén (leave empty to not modify)",
+            "required": false,
+            "defaultValue": ""
+          }
+        ]
+      },
+      {
+        "name": "Stock - Delete Regla de inventario mínimo",
+        "code": "odoo-stock-warehouse-orderpoint-delete",
+        "description": "Deletes an existing record of 'stock.warehouse.orderpoint' (Regla de inventario mínimo) by ID.",
+        "endpointPath": "/json/2/stock.warehouse.orderpoint/unlink",
+        "httpMethod": "POST",
+        "enabled": true,
+        "isExportable": true,
+        "bodyPayloadTemplate": "{\"ids\": [{{id}}]}",
+        "parameters": [
+          {
+            "name": "id",
+            "type": "NUMBER",
+            "description": "ID of the record to delete.",
+            "required": true,
+            "defaultValue": ""
+          }
+        ]
+      },
+      {
+        "name": "Stock - List Advertir de cantidad de desecho insuficiente",
+        "code": "odoo-stock-warn-insufficient-qty-scrap-list",
+        "description": "Lists records of 'stock.warn.insufficient.qty.scrap' (Advertir de cantidad de desecho insuficiente) with filters and limits.",
+        "endpointPath": "/json/2/stock.warn.insufficient.qty.scrap/search_read",
+        "httpMethod": "POST",
+        "enabled": true,
+        "isExportable": true,
+        "bodyPayloadTemplate": "{\"domain\": [], \"fields\": [\"location_id\", \"quantity\", \"product_id\", \"id\", \"product_uom_name\", \"display_name\", \"create_date\"], \"limit\": {{limit}}}",
+        "parameters": [
+          {
+            "name": "limit",
+            "type": "NUMBER",
+            "description": "Maximum number of records to return.",
+            "required": false,
+            "defaultValue": "10"
           }
         ]
       }
