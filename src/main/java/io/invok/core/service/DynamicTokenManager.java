@@ -33,7 +33,7 @@ public class DynamicTokenManager {
 
     // Cache: Provider ID -> CachedToken
     private final Map<Long, CachedToken> tokenCache = new ConcurrentHashMap<>();
-    private static final long TOKEN_TTL_SECONDS = 18000; // 5 hours
+    private static final long TOKEN_TTL_SECONDS = 300; // 5 minutes
 
     public String getToken(ApiProvider provider) {
         if (!provider.isDynamicAuth()
