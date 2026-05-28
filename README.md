@@ -4,6 +4,8 @@
 
 Invok is a self-hosteable dynamic tool proxy that turns any REST API into MCP tools — instantly, without writing a single line of server code. Connect your internal systems, third-party services, or any API with a spec to any AI agent in minutes.
 
+> 📖 **Looking for the user guide?** Read the detailed [User Manual](docs/USER_MANUAL.md) to learn about connection configurations, dynamic authentication (like Bluesky), rules for providers vs. tools, security designs, and how to use the dynamic `invok_guide` assistant.
+
 ```
   Claude Desktop · Cursor · Claude Code · Open WebUI · Any MCP Client
                               │
