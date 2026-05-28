@@ -2885,6 +2885,892 @@
             "defaultValue": "10"
           }
         ]
+      },
+      {
+        "name": "Manufacturing - List production orders",
+        "code": "odoo-mrp-production-list",
+        "description": "Lists manufacturing production orders from Odoo. Returns reference name, product ID, target quantity, unit of measure, currently producing quantity, dates, and state.",
+        "endpointPath": "/json/2/mrp.production/search_read",
+        "httpMethod": "POST",
+        "enabled": true,
+        "isExportable": true,
+        "bodyPayloadTemplate": "{\"domain\": [], \"fields\": [\"name\", \"product_id\", \"product_qty\", \"product_uom_id\", \"qty_producing\", \"date_start\", \"date_finished\", \"state\", \"bom_id\"], \"limit\": {{limit}}}",
+        "parameters": [
+          {
+            "name": "limit",
+            "type": "NUMBER",
+            "description": "Maximum number of production orders to return.",
+            "required": false,
+            "defaultValue": "10"
+          }
+        ]
+      },
+      {
+        "name": "Manufacturing - Create production order",
+        "code": "odoo-mrp-production-create",
+        "description": "Creates a new manufacturing production order for a product.",
+        "endpointPath": "/json/2/mrp.production/create",
+        "httpMethod": "POST",
+        "enabled": true,
+        "isExportable": true,
+        "bodyPayloadTemplate": "{\"vals_list\": [{\"product_id\": {{product_id}}, \"product_qty\": {{product_qty}}, \"bom_id\": {{bom_id}}, \"date_start\": \"{{date_start}}\", \"user_id\": {{user_id}}}]}",
+        "parameters": [
+          {
+            "name": "product_id",
+            "type": "NUMBER",
+            "description": "ID of the product (product.product) to manufacture.",
+            "required": true,
+            "defaultValue": ""
+          },
+          {
+            "name": "product_qty",
+            "type": "NUMBER",
+            "description": "Quantity of the product to produce.",
+            "required": true,
+            "defaultValue": ""
+          },
+          {
+            "name": "bom_id",
+            "type": "NUMBER",
+            "description": "ID of the Bill of Materials (mrp.bom) to use. If not specified, Odoo will select the default BoM for the product.",
+            "required": false,
+            "defaultValue": "null"
+          },
+          {
+            "name": "date_start",
+            "type": "STRING",
+            "description": "Scheduled start date (YYYY-MM-DD HH:MM:SS) in UTC.",
+            "required": false,
+            "defaultValue": ""
+          },
+          {
+            "name": "user_id",
+            "type": "NUMBER",
+            "description": "ID of the user responsible for this order.",
+            "required": false,
+            "defaultValue": "null"
+          }
+        ]
+      },
+      {
+        "name": "Manufacturing - Update production order",
+        "code": "odoo-mrp-production-update",
+        "description": "Updates target quantity, start date, or responsible user on an existing production order.",
+        "endpointPath": "/json/2/mrp.production/write",
+        "httpMethod": "POST",
+        "enabled": true,
+        "isExportable": true,
+        "bodyPayloadTemplate": "{\"ids\": [{{id}}], \"vals\": {\"product_qty\": {{product_qty}}, \"date_start\": \"{{date_start}}\", \"user_id\": {{user_id}}}}",
+        "parameters": [
+          {
+            "name": "id",
+            "type": "NUMBER",
+            "description": "ID of the production order to update.",
+            "required": true,
+            "defaultValue": ""
+          },
+          {
+            "name": "product_qty",
+            "type": "NUMBER",
+            "description": "New target quantity to produce.",
+            "required": false,
+            "defaultValue": "null"
+          },
+          {
+            "name": "date_start",
+            "type": "STRING",
+            "description": "New scheduled start date (YYYY-MM-DD HH:MM:SS) in UTC.",
+            "required": false,
+            "defaultValue": ""
+          },
+          {
+            "name": "user_id",
+            "type": "NUMBER",
+            "description": "New ID of the responsible user.",
+            "required": false,
+            "defaultValue": "null"
+          }
+        ]
+      },
+      {
+        "name": "Manufacturing - Delete production order",
+        "code": "odoo-mrp-production-delete",
+        "description": "Deletes a production order from Odoo.",
+        "endpointPath": "/json/2/mrp.production/unlink",
+        "httpMethod": "POST",
+        "enabled": true,
+        "isExportable": true,
+        "bodyPayloadTemplate": "{\"ids\": [{{id}}]}",
+        "parameters": [
+          {
+            "name": "id",
+            "type": "NUMBER",
+            "description": "ID of the production order to delete.",
+            "required": true,
+            "defaultValue": ""
+          }
+        ]
+      },
+      {
+        "name": "Manufacturing - Confirm production order",
+        "code": "odoo-mrp-production-confirm",
+        "description": "Confirms the production order, creating stock moves for components and finished products.",
+        "endpointPath": "/json/2/mrp.production/action_confirm",
+        "httpMethod": "POST",
+        "enabled": true,
+        "isExportable": true,
+        "bodyPayloadTemplate": "{\"ids\": [{{id}}]}",
+        "parameters": [
+          {
+            "name": "id",
+            "type": "NUMBER",
+            "description": "ID of the production order to confirm.",
+            "required": true,
+            "defaultValue": ""
+          }
+        ]
+      },
+      {
+        "name": "Manufacturing - Plan production order",
+        "code": "odoo-mrp-production-plan",
+        "description": "Plans work orders associated with the production order.",
+        "endpointPath": "/json/2/mrp.production/button_plan",
+        "httpMethod": "POST",
+        "enabled": true,
+        "isExportable": true,
+        "bodyPayloadTemplate": "{\"ids\": [{{id}}]}",
+        "parameters": [
+          {
+            "name": "id",
+            "type": "NUMBER",
+            "description": "ID of the production order to plan.",
+            "required": true,
+            "defaultValue": ""
+          }
+        ]
+      },
+      {
+        "name": "Manufacturing - Unplan production order",
+        "code": "odoo-mrp-production-unplan",
+        "description": "Unplans work orders associated with the production order.",
+        "endpointPath": "/json/2/mrp.production/button_unplan",
+        "httpMethod": "POST",
+        "enabled": true,
+        "isExportable": true,
+        "bodyPayloadTemplate": "{\"ids\": [{{id}}]}",
+        "parameters": [
+          {
+            "name": "id",
+            "type": "NUMBER",
+            "description": "ID of the production order to unplan.",
+            "required": true,
+            "defaultValue": ""
+          }
+        ]
+      },
+      {
+        "name": "Manufacturing - Mark production order as done",
+        "code": "odoo-mrp-production-mark-done",
+        "description": "Marks the manufacturing order as completed and processes stock inventory movements.",
+        "endpointPath": "/json/2/mrp.production/button_mark_done",
+        "httpMethod": "POST",
+        "enabled": true,
+        "isExportable": true,
+        "bodyPayloadTemplate": "{\"ids\": [{{id}}]}",
+        "parameters": [
+          {
+            "name": "id",
+            "type": "NUMBER",
+            "description": "ID of the production order to mark as done.",
+            "required": true,
+            "defaultValue": ""
+          }
+        ]
+      },
+      {
+        "name": "Manufacturing - Cancel production order",
+        "code": "odoo-mrp-production-cancel",
+        "description": "Cancels the manufacturing order and related stock moves.",
+        "endpointPath": "/json/2/mrp.production/action_cancel",
+        "httpMethod": "POST",
+        "enabled": true,
+        "isExportable": true,
+        "bodyPayloadTemplate": "{\"ids\": [{{id}}]}",
+        "parameters": [
+          {
+            "name": "id",
+            "type": "NUMBER",
+            "description": "ID of the production order to cancel.",
+            "required": true,
+            "defaultValue": ""
+          }
+        ]
+      },
+      {
+        "name": "Manufacturing - List Bills of Materials",
+        "code": "odoo-mrp-bom-list",
+        "description": "Lists Bills of Materials (BoM) from Odoo. Returns template ID, product variant ID, code reference, type, quantity, and unit of measure.",
+        "endpointPath": "/json/2/mrp.bom/search_read",
+        "httpMethod": "POST",
+        "enabled": true,
+        "isExportable": true,
+        "bodyPayloadTemplate": "{\"domain\": [], \"fields\": [\"product_tmpl_id\", \"product_id\", \"code\", \"type\", \"product_qty\", \"product_uom_id\", \"active\"], \"limit\": {{limit}}}",
+        "parameters": [
+          {
+            "name": "limit",
+            "type": "NUMBER",
+            "description": "Maximum number of BoMs to return.",
+            "required": false,
+            "defaultValue": "10"
+          }
+        ]
+      },
+      {
+        "name": "Manufacturing - Create Bill of Materials",
+        "code": "odoo-mrp-bom-create",
+        "description": "Creates a new Bill of Materials (BoM) for a product template.",
+        "endpointPath": "/json/2/mrp.bom/create",
+        "httpMethod": "POST",
+        "enabled": true,
+        "isExportable": true,
+        "bodyPayloadTemplate": "{\"vals_list\": [{\"product_tmpl_id\": {{product_tmpl_id}}, \"code\": \"{{code}}\", \"type\": \"{{type}}\", \"product_qty\": {{product_qty}}, \"product_uom_id\": {{product_uom_id}}}]}",
+        "parameters": [
+          {
+            "name": "product_tmpl_id",
+            "type": "NUMBER",
+            "description": "ID of the product template (product.template) this BoM is for.",
+            "required": true,
+            "defaultValue": ""
+          },
+          {
+            "name": "code",
+            "type": "STRING",
+            "description": "Reference code for this BoM.",
+            "required": false,
+            "defaultValue": ""
+          },
+          {
+            "name": "type",
+            "type": "STRING",
+            "description": "BoM Type: 'normal' (for manufacturing) or 'phantom' (for kit components).",
+            "required": false,
+            "defaultValue": "normal"
+          },
+          {
+            "name": "product_qty",
+            "type": "NUMBER",
+            "description": "Quantity of finished product produced by this BoM.",
+            "required": false,
+            "defaultValue": "1.0"
+          },
+          {
+            "name": "product_uom_id",
+            "type": "NUMBER",
+            "description": "ID of the Unit of Measure for the finished product quantity.",
+            "required": false,
+            "defaultValue": "null"
+          }
+        ]
+      },
+      {
+        "name": "Manufacturing - Update Bill of Materials",
+        "code": "odoo-mrp-bom-update",
+        "description": "Updates details such as code, type, or quantity on an existing BoM.",
+        "endpointPath": "/json/2/mrp.bom/write",
+        "httpMethod": "POST",
+        "enabled": true,
+        "isExportable": true,
+        "bodyPayloadTemplate": "{\"ids\": [{{id}}], \"vals\": {\"code\": \"{{code}}\", \"type\": \"{{type}}\", \"product_qty\": {{product_qty}}}}",
+        "parameters": [
+          {
+            "name": "id",
+            "type": "NUMBER",
+            "description": "ID of the BoM to update.",
+            "required": true,
+            "defaultValue": ""
+          },
+          {
+            "name": "code",
+            "type": "STRING",
+            "description": "New reference code.",
+            "required": false,
+            "defaultValue": ""
+          },
+          {
+            "name": "type",
+            "type": "STRING",
+            "description": "New BoM Type ('normal' or 'phantom').",
+            "required": false,
+            "defaultValue": "normal"
+          },
+          {
+            "name": "product_qty",
+            "type": "NUMBER",
+            "description": "New quantity produced.",
+            "required": false,
+            "defaultValue": "null"
+          }
+        ]
+      },
+      {
+        "name": "Manufacturing - Delete Bill of Materials",
+        "code": "odoo-mrp-bom-delete",
+        "description": "Deletes a Bill of Materials.",
+        "endpointPath": "/json/2/mrp.bom/unlink",
+        "httpMethod": "POST",
+        "enabled": true,
+        "isExportable": true,
+        "bodyPayloadTemplate": "{\"ids\": [{{id}}]}",
+        "parameters": [
+          {
+            "name": "id",
+            "type": "NUMBER",
+            "description": "ID of the BoM to delete.",
+            "required": true,
+            "defaultValue": ""
+          }
+        ]
+      },
+      {
+        "name": "Manufacturing - List BoM Component Lines",
+        "code": "odoo-mrp-bom-line-list",
+        "description": "Lists individual component lines belonging to Bills of Materials.",
+        "endpointPath": "/json/2/mrp.bom.line/search_read",
+        "httpMethod": "POST",
+        "enabled": true,
+        "isExportable": true,
+        "bodyPayloadTemplate": "{\"domain\": [], \"fields\": [\"bom_id\", \"product_id\", \"product_qty\", \"product_uom_id\", \"sequence\"], \"limit\": {{limit}}}",
+        "parameters": [
+          {
+            "name": "limit",
+            "type": "NUMBER",
+            "description": "Maximum number of component lines to return.",
+            "required": false,
+            "defaultValue": "10"
+          }
+        ]
+      },
+      {
+        "name": "Manufacturing - Create BoM Component Line",
+        "code": "odoo-mrp-bom-line-create",
+        "description": "Adds a component product to an existing Bill of Materials.",
+        "endpointPath": "/json/2/mrp.bom.line/create",
+        "httpMethod": "POST",
+        "enabled": true,
+        "isExportable": true,
+        "bodyPayloadTemplate": "{\"vals_list\": [{\"bom_id\": {{bom_id}}, \"product_id\": {{product_id}}, \"product_qty\": {{product_qty}}, \"product_uom_id\": {{product_uom_id}}}]}",
+        "parameters": [
+          {
+            "name": "bom_id",
+            "type": "NUMBER",
+            "description": "ID of the parent BoM (mrp.bom) to attach this component line to.",
+            "required": true,
+            "defaultValue": ""
+          },
+          {
+            "name": "product_id",
+            "type": "NUMBER",
+            "description": "ID of the component product (product.product).",
+            "required": true,
+            "defaultValue": ""
+          },
+          {
+            "name": "product_qty",
+            "type": "NUMBER",
+            "description": "Quantity of the component required.",
+            "required": true,
+            "defaultValue": ""
+          },
+          {
+            "name": "product_uom_id",
+            "type": "NUMBER",
+            "description": "ID of the Unit of Measure of the component quantity.",
+            "required": false,
+            "defaultValue": "null"
+          }
+        ]
+      },
+      {
+        "name": "Manufacturing - Update BoM Component Line",
+        "code": "odoo-mrp-bom-line-update",
+        "description": "Updates target quantity of a component line.",
+        "endpointPath": "/json/2/mrp.bom.line/write",
+        "httpMethod": "POST",
+        "enabled": true,
+        "isExportable": true,
+        "bodyPayloadTemplate": "{\"ids\": [{{id}}], \"vals\": {\"product_qty\": {{product_qty}}}}",
+        "parameters": [
+          {
+            "name": "id",
+            "type": "NUMBER",
+            "description": "ID of the component line to update.",
+            "required": true,
+            "defaultValue": ""
+          },
+          {
+            "name": "product_qty",
+            "type": "NUMBER",
+            "description": "New target quantity of component to consume.",
+            "required": true,
+            "defaultValue": ""
+          }
+        ]
+      },
+      {
+        "name": "Manufacturing - Delete BoM Component Line",
+        "code": "odoo-mrp-bom-line-delete",
+        "description": "Removes a component line from a Bill of Materials.",
+        "endpointPath": "/json/2/mrp.bom.line/unlink",
+        "httpMethod": "POST",
+        "enabled": true,
+        "isExportable": true,
+        "bodyPayloadTemplate": "{\"ids\": [{{id}}]}",
+        "parameters": [
+          {
+            "name": "id",
+            "type": "NUMBER",
+            "description": "ID of the component line to delete.",
+            "required": true,
+            "defaultValue": ""
+          }
+        ]
+      },
+      {
+        "name": "Manufacturing - List Work Orders",
+        "code": "odoo-mrp-workorder-list",
+        "description": "Lists active work orders from Odoo, containing production parent ID, work center, expected duration, dates, and state.",
+        "endpointPath": "/json/2/mrp.workorder/search_read",
+        "httpMethod": "POST",
+        "enabled": true,
+        "isExportable": true,
+        "bodyPayloadTemplate": "{\"domain\": [], \"fields\": [\"name\", \"production_id\", \"workcenter_id\", \"state\", \"duration\", \"duration_expected\", \"date_start\", \"date_finished\"], \"limit\": {{limit}}}",
+        "parameters": [
+          {
+            "name": "limit",
+            "type": "NUMBER",
+            "description": "Maximum number of work orders to return.",
+            "required": false,
+            "defaultValue": "10"
+          }
+        ]
+      },
+      {
+        "name": "Manufacturing - Update Work Order",
+        "code": "odoo-mrp-workorder-update",
+        "description": "Updates expected duration of a work order.",
+        "endpointPath": "/json/2/mrp.workorder/write",
+        "httpMethod": "POST",
+        "enabled": true,
+        "isExportable": true,
+        "bodyPayloadTemplate": "{\"ids\": [{{id}}], \"vals\": {\"duration_expected\": {{duration_expected}}}}",
+        "parameters": [
+          {
+            "name": "id",
+            "type": "NUMBER",
+            "description": "ID of the work order to update.",
+            "required": true,
+            "defaultValue": ""
+          },
+          {
+            "name": "duration_expected",
+            "type": "NUMBER",
+            "description": "New expected duration in minutes.",
+            "required": true,
+            "defaultValue": ""
+          }
+        ]
+      },
+      {
+        "name": "Manufacturing - Start Work Order",
+        "code": "odoo-mrp-workorder-start",
+        "description": "Starts running the work order.",
+        "endpointPath": "/json/2/mrp.workorder/button_start",
+        "httpMethod": "POST",
+        "enabled": true,
+        "isExportable": true,
+        "bodyPayloadTemplate": "{\"ids\": [{{id}}]}",
+        "parameters": [
+          {
+            "name": "id",
+            "type": "NUMBER",
+            "description": "ID of the work order to start.",
+            "required": true,
+            "defaultValue": ""
+          }
+        ]
+      },
+      {
+        "name": "Manufacturing - Finish Work Order",
+        "code": "odoo-mrp-workorder-finish",
+        "description": "Completes the work order.",
+        "endpointPath": "/json/2/mrp.workorder/button_finish",
+        "httpMethod": "POST",
+        "enabled": true,
+        "isExportable": true,
+        "bodyPayloadTemplate": "{\"ids\": [{{id}}]}",
+        "parameters": [
+          {
+            "name": "id",
+            "type": "NUMBER",
+            "description": "ID of the work order to finish.",
+            "required": true,
+            "defaultValue": ""
+          }
+        ]
+      },
+      {
+        "name": "Manufacturing - Pause Work Order",
+        "code": "odoo-mrp-workorder-pending",
+        "description": "Pauses the work order execution.",
+        "endpointPath": "/json/2/mrp.workorder/button_pending",
+        "httpMethod": "POST",
+        "enabled": true,
+        "isExportable": true,
+        "bodyPayloadTemplate": "{\"ids\": [{{id}}]}",
+        "parameters": [
+          {
+            "name": "id",
+            "type": "NUMBER",
+            "description": "ID of the work order to pause.",
+            "required": true,
+            "defaultValue": ""
+          }
+        ]
+      },
+      {
+        "name": "Manufacturing - Unblock Work Order",
+        "code": "odoo-mrp-workorder-unblock",
+        "description": "Unblocks the work order if it was blocked.",
+        "endpointPath": "/json/2/mrp.workorder/button_unblock",
+        "httpMethod": "POST",
+        "enabled": true,
+        "isExportable": true,
+        "bodyPayloadTemplate": "{\"ids\": [{{id}}]}",
+        "parameters": [
+          {
+            "name": "id",
+            "type": "NUMBER",
+            "description": "ID of the work order to unblock.",
+            "required": true,
+            "defaultValue": ""
+          }
+        ]
+      },
+      {
+        "name": "Manufacturing - List Work Centers",
+        "code": "odoo-mrp-workcenter-list",
+        "description": "Lists work centers from Odoo. Returns name, code, time efficiency, capacity, and target OEE.",
+        "endpointPath": "/json/2/mrp.workcenter/search_read",
+        "httpMethod": "POST",
+        "enabled": true,
+        "isExportable": true,
+        "bodyPayloadTemplate": "{\"domain\": [], \"fields\": [\"name\", \"code\", \"time_efficiency\", \"capacity\", \"oee_target\", \"active\"], \"limit\": {{limit}}}",
+        "parameters": [
+          {
+            "name": "limit",
+            "type": "NUMBER",
+            "description": "Maximum number of work centers to return.",
+            "required": false,
+            "defaultValue": "10"
+          }
+        ]
+      },
+      {
+        "name": "Manufacturing - Create Work Center",
+        "code": "odoo-mrp-workcenter-create",
+        "description": "Creates a new work center resource.",
+        "endpointPath": "/json/2/mrp.workcenter/create",
+        "httpMethod": "POST",
+        "enabled": true,
+        "isExportable": true,
+        "bodyPayloadTemplate": "{\"vals_list\": [{\"name\": \"{{name}}\", \"code\": \"{{code}}\", \"time_efficiency\": {{time_efficiency}}, \"capacity\": {{capacity}}, \"oee_target\": {{oee_target}}}]}",
+        "parameters": [
+          {
+            "name": "name",
+            "type": "STRING",
+            "description": "Name of the work center.",
+            "required": true,
+            "defaultValue": ""
+          },
+          {
+            "name": "code",
+            "type": "STRING",
+            "description": "Short code reference.",
+            "required": false,
+            "defaultValue": ""
+          },
+          {
+            "name": "time_efficiency",
+            "type": "NUMBER",
+            "description": "Time efficiency factor in percent.",
+            "required": false,
+            "defaultValue": "100.0"
+          },
+          {
+            "name": "capacity",
+            "type": "NUMBER",
+            "description": "Capacity (e.g. concurrent items processed).",
+            "required": false,
+            "defaultValue": "1.0"
+          },
+          {
+            "name": "oee_target",
+            "type": "NUMBER",
+            "description": "Overall Equipment Effectiveness target in percent.",
+            "required": false,
+            "defaultValue": "85.0"
+          }
+        ]
+      },
+      {
+        "name": "Manufacturing - Update Work Center",
+        "code": "odoo-mrp-workcenter-update",
+        "description": "Updates name, code, or capacity of a work center.",
+        "endpointPath": "/json/2/mrp.workcenter/write",
+        "httpMethod": "POST",
+        "enabled": true,
+        "isExportable": true,
+        "bodyPayloadTemplate": "{\"ids\": [{{id}}], \"vals\": {\"name\": \"{{name}}\", \"code\": \"{{code}}\", \"capacity\": {{capacity}}}}",
+        "parameters": [
+          {
+            "name": "id",
+            "type": "NUMBER",
+            "description": "ID of the work center to update.",
+            "required": true,
+            "defaultValue": ""
+          },
+          {
+            "name": "name",
+            "type": "STRING",
+            "description": "New name of the work center.",
+            "required": false,
+            "defaultValue": ""
+          },
+          {
+            "name": "code",
+            "type": "STRING",
+            "description": "New short code reference.",
+            "required": false,
+            "defaultValue": ""
+          },
+          {
+            "name": "capacity",
+            "type": "NUMBER",
+            "description": "New capacity value.",
+            "required": false,
+            "defaultValue": "null"
+          }
+        ]
+      },
+      {
+        "name": "Manufacturing - Delete Work Center",
+        "code": "odoo-mrp-workcenter-delete",
+        "description": "Deletes a work center from Odoo.",
+        "endpointPath": "/json/2/mrp.workcenter/unlink",
+        "httpMethod": "POST",
+        "enabled": true,
+        "isExportable": true,
+        "bodyPayloadTemplate": "{\"ids\": [{{id}}]}",
+        "parameters": [
+          {
+            "name": "id",
+            "type": "NUMBER",
+            "description": "ID of the work center to delete.",
+            "required": true,
+            "defaultValue": ""
+          }
+        ]
+      },
+      {
+        "name": "Manufacturing - List Product Variants",
+        "code": "odoo-mrp-product-list",
+        "description": "Lists product variants available in Odoo.",
+        "endpointPath": "/json/2/product.product/search_read",
+        "httpMethod": "POST",
+        "enabled": true,
+        "isExportable": true,
+        "bodyPayloadTemplate": "{\"domain\": [], \"fields\": [\"name\", \"default_code\", \"lst_price\", \"standard_price\", \"type\", \"active\"], \"limit\": {{limit}}}",
+        "parameters": [
+          {
+            "name": "limit",
+            "type": "NUMBER",
+            "description": "Maximum number of product variants to return.",
+            "required": false,
+            "defaultValue": "10"
+          }
+        ]
+      },
+      {
+        "name": "Manufacturing - Create Product Variant",
+        "code": "odoo-mrp-product-create",
+        "description": "Creates a new product variant.",
+        "endpointPath": "/json/2/product.product/create",
+        "httpMethod": "POST",
+        "enabled": true,
+        "isExportable": true,
+        "bodyPayloadTemplate": "{\"vals_list\": [{\"name\": \"{{name}}\", \"default_code\": \"{{default_code}}\", \"lst_price\": {{lst_price}}, \"standard_price\": {{standard_price}}, \"type\": \"{{type}}\"}]}",
+        "parameters": [
+          {
+            "name": "name",
+            "type": "STRING",
+            "description": "Name of the product variant.",
+            "required": true,
+            "defaultValue": ""
+          },
+          {
+            "name": "default_code",
+            "type": "STRING",
+            "description": "Internal SKU code.",
+            "required": false,
+            "defaultValue": ""
+          },
+          {
+            "name": "lst_price",
+            "type": "NUMBER",
+            "description": "Public retail price.",
+            "required": false,
+            "defaultValue": "0.0"
+          },
+          {
+            "name": "standard_price",
+            "type": "NUMBER",
+            "description": "Standard cost price.",
+            "required": false,
+            "defaultValue": "0.0"
+          },
+          {
+            "name": "type",
+            "type": "STRING",
+            "description": "Product type: 'consu' (consumable), 'service' (service), or 'product' (storable/stockable).",
+            "required": false,
+            "defaultValue": "consu"
+          }
+        ]
+      },
+      {
+        "name": "Manufacturing - Update Product Variant",
+        "code": "odoo-mrp-product-update",
+        "description": "Updates name, SKU, price, or cost of a product variant.",
+        "endpointPath": "/json/2/product.product/write",
+        "httpMethod": "POST",
+        "enabled": true,
+        "isExportable": true,
+        "bodyPayloadTemplate": "{\"ids\": [{{id}}], \"vals\": {\"name\": \"{{name}}\", \"default_code\": \"{{default_code}}\", \"lst_price\": {{lst_price}}, \"standard_price\": {{standard_price}}}}",
+        "parameters": [
+          {
+            "name": "id",
+            "type": "NUMBER",
+            "description": "ID of the product variant to update.",
+            "required": true,
+            "defaultValue": ""
+          },
+          {
+            "name": "name",
+            "type": "STRING",
+            "description": "New product name.",
+            "required": false,
+            "defaultValue": ""
+          },
+          {
+            "name": "default_code",
+            "type": "STRING",
+            "description": "New SKU code.",
+            "required": false,
+            "defaultValue": ""
+          },
+          {
+            "name": "lst_price",
+            "type": "NUMBER",
+            "description": "New public retail price.",
+            "required": false,
+            "defaultValue": "null"
+          },
+          {
+            "name": "standard_price",
+            "type": "NUMBER",
+            "description": "New standard cost price.",
+            "required": false,
+            "defaultValue": "null"
+          }
+        ]
+      },
+      {
+        "name": "Manufacturing - List Unbuild Orders",
+        "code": "odoo-mrp-unbuild-list",
+        "description": "Lists unbuild orders in Odoo.",
+        "endpointPath": "/json/2/mrp.unbuild/search_read",
+        "httpMethod": "POST",
+        "enabled": true,
+        "isExportable": true,
+        "bodyPayloadTemplate": "{\"domain\": [], \"fields\": [\"name\", \"product_id\", \"qty\", \"product_uom_id\", \"bom_id\", \"mo_id\", \"state\"], \"limit\": {{limit}}}",
+        "parameters": [
+          {
+            "name": "limit",
+            "type": "NUMBER",
+            "description": "Maximum number of unbuild orders to return.",
+            "required": false,
+            "defaultValue": "10"
+          }
+        ]
+      },
+      {
+        "name": "Manufacturing - Create Unbuild Order",
+        "code": "odoo-mrp-unbuild-create",
+        "description": "Creates a new unbuild order for a product and quantity.",
+        "endpointPath": "/json/2/mrp.unbuild/create",
+        "httpMethod": "POST",
+        "enabled": true,
+        "isExportable": true,
+        "bodyPayloadTemplate": "{\"vals_list\": [{\"product_id\": {{product_id}}, \"qty\": {{qty}}, \"bom_id\": {{bom_id}}, \"mo_id\": {{mo_id}}}]}",
+        "parameters": [
+          {
+            "name": "product_id",
+            "type": "NUMBER",
+            "description": "ID of the product (product.product) to disassemble.",
+            "required": true,
+            "defaultValue": ""
+          },
+          {
+            "name": "qty",
+            "type": "NUMBER",
+            "description": "Quantity to disassemble.",
+            "required": true,
+            "defaultValue": ""
+          },
+          {
+            "name": "bom_id",
+            "type": "NUMBER",
+            "description": "ID of the Bill of Materials to use for disassembly component list.",
+            "required": false,
+            "defaultValue": "null"
+          },
+          {
+            "name": "mo_id",
+            "type": "NUMBER",
+            "description": "ID of the source Manufacturing Order (mrp.production) to link.",
+            "required": false,
+            "defaultValue": "null"
+          }
+        ]
+      },
+      {
+        "name": "Manufacturing - Validate Unbuild Order",
+        "code": "odoo-mrp-unbuild-validate",
+        "description": "Validates and processes the disassembly of an unbuild order, restoring components to stock.",
+        "endpointPath": "/json/2/mrp.unbuild/action_validate",
+        "httpMethod": "POST",
+        "enabled": true,
+        "isExportable": true,
+        "bodyPayloadTemplate": "{\"ids\": [{{id}}]}",
+        "parameters": [
+          {
+            "name": "id",
+            "type": "NUMBER",
+            "description": "ID of the unbuild order to validate.",
+            "required": true,
+            "defaultValue": ""
+          }
+        ]
       }
     ]
   }
