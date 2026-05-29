@@ -24,7 +24,19 @@
     "EMPTY_STATE": "No tools registered.",
     "STATUS_HEALTHY": "Healthy",
     "STATUS_UNHEALTHY": "Unhealthy",
-    "DELETE_TOOL": "Delete tool"
+    "DELETE_TOOL": "Delete tool",
+    "EXPORT_MODAL": {
+      "TITLE": "Export Public Tools",
+      "LEAD": "Create a JSON file with exportable providers and tools to share with other agents and platforms.",
+      "AVAILABLE_PROVIDERS": "Available Providers ({{count}})",
+      "SELECT_ALL": "Select All",
+      "DESELECT_ALL": "Deselect All",
+      "EMPTY": "No public tools available to export.",
+      "TOOLS_COUNT": "{{count}} tools",
+      "DOWNLOAD_JSON_SPECIFIC": "Download JSON ({{count}} providers)",
+      "DOWNLOAD_JSON_ALL": "Download JSON (All providers)",
+      "GENERATING": "Generating..."
+    }
   },
   "TOOLS": {
     "TITLE": "API Tools",

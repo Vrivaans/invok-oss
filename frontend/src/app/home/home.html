@@ -255,21 +255,19 @@
   @if (showExportModal) {
   <div class="modal-overlay" (click)="closeExportModal()">
     <div class="modal-content modal--wide modal--wide-lg" (click)="$event.stopPropagation()">
-      <h3 class="modal-title">Exportar Herramientas Públicas</h3>
-      <p class="modal-lead">Crea un archivo JSON con los proveedores y herramientas
-        exportables para compartir con otros agentes y plataformas.</p>
+      <h3 class="modal-title">{{ 'HOME.EXPORT_MODAL.TITLE' | translate }}</h3>
+      <p class="modal-lead">{{ 'HOME.EXPORT_MODAL.LEAD' | translate }}</p>
 
       <div class="export-panel">
         <div class="export-panel-head">
-          <h4>Proveedores Disponibles ({{exportableProviders.length}})</h4>
+          <h4>{{ 'HOME.EXPORT_MODAL.AVAILABLE_PROVIDERS' | translate: { count: exportableProviders.length } }}</h4>
           <button type="button" class="btn secondary btn-select-all" (click)="selectAllExport()">
-            {{ selectedExportIds.size === exportableProviders.length ? 'Desmarcar Todos' : 'Seleccionar Todos' }}
+            {{ selectedExportIds.size === exportableProviders.length ? ('HOME.EXPORT_MODAL.DESELECT_ALL' | translate) : ('HOME.EXPORT_MODAL.SELECT_ALL' | translate) }}
           </button>
         </div>
 
         @if (exportableProviders.length === 0) {
-        <p class="export-empty">No hay herramientas públicas
-          disponibles para exportar.</p>
+        <p class="export-empty">{{ 'HOME.EXPORT_MODAL.EMPTY' | translate }}</p>
         } @else {
         <div class="export-list">
           @for (provider of exportableProviders; track provider.name; let idx = $index) {
@@ -280,7 +278,7 @@
               <div>
                 <h5 class="export-card-title">{{provider.name}}</h5>
                 <p class="export-card-meta">{{provider.baseUrl}} •
-                  {{provider.tools.length}} herramientas</p>
+                  {{ 'HOME.EXPORT_MODAL.TOOLS_COUNT' | translate: { count: provider.tools.length } }}</p>
               </div>
               <div class="export-check" [class.export-check--on]="selectedExportIds.has(idx)">
                 <span *ngIf="selectedExportIds.has(idx)">✓</span>
@@ -293,11 +291,12 @@
       </div>
 
       <div class="modal-actions" style="margin-top: 2rem;">
-        <button type="button" class="btn text-btn" (click)="closeExportModal()">Cancelar</button>
+        <button type="button" class="btn text-btn" (click)="closeExportModal()">{{ 'MODALS.CANCEL' | translate }}</button>
         <button type="button" class="btn primary" (click)="exportSelectedProviders()"
           [disabled]="isExporting || exportableProviders.length === 0">
-          <span *ngIf="!isExporting">Descargar JSON ({{ selectedExportIds.size > 0 ? selectedExportIds.size : 'Todos los' }} proveedores)</span>
-          <span *ngIf="isExporting">Generando...</span>
+          <span *ngIf="!isExporting && selectedExportIds.size > 0">{{ 'HOME.EXPORT_MODAL.DOWNLOAD_JSON_SPECIFIC' | translate: { count: selectedExportIds.size } }}</span>
+          <span *ngIf="!isExporting && selectedExportIds.size === 0">{{ 'HOME.EXPORT_MODAL.DOWNLOAD_JSON_ALL' | translate }}</span>
+          <span *ngIf="isExporting">{{ 'HOME.EXPORT_MODAL.GENERATING' | translate }}</span>
         </button>
       </div>
     </div>

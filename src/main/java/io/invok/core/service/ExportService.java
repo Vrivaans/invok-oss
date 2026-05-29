@@ -76,11 +76,30 @@ public class ExportService {
                 provider.getDynamicAuthMethod(),
                 provider.getDynamicAuthPayloadType(),
                 provider.getDynamicAuthPayloadLocation(),
-                provider.getDynamicAuthPayload(),
+                obfuscateDynamicAuthPayload(provider.getDynamicAuthPayload()),
                 provider.getDynamicAuthTokenExtractionPath(),
                 provider.getDynamicAuthInvalidationKeywords(),
                 customHeaders,
                 exportTools);
+    }
+
+    private String obfuscateDynamicAuthPayload(String payloadJson) {
+        if (payloadJson == null || payloadJson.isBlank()) {
+            return payloadJson;
+        }
+        try {
+            Map<String, Object> payloadMap = objectMapper.readValue(payloadJson,
+                    new TypeReference<Map<String, Object>>() {});
+            for (Map.Entry<String, Object> entry : payloadMap.entrySet()) {
+                if (entry.getValue() != null) {
+                    entry.setValue("<YOUR_DYNAMIC_AUTH_" + entry.getKey().toUpperCase() + ">");
+                }
+            }
+            return objectMapper.writeValueAsString(payloadMap);
+        } catch (Exception e) {
+            log.error("Failed to parse and obfuscate dynamic auth payload", e);
+            return payloadJson;
+        }
     }
 
     private ExportApiToolDto mapToExportToolDto(ApiTool tool) {

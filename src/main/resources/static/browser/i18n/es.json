@@ -24,7 +24,19 @@
     "EMPTY_STATE": "No hay herramientas registradas.",
     "STATUS_HEALTHY": "Sana",
     "STATUS_UNHEALTHY": "No sana",
-    "DELETE_TOOL": "Eliminar herramienta"
+    "DELETE_TOOL": "Eliminar herramienta",
+    "EXPORT_MODAL": {
+      "TITLE": "Exportar Herramientas Públicas",
+      "LEAD": "Crea un archivo JSON con los proveedores y herramientas exportables para compartir con otros agentes y plataformas.",
+      "AVAILABLE_PROVIDERS": "Proveedores Disponibles ({{count}})",
+      "SELECT_ALL": "Seleccionar Todos",
+      "DESELECT_ALL": "Desmarcar Todos",
+      "EMPTY": "No hay herramientas públicas disponibles para exportar.",
+      "TOOLS_COUNT": "{{count}} herramientas",
+      "DOWNLOAD_JSON_SPECIFIC": "Descargar JSON ({{count}} proveedores)",
+      "DOWNLOAD_JSON_ALL": "Descargar JSON (Todos los proveedores)",
+      "GENERATING": "Generando..."
+    }
   },
   "TOOLS": {
     "TITLE": "Herramientas API",
