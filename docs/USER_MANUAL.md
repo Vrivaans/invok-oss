@@ -240,7 +240,7 @@ You can trigger a configuration export via the dashboard.
 To prevent accidental exposure of sensitive keys, the export engine automatically strips out authentication credentials and replaces them with standard placeholders:
 * Primary API Keys/Secrets are replaced with: `"<YOUR_API_KEY>"`
 * Secondary API Keys/Secrets are replaced with: `"<YOUR_SECONDARY_KEY>"`
-* **Planned Enhancement:** Dynamic Auth Payload values (like passwords, keys, or client secrets) are currently exported as-is. A future update is planned to automatically detect and replace these values with placeholders (e.g. `<YOUR_PASSWORD>`) while keeping the JSON keys intact to preserve structure. Until then, **always manually inspect your exported JSON** to ensure no plaintext credentials are left in the dynamic auth payload.
+* **Dynamic Auth Payload values** (such as passwords, identifiers, keys, or client secrets) are automatically obfuscated. The JSON keys are preserved to maintain configuration structure, but all values are replaced with placeholders in the format `"<YOUR_DYNAMIC_AUTH_KEYNAME>"` (for example, `"password": "<YOUR_DYNAMIC_AUTH_PASSWORD>"`).
 
 ### 5.3 Sharing and Importing
 Because exported recipes are secret-free, you can safely:
@@ -248,7 +248,7 @@ Because exported recipes are secret-free, you can safely:
 2. Share them with other team members or the community.
 3. Feed them to AI agents as reference/context.
 
-When someone imports your recipe, they only need to replace the `"<YOUR_API_KEY>"` and `"<YOUR_SECONDARY_KEY>"` placeholders with their own credentials in the UI or in the JSON payload before hitting **Save** or executing `POST /api/import`.
+When someone imports your recipe, they only need to replace the `"<YOUR_API_KEY>"`, `"<YOUR_SECONDARY_KEY>"`, and any `"<YOUR_DYNAMIC_AUTH_...>"` placeholders with their own credentials in the UI or in the JSON payload before hitting **Save** or executing `POST /api/import`.
 
 ---
 
