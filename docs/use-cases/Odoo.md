@@ -3459,12 +3459,12 @@
       {
         "name": "Manufacturing - List Work Centers",
         "code": "odoo-mrp-workcenter-list",
-        "description": "Lists work centers from Odoo. Returns name, code, time efficiency, capacity, and target OEE.",
+        "description": "Lists work centers from Odoo. Returns name, code, time efficiency, and target OEE.",
         "endpointPath": "/json/2/mrp.workcenter/search_read",
         "httpMethod": "POST",
         "enabled": true,
         "isExportable": true,
-        "bodyPayloadTemplate": "{\"domain\": [], \"fields\": [\"name\", \"code\", \"time_efficiency\", \"capacity\", \"oee_target\", \"active\"], \"limit\": {{limit}}}",
+        "bodyPayloadTemplate": "{\"domain\": [], \"fields\": [\"name\", \"code\", \"time_efficiency\", \"oee_target\", \"active\"], \"limit\": {{limit}}}",
         "parameters": [
           {
             "name": "limit",
@@ -3483,7 +3483,7 @@
         "httpMethod": "POST",
         "enabled": true,
         "isExportable": true,
-        "bodyPayloadTemplate": "{\"vals_list\": [{\"name\": \"{{name}}\", \"code\": \"{{code}}\", \"time_efficiency\": {{time_efficiency}}, \"capacity\": {{capacity}}, \"oee_target\": {{oee_target}}}]}",
+        "bodyPayloadTemplate": "{\"vals_list\": [{\"name\": \"{{name}}\", \"code\": \"{{code}}\", \"time_efficiency\": {{time_efficiency}}, \"oee_target\": {{oee_target}}}]}",
         "parameters": [
           {
             "name": "name",
@@ -3507,13 +3507,6 @@
             "defaultValue": "100.0"
           },
           {
-            "name": "capacity",
-            "type": "NUMBER",
-            "description": "Capacity (e.g. concurrent items processed).",
-            "required": false,
-            "defaultValue": "1.0"
-          },
-          {
             "name": "oee_target",
             "type": "NUMBER",
             "description": "Overall Equipment Effectiveness target in percent.",
@@ -3525,12 +3518,12 @@
       {
         "name": "Manufacturing - Update Work Center",
         "code": "odoo-mrp-workcenter-update",
-        "description": "Updates name, code, or capacity of a work center.",
+        "description": "Updates name or code of a work center.",
         "endpointPath": "/json/2/mrp.workcenter/write",
         "httpMethod": "POST",
         "enabled": true,
         "isExportable": true,
-        "bodyPayloadTemplate": "{\"ids\": [{{id}}], \"vals\": {\"name\": \"{{name}}\", \"code\": \"{{code}}\", \"capacity\": {{capacity}}}}",
+        "bodyPayloadTemplate": "{\"ids\": [{{id}}], \"vals\": {\"name\": \"{{name}}\", \"code\": \"{{code}}\"}}",
         "parameters": [
           {
             "name": "id",
@@ -3552,13 +3545,6 @@
             "description": "New short code reference.",
             "required": false,
             "defaultValue": ""
-          },
-          {
-            "name": "capacity",
-            "type": "NUMBER",
-            "description": "New capacity value.",
-            "required": false,
-            "defaultValue": "null"
           }
         ]
       },
@@ -3702,7 +3688,7 @@
         "httpMethod": "POST",
         "enabled": true,
         "isExportable": true,
-        "bodyPayloadTemplate": "{\"domain\": [], \"fields\": [\"name\", \"product_id\", \"qty\", \"product_uom_id\", \"bom_id\", \"mo_id\", \"state\"], \"limit\": {{limit}}}",
+        "bodyPayloadTemplate": "{\"domain\": [], \"fields\": [\"name\", \"product_id\", \"product_qty\", \"product_uom_id\", \"bom_id\", \"mo_id\", \"state\"], \"limit\": {{limit}}}",
         "parameters": [
           {
             "name": "limit",
@@ -3721,7 +3707,7 @@
         "httpMethod": "POST",
         "enabled": true,
         "isExportable": true,
-        "bodyPayloadTemplate": "{\"vals_list\": [{\"product_id\": {{product_id}}, \"qty\": {{qty}}, \"bom_id\": {{bom_id}}, \"mo_id\": {{mo_id}}}]}",
+        "bodyPayloadTemplate": "{\"vals_list\": [{\"product_id\": {{product_id}}, \"product_qty\": {{product_qty}}, \"bom_id\": {{bom_id}}, \"mo_id\": {{mo_id}}}]}",
         "parameters": [
           {
             "name": "product_id",
@@ -3731,7 +3717,7 @@
             "defaultValue": ""
           },
           {
-            "name": "qty",
+            "name": "product_qty",
             "type": "NUMBER",
             "description": "Quantity to disassemble.",
             "required": true,
