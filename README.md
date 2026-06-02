@@ -336,6 +336,7 @@ Since Invok OSS runs in a trusted local environment, these endpoints do not requ
 | `GET` | `/api/guide` | Integration guidelines for agent self-integration |
 | `GET` | `/api/v1/recipes/openapi.json` | Get dynamic OpenAPI v3 spec for automation platforms |
 | `POST` | `/api/v1/execute/{toolCode}` | Execute a tool raw, returning direct JSON |
+| `GET` | `/llms.txt` | Get system conceptual specification and mental model (llms.txt) |
 | `POST` | `/mcp` | Standard JSON-RPC endpoint (Streamable HTTP) |
 | `GET` | `/mcp/tools/list` | List tools (stdio bridge) |
 | `POST` | `/mcp/tools/call` | Execute a tool (stdio bridge) |
@@ -389,6 +390,20 @@ The OSS version is fully functional for self-hosted setups. The admin API has no
 Need analytics, full request/response traceability, team collaboration, and hosted infrastructure?
 
 **[Invok Cloud →](https://useinvok.run)** is the production-ready hosted version with everything included.
+
+---
+
+## Specification for LLMs (llms.txt)
+
+To help large language models (LLMs) and AI agents quickly understand the architecture, mental model, and boundaries of Invok, the project includes and dynamically serves a standard `llms.txt` file:
+
+* **Specification File:** [llms.txt](file:///Users/ivanv/Desktop/VIDAL/programacion/invok/llms.txt)
+* **Public Endpoint:** `GET /llms.txt`
+
+### Dynamic Unification
+The endpoint is dynamically served by the backend:
+1. In **development**, it reads the `llms.txt` file directly from the project's root folder, allowing instant updates to be served without rebuilding.
+2. In **production**, it falls back to the static resource packaged in the classpath (`static/browser/llms.txt`).
 
 ---
 
