@@ -20,6 +20,7 @@ import java.time.Instant;
 import java.util.List;
 import java.util.Map;
 import com.fasterxml.jackson.core.type.TypeReference;
+import org.springframework.web.util.UriComponentsBuilder;
 
 @Service
 @Slf4j
@@ -150,10 +151,21 @@ public class ToolExecutionService {
 
         HttpMethod httpMethod = convertHttpMethod(apiTool.getHttpMethod());
 
-        RestClient.RequestBodySpec requestSpec = client.method(httpMethod).uri(java.net.URI.create(fullUrl));
+        // URI.create() es estricto: falla con caracteres ilegales (espacios, [], etc.) en query params.
+        // UriComponentsBuilder con encoded=true parsea la URL ya-codificada de forma robusta.
+        java.net.URI resolvedUri;
+        try {
+            resolvedUri = UriComponentsBuilder.fromUriString(fullUrl).build(true).toUri();
+        } catch (Exception uriEx) {
+            log.warn("URI build failed for '{}', falling back to URI.create: {}", fullUrl, uriEx.getMessage());
+            resolvedUri = java.net.URI.create(fullUrl);
+        }
+        RestClient.RequestBodySpec requestSpec = client.method(httpMethod).uri(resolvedUri);
 
         configureAuthentication(requestSpec, apiTool, dynamicToken);
 
+        // Los valores de customHeaders pueden estar encriptados (API secrets) o en texto plano
+        // (Content-Type, Accept, etc.). Solo intentamos desencriptar; si falla, usamos el valor raw.
         if (apiTool.getProvider().getCustomHeadersJson() != null
                 && !apiTool.getProvider().getCustomHeadersJson().isEmpty()) {
             try {
@@ -161,8 +173,19 @@ public class ToolExecutionService {
                         new TypeReference<Map<String, String>>() {
                         });
                 customHeaders.forEach((k, v) -> {
-                    String decryptedValue = (v != null && !v.isBlank()) ? encryptionService.decrypt(v) : v;
-                    requestSpec.header(k, decryptedValue);
+                    if (v == null || v.isBlank()) {
+                        requestSpec.header(k, v);
+                        return;
+                    }
+                    String headerValue;
+                    try {
+                        headerValue = encryptionService.decrypt(v);
+                    } catch (Exception decryptEx) {
+                        // El valor no está encriptado (ej: "application/json") — usarlo directamente.
+                        log.debug("Custom header '{}' value is not encrypted, using raw value.", k);
+                        headerValue = v;
+                    }
+                    requestSpec.header(k, headerValue);
                 });
             } catch (Exception e) {
                 log.warn("Failed to parse customHeadersJson for tool execution: {}",
