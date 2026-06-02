@@ -55,6 +55,8 @@
 .home-actions {
   display: flex;
   justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
   margin-top: 1.75rem;
 }
 
@@ -420,5 +422,23 @@
     color: #0a0a0a;
     font-weight: 700;
     font-size: 0.85rem;
+  }
+}
+
+.alert {
+  padding: 0.75rem 1rem;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-align: center;
+
+  &.success {
+    background: rgba(16, 185, 129, 0.1);
+    color: #4ade80;
+  }
+
+  &.error {
+    background: rgba(239, 68, 68, 0.1);
+    color: #f87171;
   }
 }

@@ -48,7 +48,9 @@ export class HomeComponent implements OnInit {
     selectedExportIds: Set<number> = new Set();
     isExporting = false;
     invokUrl = window.location.origin;
-    handsAiToken = '';
+    isSubmittingRefresh = false;
+    refreshSuccessMessage = '';
+    refreshErrorMessage = '';
 
     // Welcome Onboarding
     showWelcomeModal = false;
@@ -355,26 +357,9 @@ export class HomeComponent implements OnInit {
                         });
                     }
 
-                    const headerParametersList = [];
-                    if (this.handsAiToken && this.handsAiToken.trim()) {
-                        headerParametersList.push({
-                            name: 'X-HandsAI-Token',
-                            value: this.handsAiToken.trim()
-                        });
-                    } else {
-                        headerParametersList.push({
-                            name: 'X-HandsAI-Token',
-                            value: 'YOUR_PAT_TOKEN'
-                        });
-                    }
-
                     const parameters: any = {
                         method: 'POST',
                         url: `${baseUrl}/api/v1/execute/${tool.code}`,
-                        sendHeaders: true,
-                        headerParameters: {
-                            parameters: headerParametersList
-                        },
                         sendBody: true,
                         specifyBody: 'json',
                         jsonBody: JSON.stringify(bodyParams, null, 2),
@@ -427,5 +412,23 @@ export class HomeComponent implements OnInit {
 
         this.isExporting = false;
         this.closeExportModal();
+    }
+
+    refreshCache() {
+        this.isSubmittingRefresh = true;
+        this.refreshSuccessMessage = '';
+        this.refreshErrorMessage = '';
+        this.apiService.refreshToolCache().subscribe({
+            next: (res) => {
+                this.isSubmittingRefresh = false;
+                this.refreshSuccessMessage = res.message || 'Caché de herramientas actualizada correctamente';
+                setTimeout(() => this.refreshSuccessMessage = '', 4000);
+            },
+            error: (err) => {
+                this.isSubmittingRefresh = false;
+                this.refreshErrorMessage = err.error?.message || 'Error al refrescar la caché.';
+                setTimeout(() => this.refreshErrorMessage = '', 5000);
+            }
+        });
     }
 }

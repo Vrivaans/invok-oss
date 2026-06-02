@@ -4,9 +4,18 @@
     <h1 class="home-brand"><span class="brand-accent">Inv</span>ok</h1>
     <p class="home-tagline">{{ 'HOME.TITLE' | translate }}</p>
     <div class="home-actions">
+      <button type="button" class="btn primary home-export-btn" (click)="refreshCache()" [disabled]="isSubmittingRefresh">
+        <span class="home-export-icon" aria-hidden="true">🔄</span> {{ 'TOOLS.REFRESH_CACHE_BTN' | translate }}
+      </button>
       <button type="button" class="btn primary home-export-btn" (click)="openExportModal()">
         <span class="home-export-icon" aria-hidden="true">☁️</span> {{ 'HOME.EXPORT_BUTTON' | translate }}
       </button>
+    </div>
+    <div *ngIf="refreshSuccessMessage" class="alert success" style="margin-top: 1rem; max-width: 400px; margin-left: auto; margin-right: auto;">
+      {{ refreshSuccessMessage }}
+    </div>
+    <div *ngIf="refreshErrorMessage" class="alert error" style="margin-top: 1rem; max-width: 400px; margin-left: auto; margin-right: auto;">
+      {{ refreshErrorMessage }}
     </div>
   </header>
 
@@ -300,10 +309,6 @@
           <div class="form-group" style="flex: 1; min-width: 220px; display: flex; flex-direction: column; gap: 4px;">
             <label style="font-size: 0.85rem; font-weight: 500; color: rgba(255,255,255,0.8);">{{ 'HOME.EXPORT_MODAL.N8N_URL_LABEL' | translate }}</label>
             <input type="url" [(ngModel)]="invokUrl" [ngModelOptions]="{standalone: true}" placeholder="http://localhost:8080" style="width: 100%; border-radius: 6px; padding: 0.5rem; background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.15); color: #fff;" />
-          </div>
-          <div class="form-group" style="flex: 1; min-width: 220px; display: flex; flex-direction: column; gap: 4px;">
-            <label style="font-size: 0.85rem; font-weight: 500; color: rgba(255,255,255,0.8);">{{ 'HOME.EXPORT_MODAL.N8N_TOKEN_LABEL' | translate }}</label>
-            <input type="text" [(ngModel)]="handsAiToken" [ngModelOptions]="{standalone: true}" placeholder="Token PAT..." style="width: 100%; border-radius: 6px; padding: 0.5rem; background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.15); color: #fff;" />
           </div>
         </div>
       </div>

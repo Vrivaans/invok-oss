@@ -89,7 +89,8 @@ public class ExportService {
         }
         try {
             Map<String, Object> payloadMap = objectMapper.readValue(payloadJson,
-                    new TypeReference<Map<String, Object>>() {});
+                    new TypeReference<Map<String, Object>>() {
+                    });
             for (Map.Entry<String, Object> entry : payloadMap.entrySet()) {
                 if (entry.getValue() != null) {
                     entry.setValue("<YOUR_DYNAMIC_AUTH_" + entry.getKey().toUpperCase() + ">");
