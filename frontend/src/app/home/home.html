@@ -290,8 +290,30 @@
         }
       </div>
 
+      <!-- n8n Export Configuration -->
+      <div class="n8n-export-config" *ngIf="exportableProviders.length > 0" style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid rgba(255,255,255,0.1);">
+        <h4 style="margin-bottom: 0.5rem; font-size: 1.1rem; color: #fff;">{{ 'HOME.EXPORT_MODAL.N8N_CONFIG_TITLE' | translate }}</h4>
+        <p class="helper-text" style="font-size: 0.85rem; opacity: 0.7; margin-bottom: 1rem;">
+          {{ 'HOME.EXPORT_MODAL.N8N_CONFIG_LEAD' | translate }}
+        </p>
+        <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+          <div class="form-group" style="flex: 1; min-width: 220px; display: flex; flex-direction: column; gap: 4px;">
+            <label style="font-size: 0.85rem; font-weight: 500; color: rgba(255,255,255,0.8);">{{ 'HOME.EXPORT_MODAL.N8N_URL_LABEL' | translate }}</label>
+            <input type="url" [(ngModel)]="invokUrl" [ngModelOptions]="{standalone: true}" placeholder="http://localhost:8080" style="width: 100%; border-radius: 6px; padding: 0.5rem; background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.15); color: #fff;" />
+          </div>
+          <div class="form-group" style="flex: 1; min-width: 220px; display: flex; flex-direction: column; gap: 4px;">
+            <label style="font-size: 0.85rem; font-weight: 500; color: rgba(255,255,255,0.8);">{{ 'HOME.EXPORT_MODAL.N8N_TOKEN_LABEL' | translate }}</label>
+            <input type="text" [(ngModel)]="handsAiToken" [ngModelOptions]="{standalone: true}" placeholder="Token PAT..." style="width: 100%; border-radius: 6px; padding: 0.5rem; background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.15); color: #fff;" />
+          </div>
+        </div>
+      </div>
+
       <div class="modal-actions" style="margin-top: 2rem;">
         <button type="button" class="btn text-btn" (click)="closeExportModal()">{{ 'MODALS.CANCEL' | translate }}</button>
+        <button type="button" class="btn secondary" (click)="exportAsN8nWorkflow()"
+          [disabled]="isExporting || exportableProviders.length === 0">
+          <span>{{ 'HOME.EXPORT_MODAL.DOWNLOAD_N8N' | translate }}</span>
+        </button>
         <button type="button" class="btn primary" (click)="exportSelectedProviders()"
           [disabled]="isExporting || exportableProviders.length === 0">
           <span *ngIf="!isExporting && selectedExportIds.size > 0">{{ 'HOME.EXPORT_MODAL.DOWNLOAD_JSON_SPECIFIC' | translate: { count: selectedExportIds.size } }}</span>

@@ -120,6 +120,8 @@ Invok exposes dynamic tools to external AI agents using the standard Model Conte
 - `POST /api/import` — Import OpenAPI specification or JSON recipes.
 - `GET /api/export` — Export providers and tools (secrets are automatically replaced with template placeholders).
 - `GET /api/guide` — Access integration guidelines.
+- `GET /api/v1/recipes/openapi.json` — Get dynamic OpenAPI v3 spec for automation platforms (n8n/Make).
+- `POST /api/v1/execute/{toolCode}` — Execute a tool raw (bypasses TOON formatting & XML wrapping to return raw JSON directly).
 
 ---
 

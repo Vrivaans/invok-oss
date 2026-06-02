@@ -42,12 +42,12 @@ public class ToolCacheManager {
     }
 
     public void addOrUpdateTool(ApiTool tool) {
-        if (tool.isEnabled() && tool.isHealthy()) {
+        if (tool.isEnabled()) {
             toolCache.put(tool.getCode(), tool);
             log.info("Tool {} added/updated in cache", tool.getCode());
         } else {
             toolCache.remove(tool.getCode());
-            log.info("Tool {} removed from cache due to disabled state or unhealthy status", tool.getCode());
+            log.info("Tool {} removed from cache due to disabled state", tool.getCode());
         }
     }
 

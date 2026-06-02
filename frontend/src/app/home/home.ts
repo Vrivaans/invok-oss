@@ -1,6 +1,6 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators, FormArray } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators, FormArray, FormsModule } from '@angular/forms';
 import { ApiService, ApiTool } from '../api.service';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
@@ -8,7 +8,7 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 @Component({
     selector: 'app-home',
     standalone: true,
-    imports: [CommonModule, ReactiveFormsModule, TranslateModule],
+    imports: [CommonModule, ReactiveFormsModule, FormsModule, TranslateModule],
     templateUrl: './home.html',
     styleUrl: './home.scss'
 })
@@ -47,6 +47,8 @@ export class HomeComponent implements OnInit {
     exportableProviders: any[] = [];
     selectedExportIds: Set<number> = new Set();
     isExporting = false;
+    invokUrl = window.location.origin;
+    handsAiToken = '';
 
     // Welcome Onboarding
     showWelcomeModal = false;
@@ -312,6 +314,113 @@ export class HomeComponent implements OnInit {
         linkElement.setAttribute('href', url);
         linkElement.setAttribute('download', exportFileDefaultName);
         document.body.appendChild(linkElement); // Required for Firefox
+        linkElement.click();
+        document.body.removeChild(linkElement);
+        window.URL.revokeObjectURL(url);
+
+        this.isExporting = false;
+        this.closeExportModal();
+    }
+
+    exportAsN8nWorkflow() {
+        this.isExporting = true;
+
+        let providersToExport = this.exportableProviders;
+        if (this.selectedExportIds.size > 0) {
+            providersToExport = this.exportableProviders.filter((_, index) => this.selectedExportIds.has(index));
+        }
+
+        const nodes: any[] = [];
+        const connections: any = {};
+        
+        let x = 250;
+        let y = 300;
+        let index = 1;
+
+        let baseUrl = this.invokUrl ? this.invokUrl.trim() : 'http://localhost:8080';
+        if (baseUrl.endsWith('/')) {
+            baseUrl = baseUrl.slice(0, -1);
+        }
+
+        providersToExport.forEach(provider => {
+            if (provider.tools) {
+                provider.tools.forEach((tool: any) => {
+                    const nodeName = `Invok: ${tool.code}`;
+                    const nodeType = 'n8n-nodes-base.httpRequest';
+                    
+                    const bodyParams: any = {};
+                    if (tool.parameters) {
+                        tool.parameters.forEach((param: any) => {
+                            bodyParams[param.name] = param.defaultValue !== undefined ? param.defaultValue : '';
+                        });
+                    }
+
+                    const headerParametersList = [];
+                    if (this.handsAiToken && this.handsAiToken.trim()) {
+                        headerParametersList.push({
+                            name: 'X-HandsAI-Token',
+                            value: this.handsAiToken.trim()
+                        });
+                    } else {
+                        headerParametersList.push({
+                            name: 'X-HandsAI-Token',
+                            value: 'YOUR_PAT_TOKEN'
+                        });
+                    }
+
+                    const parameters: any = {
+                        method: 'POST',
+                        url: `${baseUrl}/api/v1/execute/${tool.code}`,
+                        sendHeaders: true,
+                        headerParameters: {
+                            parameters: headerParametersList
+                        },
+                        sendBody: true,
+                        specifyBody: 'json',
+                        jsonBody: JSON.stringify(bodyParams, null, 2),
+                        options: {}
+                    };
+
+                    nodes.push({
+                        parameters: parameters,
+                        id: `invok-node-${tool.code}-${index++}`,
+                        name: nodeName,
+                        type: nodeType,
+                        typeVersion: 4.2,
+                        position: [x, y]
+                    });
+
+                    x += 250;
+                    if (x > 1500) {
+                        x = 250;
+                        y += 200;
+                    }
+                });
+            }
+        });
+
+        const n8nWorkflow = {
+            name: 'Workflow Invok',
+            nodes: nodes,
+            connections: connections,
+            active: false,
+            settings: {
+                executionOrder: 'v1'
+            },
+            meta: {
+                templateCredsSetupCompleted: true
+            }
+        };
+
+        const dataStr = JSON.stringify(n8nWorkflow, null, 2);
+        const blob = new Blob([dataStr], { type: 'application/json;charset=utf-8' });
+        const url = window.URL.createObjectURL(blob);
+        const exportFileDefaultName = 'invok_n8n_workflow.json';
+
+        const linkElement = document.createElement('a');
+        linkElement.setAttribute('href', url);
+        linkElement.setAttribute('download', exportFileDefaultName);
+        document.body.appendChild(linkElement);
         linkElement.click();
         document.body.removeChild(linkElement);
         window.URL.revokeObjectURL(url);

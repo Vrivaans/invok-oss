@@ -35,7 +35,12 @@
       "TOOLS_COUNT": "{{count}} herramientas",
       "DOWNLOAD_JSON_SPECIFIC": "Descargar JSON ({{count}} proveedores)",
       "DOWNLOAD_JSON_ALL": "Descargar JSON (Todos los proveedores)",
-      "GENERATING": "Generando..."
+      "GENERATING": "Generando...",
+      "DOWNLOAD_N8N": "Exportar a n8n Workflow",
+      "N8N_CONFIG_TITLE": "Configuración para n8n",
+      "N8N_CONFIG_LEAD": "Especifica los datos de conexión que usarán los nodos de n8n para conectarse a este servidor Invok.",
+      "N8N_URL_LABEL": "URL Base de Invok",
+      "N8N_TOKEN_LABEL": "X-HandsAI-Token (PAT)"
     }
   },
   "TOOLS": {
