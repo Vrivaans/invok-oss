@@ -78,6 +78,7 @@
     "ADD_MANUAL": "Add Manually",
     "SUBMIT_BUTTON": "Save All",
     "SUBMITTING": "Saving Batch...",
+    "REFRESH_CACHE_BTN": "Refresh Cache",
     "SECONDARY_AUTH_TITLE": "Secondary Authentication (App Tokens)",
     "SECONDARY_API_KEY_NAME": "Secondary Key Name (e.g. 'token')",
     "SECONDARY_API_KEY_VALUE": "Secondary Key Value",

@@ -481,6 +481,24 @@ export class ToolsComponent implements OnInit {
     }
   }
 
+  refreshCache() {
+    this.isSubmitting = true;
+    this.successMessage = '';
+    this.errorMessage = '';
+    this.apiService.refreshToolCache().subscribe({
+      next: (res) => {
+        this.isSubmitting = false;
+        this.successMessage = res.message || 'Caché de herramientas actualizada correctamente';
+        setTimeout(() => this.successMessage = '', 4000);
+      },
+      error: (err) => {
+        this.isSubmitting = false;
+        this.errorMessage = err.error?.message || 'Error al refrescar la caché.';
+        setTimeout(() => this.errorMessage = '', 5000);
+      }
+    });
+  }
+
   onSubmit() {
     if (this.batchForm.invalid || this.endpoints.length === 0) {
       this.batchForm.markAllAsTouched();

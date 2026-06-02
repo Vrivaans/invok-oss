@@ -288,6 +288,33 @@ Import any of these via `POST /api/import`.
 
 ---
 
+## Connect to Automation Platforms (n8n, Make, Zapier)
+
+Invok can act as a secure, unified API Gateway for automation tools. You can expose all your active tools via a dynamic OpenAPI specification and execute them directly through raw HTTP requests without token formatting (TOON) or XML wrapping.
+
+### Automation Endpoints
+* **Get OpenAPI Specification**: `GET /api/v1/recipes/openapi.json`
+* **Execute raw tool**: `POST /api/v1/execute/{toolCode}`
+
+Since Invok OSS runs in a trusted local environment, these endpoints do not require authentication headers by default.
+
+### n8n Configuration
+1. Add an **HTTP Request** node.
+2. Click **Import cURL** and paste the following to test executing a tool (e.g., `coinbase-spot-price`):
+   ```bash
+   curl -X POST http://localhost:8080/api/v1/execute/coinbase-spot-price \
+     -H "Content-Type: application/json" \
+     -d '{"currency_pair": "BTC-USD"}'
+   ```
+3. Execute the step to receive the raw JSON response directly.
+
+### Make Configuration
+1. Add the **HTTP -> Make an OpenAPI request** node.
+2. Specify the OpenAPI document URL: `http://localhost:8080/api/v1/recipes/openapi.json`
+3. That's it! Make will automatically import the list of all your tools and their corresponding parameters as dropdowns.
+
+---
+
 ## API Reference
 
 | Method | Endpoint | Description |
@@ -303,9 +330,12 @@ Import any of these via `POST /api/import`.
 | `POST` | `/api/tools/{id}/validate` | Health check a tool endpoint |
 | `POST` | `/api/tools/batch` | Batch register tools |
 | `POST` | `/api/tools/call` | Execute a tool directly (for testing) |
+| `POST` | `/api/tools/cache/refresh` | Manually clear and reload the tool cache |
 | `POST` | `/api/import` | Import recipes or OpenAPI specs |
 | `GET` | `/api/export` | Export full configuration as a recipe |
 | `GET` | `/api/guide` | Integration guidelines for agent self-integration |
+| `GET` | `/api/v1/recipes/openapi.json` | Get dynamic OpenAPI v3 spec for automation platforms |
+| `POST` | `/api/v1/execute/{toolCode}` | Execute a tool raw, returning direct JSON |
 | `POST` | `/mcp` | Standard JSON-RPC endpoint (Streamable HTTP) |
 | `GET` | `/mcp/tools/list` | List tools (stdio bridge) |
 | `POST` | `/mcp/tools/call` | Execute a tool (stdio bridge) |

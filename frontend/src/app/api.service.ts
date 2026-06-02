@@ -91,4 +91,8 @@ export class ApiService {
     deleteApiProvider(id: number): Observable<void> {
         return this.http.delete<void>(`/api/providers/${id}`);
     }
+
+    refreshToolCache(): Observable<any> {
+        return this.http.post<any>('/api/tools/cache/refresh', {});
+    }
 }

@@ -1,7 +1,15 @@
 <div class="container">
-    <header>
-        <h1>{{ 'TOOLS.TITLE' | translate }}</h1>
-        <p>{{ 'TOOLS.SUBTITLE' | translate }}</p>
+    <header style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem;">
+        <div>
+            <h1>{{ 'TOOLS.TITLE' | translate }}</h1>
+            <p>{{ 'TOOLS.SUBTITLE' | translate }}</p>
+        </div>
+        <div>
+            <button type="button" class="btn secondary" (click)="refreshCache()" [disabled]="isSubmitting" style="padding: 0.6rem 1.2rem; font-size: 0.9rem; border-radius: 999px; display: flex; align-items: center; gap: 6px;">
+                <span>🔄</span>
+                <span>{{ 'TOOLS.REFRESH_CACHE_BTN' | translate }}</span>
+            </button>
+        </div>
     </header>
 
     <main>

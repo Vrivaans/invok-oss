@@ -37,7 +37,11 @@ public class ToolExecutionService {
     private final io.invok.core.util.DataEgressScrubber dataEgressScrubber;
 
     public ToolExecuteResponse executeApiTool(ToolExecuteRequest request) {
-        log.info("Executing tool: {}", request.toolName());
+        return executeApiTool(request, false);
+    }
+
+    public ToolExecuteResponse executeApiTool(ToolExecuteRequest request, boolean raw) {
+        log.info("Executing tool: {} (raw={})", request.toolName(), raw);
         Instant startTime = Instant.now();
 
         Map<String, Object> safeParameters = dataEgressScrubber.scrubParameters(request.parameters());
@@ -109,11 +113,11 @@ public class ToolExecutionService {
             long executionTime = Duration.between(startTime, Instant.now()).toMillis();
             log.info("Tool execution successful: {} in {}ms", safeRequest.toolName(), executionTime);
 
-            String sanitizedOutput = securitySanitizer.sanitizeToolResponse(result);
+            Object finalOutput = raw ? result : securitySanitizer.sanitizeToolResponse(result);
 
             return new ToolExecuteResponse(
                     true,
-                    sanitizedOutput,
+                    finalOutput,
                     executionTime,
                     "api_tool",
                     null);

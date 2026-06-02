@@ -32,13 +32,13 @@ public class ToolCacheManager {
 
     public List<ApiTool> getAllCachedTools() {
         return toolCache.values().stream()
-                .filter(tool -> tool.isEnabled() && tool.isHealthy())
+                .filter(ApiTool::isEnabled)
                 .toList();
     }
 
     public Optional<ApiTool> getCachedTool(String toolCode) {
         return Optional.ofNullable(toolCache.get(toolCode))
-                .filter(tool -> tool.isEnabled() && tool.isHealthy());
+                .filter(ApiTool::isEnabled);
     }
 
     public void addOrUpdateTool(ApiTool tool) {

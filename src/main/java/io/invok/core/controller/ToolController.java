@@ -23,6 +23,13 @@ public class ToolController {
     private final ApiToolService apiToolService;
     private final ToolExecutionService toolExecutionService;
     private final ToolDiscoveryService toolDiscoveryService;
+    private final io.invok.core.service.ToolCacheManager toolCacheManager;
+
+    @PostMapping("/cache/refresh")
+    public Map<String, Object> refreshToolCache() {
+        int totalTools = toolCacheManager.refreshCache();
+        return Map.of("message", "Cache refreshed successfully", "count", totalTools);
+    }
 
     @GetMapping
     public List<ApiToolResponse> getAllTools() {
