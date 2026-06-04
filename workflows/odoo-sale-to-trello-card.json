@@ -1,0 +1,151 @@
+{
+  "name": "Odoo: Nueva Venta → Tarjeta en Trello",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 5
+            }
+          ]
+        }
+      },
+      "id": "schedule-trigger-1",
+      "name": "Cada 5 minutos",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        250,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/odoo-sale-order-list",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"limit\": \"50\"\n}",
+        "options": {}
+      },
+      "id": "invok-node-odoo-sale-order-list-1",
+      "name": "Invok: Listar Ventas de Odoo",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        500,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Este nodo filtra solo las ventas nuevas comparando con el último ID procesado.\n// n8n guarda el estado entre ejecuciones usando getWorkflowStaticData.\nconst staticData = $getWorkflowStaticData('node');\nconst lastProcessedId = staticData.lastProcessedId || 0;\n\n// La respuesta de Invok viene en body.result o body directamente\nconst responseBody = $input.first().json;\nconst orders = responseBody.result || responseBody;\n\nif (!Array.isArray(orders) || orders.length === 0) {\n  return [];\n}\n\n// Filtrar solo órdenes con ID mayor al último procesado\nconst newOrders = orders.filter(order => order.id > lastProcessedId);\n\nif (newOrders.length === 0) {\n  return [];\n}\n\n// Actualizar el último ID procesado al máximo encontrado\nstaticData.lastProcessedId = Math.max(...newOrders.map(o => o.id));\n\n// Retornar cada orden nueva como un item separado para que n8n las procese una por una\nreturn newOrders.map(order => ({ json: order }));\n"
+      },
+      "id": "code-filter-new-orders-1",
+      "name": "Filtrar Ventas Nuevas",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        750,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/trello-create-card",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"list_id\": \"TU_TRELLO_LIST_ID\",\n  \"name\": \"🛒 Venta #{{ $json.name }} — {{ $json.partner_id[1] || 'Sin cliente' }}\",\n  \"description\": \"**Orden de venta de Odoo**\\n\\n- **N° Pedido:** {{ $json.name }}\\n- **Cliente:** {{ $json.partner_id[1] || 'Sin cliente' }}\\n- **Total:** ${{ $json.amount_total }}\\n- **Estado:** {{ $json.state }}\\n- **Fecha:** {{ $json.date_order }}\\n- **ID Odoo:** {{ $json.id }}\"\n}",
+        "options": {}
+      },
+      "id": "invok-node-trello-create-card-1",
+      "name": "Invok: Crear Tarjeta en Trello",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1000,
+        300
+      ]
+    }
+  ],
+  "connections": {
+    "Cada 5 minutos": {
+      "main": [
+        [
+          {
+            "node": "Invok: Listar Ventas de Odoo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Invok: Listar Ventas de Odoo": {
+      "main": [
+        [
+          {
+            "node": "Filtrar Ventas Nuevas",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filtrar Ventas Nuevas": {
+      "main": [
+        [
+          {
+            "node": "Invok: Crear Tarjeta en Trello",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {
+    "instanceId": ""
+  },
+  "tags": [
+    {
+      "name": "invok",
+      "createdAt": "2026-06-03T17:00:00.000Z",
+      "updatedAt": "2026-06-03T17:00:00.000Z"
+    },
+    {
+      "name": "odoo",
+      "createdAt": "2026-06-03T17:00:00.000Z",
+      "updatedAt": "2026-06-03T17:00:00.000Z"
+    },
+    {
+      "name": "trello",
+      "createdAt": "2026-06-03T17:00:00.000Z",
+      "updatedAt": "2026-06-03T17:00:00.000Z"
+    }
+  ]
+}

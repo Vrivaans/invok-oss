@@ -1,0 +1,4252 @@
+{
+  "name": "Workflow Invok",
+  "nodes": [
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/moltbook-semantic-search",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"q\": null\n}",
+        "options": {}
+      },
+      "id": "invok-node-moltbook-semantic-search-1",
+      "name": "Invok: moltbook-semantic-search",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        250,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/moltbook-read-feed",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"sort\": \"hot\",\n  \"limit\": \"10\",\n  \"submolt\": null\n}",
+        "options": {}
+      },
+      "id": "invok-node-moltbook-read-feed-2",
+      "name": "Invok: moltbook-read-feed",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        500,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/moltbook-create-post",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"content\": null,\n  \"title\": null,\n  \"submolt_name\": null\n}",
+        "options": {}
+      },
+      "id": "invok-node-moltbook-create-post-3",
+      "name": "Invok: moltbook-create-post",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        750,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/moltbook-verify",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"answer\": \"\",\n  \"verification_code\": \"\"\n}",
+        "options": {}
+      },
+      "id": "invok-node-moltbook-verify-4",
+      "name": "Invok: moltbook-verify",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1000,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/moltbook-create-comment",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"post_id\": \"\",\n  \"content\": \"\"\n}",
+        "options": {}
+      },
+      "id": "invok-node-moltbook-create-comment-5",
+      "name": "Invok: moltbook-create-comment",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1250,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/moltbook-read-comments",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"sort\": \"best\",\n  \"post_id\": \"\"\n}",
+        "options": {}
+      },
+      "id": "invok-node-moltbook-read-comments-6",
+      "name": "Invok: moltbook-read-comments",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1500,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/moltbook-get-notifications",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{}",
+        "options": {}
+      },
+      "id": "invok-node-moltbook-get-notifications-7",
+      "name": "Invok: moltbook-get-notifications",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        250,
+        500
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/moltbook-home-dashboard",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{}",
+        "options": {}
+      },
+      "id": "invok-node-moltbook-home-dashboard-8",
+      "name": "Invok: moltbook-home-dashboard",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        500,
+        500
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/social-post",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"post\": \"\",\n  \"platforms\": \"\"\n}",
+        "options": {}
+      },
+      "id": "invok-node-social-post-9",
+      "name": "Invok: social-post",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        750,
+        500
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/odoo-crm-list",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"limit\": \"10\"\n}",
+        "options": {}
+      },
+      "id": "invok-node-odoo-crm-list-10",
+      "name": "Invok: odoo-crm-list",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1000,
+        500
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/odoo-crm-create",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"description\": \"\",\n  \"type\": \"lead\",\n  \"name\": \"\",\n  \"partner_name\": \"\",\n  \"email_from\": \"\"\n}",
+        "options": {}
+      },
+      "id": "invok-node-odoo-crm-create-11",
+      "name": "Invok: odoo-crm-create",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1250,
+        500
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/odoo-crm-update",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"id\": \"\",\n  \"stage_id\": \"\",\n  \"probability\": \"\",\n  \"name\": \"\"\n}",
+        "options": {}
+      },
+      "id": "invok-node-odoo-crm-update-12",
+      "name": "Invok: odoo-crm-update",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1500,
+        500
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/odoo-crm-delete",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"id\": \"\"\n}",
+        "options": {}
+      },
+      "id": "invok-node-odoo-crm-delete-13",
+      "name": "Invok: odoo-crm-delete",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        250,
+        700
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/odoo-project-list",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"limit\": \"10\"\n}",
+        "options": {}
+      },
+      "id": "invok-node-odoo-project-list-14",
+      "name": "Invok: odoo-project-list",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        500,
+        700
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/odoo-project-task-list",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"limit\": \"10\"\n}",
+        "options": {}
+      },
+      "id": "invok-node-odoo-project-task-list-15",
+      "name": "Invok: odoo-project-task-list",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        750,
+        700
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/odoo-project-task-create",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"name\": \"\",\n  \"project_id\": \"\",\n  \"date_deadline\": \"\",\n  \"description\": \"\"\n}",
+        "options": {}
+      },
+      "id": "invok-node-odoo-project-task-create-16",
+      "name": "Invok: odoo-project-task-create",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1000,
+        700
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/odoo-project-task-update",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"name\": \"\",\n  \"date_deadline\": \"\",\n  \"id\": \"\",\n  \"description\": \"\",\n  \"stage_id\": \"\"\n}",
+        "options": {}
+      },
+      "id": "invok-node-odoo-project-task-update-17",
+      "name": "Invok: odoo-project-task-update",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1250,
+        700
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/odoo-project-task-delete",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"id\": \"\"\n}",
+        "options": {}
+      },
+      "id": "invok-node-odoo-project-task-delete-18",
+      "name": "Invok: odoo-project-task-delete",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1500,
+        700
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/odoo-product-list",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"limit\": \"10\"\n}",
+        "options": {}
+      },
+      "id": "invok-node-odoo-product-list-19",
+      "name": "Invok: odoo-product-list",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        250,
+        900
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/odoo-product-create",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"list_price\": \"0.0\",\n  \"type\": \"consu\",\n  \"name\": \"\"\n}",
+        "options": {}
+      },
+      "id": "invok-node-odoo-product-create-20",
+      "name": "Invok: odoo-product-create",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        500,
+        900
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/odoo-product-update",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"name\": \"\",\n  \"list_price\": \"\",\n  \"id\": \"\",\n  \"type\": \"\"\n}",
+        "options": {}
+      },
+      "id": "invok-node-odoo-product-update-21",
+      "name": "Invok: odoo-product-update",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        750,
+        900
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/odoo-calendar-event-list",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"limit\": \"10\"\n}",
+        "options": {}
+      },
+      "id": "invok-node-odoo-calendar-event-list-22",
+      "name": "Invok: odoo-calendar-event-list",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1000,
+        900
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/odoo-calendar-event-create",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"start\": \"\",\n  \"name\": \"\",\n  \"description\": \"\",\n  \"stop\": \"\"\n}",
+        "options": {}
+      },
+      "id": "invok-node-odoo-calendar-event-create-23",
+      "name": "Invok: odoo-calendar-event-create",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1250,
+        900
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/odoo-calendar-event-update",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"stop\": \"\",\n  \"name\": \"\",\n  \"id\": \"\",\n  \"start\": \"\",\n  \"description\": \"\"\n}",
+        "options": {}
+      },
+      "id": "invok-node-odoo-calendar-event-update-24",
+      "name": "Invok: odoo-calendar-event-update",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1500,
+        900
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/odoo-mail-activity-list",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"limit\": \"10\"\n}",
+        "options": {}
+      },
+      "id": "invok-node-odoo-mail-activity-list-25",
+      "name": "Invok: odoo-mail-activity-list",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        250,
+        1100
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/odoo-ir-model-list",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"model_name\": \"\"\n}",
+        "options": {}
+      },
+      "id": "invok-node-odoo-ir-model-list-26",
+      "name": "Invok: odoo-ir-model-list",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        500,
+        1100
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/odoo-mail-activity-create",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"summary\": \"\",\n  \"activity_type_id\": \"1\",\n  \"res_id\": \"\",\n  \"res_model_id\": \"\",\n  \"date_deadline\": \"\"\n}",
+        "options": {}
+      },
+      "id": "invok-node-odoo-mail-activity-create-27",
+      "name": "Invok: odoo-mail-activity-create",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        750,
+        1100
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/odoo-mail-message-list",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"limit\": \"10\"\n}",
+        "options": {}
+      },
+      "id": "invok-node-odoo-mail-message-list-28",
+      "name": "Invok: odoo-mail-message-list",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1000,
+        1100
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/odoo-mail-message-create",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"body\": \"\",\n  \"res_id\": \"\",\n  \"model\": \"\"\n}",
+        "options": {}
+      },
+      "id": "invok-node-odoo-mail-message-create-29",
+      "name": "Invok: odoo-mail-message-create",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1250,
+        1100
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/odoo-res-partner-list",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"limit\": \"10\"\n}",
+        "options": {}
+      },
+      "id": "invok-node-odoo-res-partner-list-30",
+      "name": "Invok: odoo-res-partner-list",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1500,
+        1100
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/odoo-res-partner-create",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"name\": \"\",\n  \"city\": \"\",\n  \"street\": \"\",\n  \"email\": \"\",\n  \"phone\": \"\"\n}",
+        "options": {}
+      },
+      "id": "invok-node-odoo-res-partner-create-31",
+      "name": "Invok: odoo-res-partner-create",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        250,
+        1300
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/odoo-res-partner-update",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"phone\": \"\",\n  \"name\": \"\",\n  \"email\": \"\",\n  \"street\": \"\",\n  \"city\": \"\",\n  \"id\": \"\"\n}",
+        "options": {}
+      },
+      "id": "invok-node-odoo-res-partner-update-32",
+      "name": "Invok: odoo-res-partner-update",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        500,
+        1300
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/odoo-sale-order-list",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"limit\": \"10\"\n}",
+        "options": {}
+      },
+      "id": "invok-node-odoo-sale-order-list-33",
+      "name": "Invok: odoo-sale-order-list",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        750,
+        1300
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/odoo-sale-order-create",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"date_order\": \"\",\n  \"partner_id\": \"\"\n}",
+        "options": {}
+      },
+      "id": "invok-node-odoo-sale-order-create-34",
+      "name": "Invok: odoo-sale-order-create",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1000,
+        1300
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/odoo-sale-order-update",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"state\": \"\",\n  \"id\": \"\",\n  \"partner_id\": \"\"\n}",
+        "options": {}
+      },
+      "id": "invok-node-odoo-sale-order-update-35",
+      "name": "Invok: odoo-sale-order-update",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1250,
+        1300
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/odoo-resource-list",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"limit\": \"10\"\n}",
+        "options": {}
+      },
+      "id": "invok-node-odoo-resource-list-36",
+      "name": "Invok: odoo-resource-list",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1500,
+        1300
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/odoo-account-move-list",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"limit\": \"10\"\n}",
+        "options": {}
+      },
+      "id": "invok-node-odoo-account-move-list-37",
+      "name": "Invok: odoo-account-move-list",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        250,
+        1500
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/odoo-account-move-create",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"move_type\": \"out_invoice\",\n  \"journal_id\": \"\",\n  \"date\": \"\",\n  \"partner_id\": \"\"\n}",
+        "options": {}
+      },
+      "id": "invok-node-odoo-account-move-create-38",
+      "name": "Invok: odoo-account-move-create",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        500,
+        1500
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/odoo-account-move-update",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"partner_id\": \"\",\n  \"date\": \"\",\n  \"journal_id\": \"\",\n  \"id\": \"\"\n}",
+        "options": {}
+      },
+      "id": "invok-node-odoo-account-move-update-39",
+      "name": "Invok: odoo-account-move-update",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        750,
+        1500
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/odoo-inventory-stock-list",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"limit\": \"10\"\n}",
+        "options": {}
+      },
+      "id": "invok-node-odoo-inventory-stock-list-40",
+      "name": "Invok: odoo-inventory-stock-list",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1000,
+        1500
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/odoo-inventory-transfer-list",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"limit\": \"10\"\n}",
+        "options": {}
+      },
+      "id": "invok-node-odoo-inventory-transfer-list-41",
+      "name": "Invok: odoo-inventory-transfer-list",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1250,
+        1500
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/odoo-stock-avco-report-list",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"limit\": \"10\"\n}",
+        "options": {}
+      },
+      "id": "invok-node-odoo-stock-avco-report-list-42",
+      "name": "Invok: odoo-stock-avco-report-list",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1500,
+        1500
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/odoo-stock-backorder-confirmation-list",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"limit\": \"10\"\n}",
+        "options": {}
+      },
+      "id": "invok-node-odoo-stock-backorder-confirmation-list-43",
+      "name": "Invok: odoo-stock-backorder-confirmation-list",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        250,
+        1700
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/odoo-stock-backorder-confirmation-line-list",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"limit\": \"10\"\n}",
+        "options": {}
+      },
+      "id": "invok-node-odoo-stock-backorder-confirmation-line-list-44",
+      "name": "Invok: odoo-stock-backorder-confirmation-line-list",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        500,
+        1700
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/odoo-stock-inventory-adjustment-name-list",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"limit\": \"10\"\n}",
+        "options": {}
+      },
+      "id": "invok-node-odoo-stock-inventory-adjustment-name-list-45",
+      "name": "Invok: odoo-stock-inventory-adjustment-name-list",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        750,
+        1700
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/odoo-stock-inventory-conflict-list",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"limit\": \"10\"\n}",
+        "options": {}
+      },
+      "id": "invok-node-odoo-stock-inventory-conflict-list-46",
+      "name": "Invok: odoo-stock-inventory-conflict-list",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1000,
+        1700
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/odoo-stock-inventory-warning-list",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"limit\": \"10\"\n}",
+        "options": {}
+      },
+      "id": "invok-node-odoo-stock-inventory-warning-list-47",
+      "name": "Invok: odoo-stock-inventory-warning-list",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1250,
+        1700
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/odoo-stock-location-list",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"limit\": \"10\"\n}",
+        "options": {}
+      },
+      "id": "invok-node-odoo-stock-location-list-48",
+      "name": "Invok: odoo-stock-location-list",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1500,
+        1700
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/odoo-stock-location-create",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"usage\": \"\",\n  \"location_id\": \"\",\n  \"name\": \"\"\n}",
+        "options": {}
+      },
+      "id": "invok-node-odoo-stock-location-create-49",
+      "name": "Invok: odoo-stock-location-create",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        250,
+        1900
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/odoo-stock-location-update",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"name\": \"\",\n  \"location_id\": \"\",\n  \"usage\": \"\",\n  \"id\": \"\"\n}",
+        "options": {}
+      },
+      "id": "invok-node-odoo-stock-location-update-50",
+      "name": "Invok: odoo-stock-location-update",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        500,
+        1900
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/odoo-stock-location-delete",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"id\": \"\"\n}",
+        "options": {}
+      },
+      "id": "invok-node-odoo-stock-location-delete-51",
+      "name": "Invok: odoo-stock-location-delete",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        750,
+        1900
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/odoo-stock-lot-list",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"limit\": \"10\"\n}",
+        "options": {}
+      },
+      "id": "invok-node-odoo-stock-lot-list-52",
+      "name": "Invok: odoo-stock-lot-list",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1000,
+        1900
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/odoo-stock-lot-create",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"name\": \"\",\n  \"location_id\": \"\",\n  \"product_id\": \"\"\n}",
+        "options": {}
+      },
+      "id": "invok-node-odoo-stock-lot-create-53",
+      "name": "Invok: odoo-stock-lot-create",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1250,
+        1900
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/odoo-stock-lot-update",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"name\": \"\",\n  \"product_id\": \"\",\n  \"id\": \"\",\n  \"location_id\": \"\"\n}",
+        "options": {}
+      },
+      "id": "invok-node-odoo-stock-lot-update-54",
+      "name": "Invok: odoo-stock-lot-update",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1500,
+        1900
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/odoo-stock-lot-delete",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"id\": \"\"\n}",
+        "options": {}
+      },
+      "id": "invok-node-odoo-stock-lot-delete-55",
+      "name": "Invok: odoo-stock-lot-delete",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        250,
+        2100
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/odoo-stock-move-list",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"limit\": \"10\"\n}",
+        "options": {}
+      },
+      "id": "invok-node-odoo-stock-move-list-56",
+      "name": "Invok: odoo-stock-move-list",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        500,
+        2100
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/odoo-stock-move-create",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"date\": \"\",\n  \"company_id\": \"\",\n  \"product_uom_qty\": \"\",\n  \"product_uom\": \"\",\n  \"product_id\": \"\",\n  \"procure_method\": \"\",\n  \"location_id\": \"\",\n  \"location_dest_id\": \"\"\n}",
+        "options": {}
+      },
+      "id": "invok-node-odoo-stock-move-create-57",
+      "name": "Invok: odoo-stock-move-create",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        750,
+        2100
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/odoo-stock-move-update",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"company_id\": \"\",\n  \"product_uom_qty\": \"\",\n  \"date\": \"\",\n  \"procure_method\": \"\",\n  \"location_dest_id\": \"\",\n  \"location_id\": \"\",\n  \"product_id\": \"\",\n  \"product_uom\": \"\",\n  \"id\": \"\"\n}",
+        "options": {}
+      },
+      "id": "invok-node-odoo-stock-move-update-58",
+      "name": "Invok: odoo-stock-move-update",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1000,
+        2100
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/odoo-stock-move-delete",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"id\": \"\"\n}",
+        "options": {}
+      },
+      "id": "invok-node-odoo-stock-move-delete-59",
+      "name": "Invok: odoo-stock-move-delete",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1250,
+        2100
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/odoo-stock-move-line-list",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"limit\": \"10\"\n}",
+        "options": {}
+      },
+      "id": "invok-node-odoo-stock-move-line-list-60",
+      "name": "Invok: odoo-stock-move-line-list",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1500,
+        2100
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/odoo-stock-move-line-create",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"date\": \"\",\n  \"location_dest_id\": \"\",\n  \"location_id\": \"\",\n  \"product_uom_id\": \"\",\n  \"company_id\": \"\"\n}",
+        "options": {}
+      },
+      "id": "invok-node-odoo-stock-move-line-create-61",
+      "name": "Invok: odoo-stock-move-line-create",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        250,
+        2300
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/odoo-stock-move-line-update",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"id\": \"\",\n  \"location_id\": \"\",\n  \"company_id\": \"\",\n  \"date\": \"\",\n  \"product_uom_id\": \"\",\n  \"location_dest_id\": \"\"\n}",
+        "options": {}
+      },
+      "id": "invok-node-odoo-stock-move-line-update-62",
+      "name": "Invok: odoo-stock-move-line-update",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        500,
+        2300
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/odoo-stock-move-line-delete",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"id\": \"\"\n}",
+        "options": {}
+      },
+      "id": "invok-node-odoo-stock-move-line-delete-63",
+      "name": "Invok: odoo-stock-move-line-delete",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        750,
+        2300
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/odoo-stock-orderpoint-snooze-list",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"limit\": \"10\"\n}",
+        "options": {}
+      },
+      "id": "invok-node-odoo-stock-orderpoint-snooze-list-64",
+      "name": "Invok: odoo-stock-orderpoint-snooze-list",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1000,
+        2300
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/odoo-stock-package-list",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"limit\": \"10\"\n}",
+        "options": {}
+      },
+      "id": "invok-node-odoo-stock-package-list-65",
+      "name": "Invok: odoo-stock-package-list",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1250,
+        2300
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/odoo-stock-package-create",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"name\": \"\",\n  \"location_id\": \"\"\n}",
+        "options": {}
+      },
+      "id": "invok-node-odoo-stock-package-create-66",
+      "name": "Invok: odoo-stock-package-create",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1500,
+        2300
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/odoo-stock-package-update",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"id\": \"\",\n  \"location_id\": \"\",\n  \"name\": \"\"\n}",
+        "options": {}
+      },
+      "id": "invok-node-odoo-stock-package-update-67",
+      "name": "Invok: odoo-stock-package-update",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        250,
+        2500
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/odoo-stock-package-delete",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"id\": \"\"\n}",
+        "options": {}
+      },
+      "id": "invok-node-odoo-stock-package-delete-68",
+      "name": "Invok: odoo-stock-package-delete",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        500,
+        2500
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/odoo-stock-package-destination-list",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"limit\": \"10\"\n}",
+        "options": {}
+      },
+      "id": "invok-node-odoo-stock-package-destination-list-69",
+      "name": "Invok: odoo-stock-package-destination-list",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        750,
+        2500
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/odoo-stock-package-history-list",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"limit\": \"10\"\n}",
+        "options": {}
+      },
+      "id": "invok-node-odoo-stock-package-history-list-70",
+      "name": "Invok: odoo-stock-package-history-list",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1000,
+        2500
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/odoo-stock-package-type-list",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"limit\": \"10\"\n}",
+        "options": {}
+      },
+      "id": "invok-node-odoo-stock-package-type-list-71",
+      "name": "Invok: odoo-stock-package-type-list",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1250,
+        2500
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/odoo-stock-picking-list",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"limit\": \"10\"\n}",
+        "options": {}
+      },
+      "id": "invok-node-odoo-stock-picking-list-72",
+      "name": "Invok: odoo-stock-picking-list",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1500,
+        2500
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/odoo-stock-picking-create",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"move_type\": \"\",\n  \"picking_type_id\": \"\",\n  \"location_id\": \"\",\n  \"location_dest_id\": \"\"\n}",
+        "options": {}
+      },
+      "id": "invok-node-odoo-stock-picking-create-73",
+      "name": "Invok: odoo-stock-picking-create",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        250,
+        2700
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/odoo-stock-picking-update",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"location_id\": \"\",\n  \"id\": \"\",\n  \"location_dest_id\": \"\",\n  \"picking_type_id\": \"\",\n  \"move_type\": \"\"\n}",
+        "options": {}
+      },
+      "id": "invok-node-odoo-stock-picking-update-74",
+      "name": "Invok: odoo-stock-picking-update",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        500,
+        2700
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/odoo-stock-picking-delete",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"id\": \"\"\n}",
+        "options": {}
+      },
+      "id": "invok-node-odoo-stock-picking-delete-75",
+      "name": "Invok: odoo-stock-picking-delete",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        750,
+        2700
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/odoo-stock-picking-type-list",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"limit\": \"10\"\n}",
+        "options": {}
+      },
+      "id": "invok-node-odoo-stock-picking-type-list-76",
+      "name": "Invok: odoo-stock-picking-type-list",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1000,
+        2700
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/odoo-stock-put-in-pack-list",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"limit\": \"10\"\n}",
+        "options": {}
+      },
+      "id": "invok-node-odoo-stock-put-in-pack-list-77",
+      "name": "Invok: odoo-stock-put-in-pack-list",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1250,
+        2700
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/odoo-stock-putaway-rule-list",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"limit\": \"10\"\n}",
+        "options": {}
+      },
+      "id": "invok-node-odoo-stock-putaway-rule-list-78",
+      "name": "Invok: odoo-stock-putaway-rule-list",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1500,
+        2700
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/odoo-stock-quant-list",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"limit\": \"10\"\n}",
+        "options": {}
+      },
+      "id": "invok-node-odoo-stock-quant-list-79",
+      "name": "Invok: odoo-stock-quant-list",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        250,
+        2900
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/odoo-stock-quant-create",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"product_id\": \"\"\n}",
+        "options": {}
+      },
+      "id": "invok-node-odoo-stock-quant-create-80",
+      "name": "Invok: odoo-stock-quant-create",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        500,
+        2900
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/odoo-stock-quant-update",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"product_id\": \"\",\n  \"id\": \"\"\n}",
+        "options": {}
+      },
+      "id": "invok-node-odoo-stock-quant-update-81",
+      "name": "Invok: odoo-stock-quant-update",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        750,
+        2900
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/odoo-stock-quant-delete",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"id\": \"\"\n}",
+        "options": {}
+      },
+      "id": "invok-node-odoo-stock-quant-delete-82",
+      "name": "Invok: odoo-stock-quant-delete",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1000,
+        2900
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/odoo-stock-quant-relocate-list",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"limit\": \"10\"\n}",
+        "options": {}
+      },
+      "id": "invok-node-odoo-stock-quant-relocate-list-83",
+      "name": "Invok: odoo-stock-quant-relocate-list",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1250,
+        2900
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/odoo-stock-quantity-history-list",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"limit\": \"10\"\n}",
+        "options": {}
+      },
+      "id": "invok-node-odoo-stock-quantity-history-list-84",
+      "name": "Invok: odoo-stock-quantity-history-list",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1500,
+        2900
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/odoo-stock-reference-list",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"limit\": \"10\"\n}",
+        "options": {}
+      },
+      "id": "invok-node-odoo-stock-reference-list-85",
+      "name": "Invok: odoo-stock-reference-list",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        250,
+        3100
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/odoo-stock-replenishment-info-list",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"limit\": \"10\"\n}",
+        "options": {}
+      },
+      "id": "invok-node-odoo-stock-replenishment-info-list-86",
+      "name": "Invok: odoo-stock-replenishment-info-list",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        500,
+        3100
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/odoo-stock-replenishment-option-list",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"limit\": \"10\"\n}",
+        "options": {}
+      },
+      "id": "invok-node-odoo-stock-replenishment-option-list-87",
+      "name": "Invok: odoo-stock-replenishment-option-list",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        750,
+        3100
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/odoo-stock-request-count-list",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"limit\": \"10\"\n}",
+        "options": {}
+      },
+      "id": "invok-node-odoo-stock-request-count-list-88",
+      "name": "Invok: odoo-stock-request-count-list",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1000,
+        3100
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/odoo-stock-return-picking-list",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"limit\": \"10\"\n}",
+        "options": {}
+      },
+      "id": "invok-node-odoo-stock-return-picking-list-89",
+      "name": "Invok: odoo-stock-return-picking-list",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1250,
+        3100
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/odoo-stock-return-picking-line-list",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"limit\": \"10\"\n}",
+        "options": {}
+      },
+      "id": "invok-node-odoo-stock-return-picking-line-list-90",
+      "name": "Invok: odoo-stock-return-picking-line-list",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1500,
+        3100
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/odoo-stock-route-list",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"limit\": \"10\"\n}",
+        "options": {}
+      },
+      "id": "invok-node-odoo-stock-route-list-91",
+      "name": "Invok: odoo-stock-route-list",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        250,
+        3300
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/odoo-stock-rule-list",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"limit\": \"10\"\n}",
+        "options": {}
+      },
+      "id": "invok-node-odoo-stock-rule-list-92",
+      "name": "Invok: odoo-stock-rule-list",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        500,
+        3300
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/odoo-stock-rules-report-list",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"limit\": \"10\"\n}",
+        "options": {}
+      },
+      "id": "invok-node-odoo-stock-rules-report-list-93",
+      "name": "Invok: odoo-stock-rules-report-list",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        750,
+        3300
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/odoo-stock-scrap-list",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"limit\": \"10\"\n}",
+        "options": {}
+      },
+      "id": "invok-node-odoo-stock-scrap-list-94",
+      "name": "Invok: odoo-stock-scrap-list",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1000,
+        3300
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/odoo-stock-scrap-create",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"product_uom_id\": \"\",\n  \"company_id\": \"\",\n  \"scrap_location_id\": \"\",\n  \"scrap_qty\": \"\",\n  \"location_id\": \"\",\n  \"product_id\": \"\",\n  \"name\": \"\"\n}",
+        "options": {}
+      },
+      "id": "invok-node-odoo-stock-scrap-create-95",
+      "name": "Invok: odoo-stock-scrap-create",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1250,
+        3300
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/odoo-stock-scrap-update",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"company_id\": \"\",\n  \"scrap_qty\": \"\",\n  \"scrap_location_id\": \"\",\n  \"product_uom_id\": \"\",\n  \"id\": \"\",\n  \"name\": \"\",\n  \"location_id\": \"\",\n  \"product_id\": \"\"\n}",
+        "options": {}
+      },
+      "id": "invok-node-odoo-stock-scrap-update-96",
+      "name": "Invok: odoo-stock-scrap-update",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1500,
+        3300
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/odoo-stock-scrap-delete",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"id\": \"\"\n}",
+        "options": {}
+      },
+      "id": "invok-node-odoo-stock-scrap-delete-97",
+      "name": "Invok: odoo-stock-scrap-delete",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        250,
+        3500
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/odoo-stock-scrap-reason-tag-list",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"limit\": \"10\"\n}",
+        "options": {}
+      },
+      "id": "invok-node-odoo-stock-scrap-reason-tag-list-98",
+      "name": "Invok: odoo-stock-scrap-reason-tag-list",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        500,
+        3500
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/odoo-stock-storage-category-list",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"limit\": \"10\"\n}",
+        "options": {}
+      },
+      "id": "invok-node-odoo-stock-storage-category-list-99",
+      "name": "Invok: odoo-stock-storage-category-list",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        750,
+        3500
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/odoo-stock-storage-category-capacity-list",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"limit\": \"10\"\n}",
+        "options": {}
+      },
+      "id": "invok-node-odoo-stock-storage-category-capacity-list-100",
+      "name": "Invok: odoo-stock-storage-category-capacity-list",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1000,
+        3500
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/odoo-stock-traceability-report-list",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"limit\": \"10\"\n}",
+        "options": {}
+      },
+      "id": "invok-node-odoo-stock-traceability-report-list-101",
+      "name": "Invok: odoo-stock-traceability-report-list",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1250,
+        3500
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/odoo-stock-warehouse-list",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"limit\": \"10\"\n}",
+        "options": {}
+      },
+      "id": "invok-node-odoo-stock-warehouse-list-102",
+      "name": "Invok: odoo-stock-warehouse-list",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1500,
+        3500
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/odoo-stock-warehouse-create",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"code\": \"\",\n  \"name\": \"\",\n  \"delivery_steps\": \"\",\n  \"reception_steps\": \"\",\n  \"view_location_id\": \"\",\n  \"lot_stock_id\": \"\",\n  \"company_id\": \"\"\n}",
+        "options": {}
+      },
+      "id": "invok-node-odoo-stock-warehouse-create-103",
+      "name": "Invok: odoo-stock-warehouse-create",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        250,
+        3700
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/odoo-stock-warehouse-update",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"view_location_id\": \"\",\n  \"delivery_steps\": \"\",\n  \"id\": \"\",\n  \"company_id\": \"\",\n  \"code\": \"\",\n  \"name\": \"\",\n  \"reception_steps\": \"\",\n  \"lot_stock_id\": \"\"\n}",
+        "options": {}
+      },
+      "id": "invok-node-odoo-stock-warehouse-update-104",
+      "name": "Invok: odoo-stock-warehouse-update",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        500,
+        3700
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/odoo-stock-warehouse-delete",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"id\": \"\"\n}",
+        "options": {}
+      },
+      "id": "invok-node-odoo-stock-warehouse-delete-105",
+      "name": "Invok: odoo-stock-warehouse-delete",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        750,
+        3700
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/odoo-stock-warehouse-orderpoint-list",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"limit\": \"10\"\n}",
+        "options": {}
+      },
+      "id": "invok-node-odoo-stock-warehouse-orderpoint-list-106",
+      "name": "Invok: odoo-stock-warehouse-orderpoint-list",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1000,
+        3700
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/odoo-stock-warehouse-orderpoint-create",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"product_min_qty\": \"\",\n  \"warehouse_id\": \"\",\n  \"product_id\": \"\",\n  \"location_id\": \"\",\n  \"company_id\": \"\",\n  \"name\": \"\",\n  \"trigger\": \"\",\n  \"product_max_qty\": \"\"\n}",
+        "options": {}
+      },
+      "id": "invok-node-odoo-stock-warehouse-orderpoint-create-107",
+      "name": "Invok: odoo-stock-warehouse-orderpoint-create",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1250,
+        3700
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/odoo-stock-warehouse-orderpoint-update",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"company_id\": \"\",\n  \"trigger\": \"\",\n  \"name\": \"\",\n  \"product_min_qty\": \"\",\n  \"location_id\": \"\",\n  \"id\": \"\",\n  \"product_id\": \"\",\n  \"product_max_qty\": \"\",\n  \"warehouse_id\": \"\"\n}",
+        "options": {}
+      },
+      "id": "invok-node-odoo-stock-warehouse-orderpoint-update-108",
+      "name": "Invok: odoo-stock-warehouse-orderpoint-update",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1500,
+        3700
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/odoo-stock-warehouse-orderpoint-delete",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"id\": \"\"\n}",
+        "options": {}
+      },
+      "id": "invok-node-odoo-stock-warehouse-orderpoint-delete-109",
+      "name": "Invok: odoo-stock-warehouse-orderpoint-delete",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        250,
+        3900
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/odoo-stock-warn-insufficient-qty-scrap-list",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"limit\": \"10\"\n}",
+        "options": {}
+      },
+      "id": "invok-node-odoo-stock-warn-insufficient-qty-scrap-list-110",
+      "name": "Invok: odoo-stock-warn-insufficient-qty-scrap-list",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        500,
+        3900
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/odoo-mrp-production-list",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"limit\": \"10\"\n}",
+        "options": {}
+      },
+      "id": "invok-node-odoo-mrp-production-list-111",
+      "name": "Invok: odoo-mrp-production-list",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        750,
+        3900
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/odoo-mrp-production-create",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"date_start\": \"\",\n  \"bom_id\": \"null\",\n  \"user_id\": \"null\",\n  \"product_qty\": \"\",\n  \"product_id\": \"\"\n}",
+        "options": {}
+      },
+      "id": "invok-node-odoo-mrp-production-create-112",
+      "name": "Invok: odoo-mrp-production-create",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1000,
+        3900
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/odoo-mrp-production-update",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"date_start\": \"\",\n  \"user_id\": \"null\",\n  \"id\": \"\",\n  \"product_qty\": \"null\"\n}",
+        "options": {}
+      },
+      "id": "invok-node-odoo-mrp-production-update-113",
+      "name": "Invok: odoo-mrp-production-update",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1250,
+        3900
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/odoo-mrp-production-delete",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"id\": \"\"\n}",
+        "options": {}
+      },
+      "id": "invok-node-odoo-mrp-production-delete-114",
+      "name": "Invok: odoo-mrp-production-delete",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1500,
+        3900
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/odoo-mrp-production-confirm",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"id\": \"\"\n}",
+        "options": {}
+      },
+      "id": "invok-node-odoo-mrp-production-confirm-115",
+      "name": "Invok: odoo-mrp-production-confirm",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        250,
+        4100
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/odoo-mrp-production-plan",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"id\": \"\"\n}",
+        "options": {}
+      },
+      "id": "invok-node-odoo-mrp-production-plan-116",
+      "name": "Invok: odoo-mrp-production-plan",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        500,
+        4100
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/odoo-mrp-production-unplan",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"id\": \"\"\n}",
+        "options": {}
+      },
+      "id": "invok-node-odoo-mrp-production-unplan-117",
+      "name": "Invok: odoo-mrp-production-unplan",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        750,
+        4100
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/odoo-mrp-production-mark-done",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"id\": \"\"\n}",
+        "options": {}
+      },
+      "id": "invok-node-odoo-mrp-production-mark-done-118",
+      "name": "Invok: odoo-mrp-production-mark-done",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1000,
+        4100
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/odoo-mrp-production-cancel",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"id\": \"\"\n}",
+        "options": {}
+      },
+      "id": "invok-node-odoo-mrp-production-cancel-119",
+      "name": "Invok: odoo-mrp-production-cancel",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1250,
+        4100
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/odoo-mrp-bom-list",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"limit\": \"10\"\n}",
+        "options": {}
+      },
+      "id": "invok-node-odoo-mrp-bom-list-120",
+      "name": "Invok: odoo-mrp-bom-list",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1500,
+        4100
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/odoo-mrp-bom-create",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"product_uom_id\": \"null\",\n  \"code\": \"\",\n  \"type\": \"normal\",\n  \"product_tmpl_id\": \"\",\n  \"product_qty\": \"1.0\"\n}",
+        "options": {}
+      },
+      "id": "invok-node-odoo-mrp-bom-create-121",
+      "name": "Invok: odoo-mrp-bom-create",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        250,
+        4300
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/odoo-mrp-bom-update",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"id\": \"\",\n  \"type\": \"normal\",\n  \"product_qty\": \"null\",\n  \"code\": \"\"\n}",
+        "options": {}
+      },
+      "id": "invok-node-odoo-mrp-bom-update-122",
+      "name": "Invok: odoo-mrp-bom-update",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        500,
+        4300
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/odoo-mrp-bom-delete",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"id\": \"\"\n}",
+        "options": {}
+      },
+      "id": "invok-node-odoo-mrp-bom-delete-123",
+      "name": "Invok: odoo-mrp-bom-delete",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        750,
+        4300
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/odoo-mrp-bom-line-list",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"limit\": \"10\"\n}",
+        "options": {}
+      },
+      "id": "invok-node-odoo-mrp-bom-line-list-124",
+      "name": "Invok: odoo-mrp-bom-line-list",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1000,
+        4300
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/odoo-mrp-bom-line-create",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"product_qty\": \"\",\n  \"product_uom_id\": \"null\",\n  \"bom_id\": \"\",\n  \"product_id\": \"\"\n}",
+        "options": {}
+      },
+      "id": "invok-node-odoo-mrp-bom-line-create-125",
+      "name": "Invok: odoo-mrp-bom-line-create",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1250,
+        4300
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/odoo-mrp-bom-line-update",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"id\": \"\",\n  \"product_qty\": \"\"\n}",
+        "options": {}
+      },
+      "id": "invok-node-odoo-mrp-bom-line-update-126",
+      "name": "Invok: odoo-mrp-bom-line-update",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1500,
+        4300
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/odoo-mrp-bom-line-delete",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"id\": \"\"\n}",
+        "options": {}
+      },
+      "id": "invok-node-odoo-mrp-bom-line-delete-127",
+      "name": "Invok: odoo-mrp-bom-line-delete",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        250,
+        4500
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/odoo-mrp-workorder-list",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"limit\": \"10\"\n}",
+        "options": {}
+      },
+      "id": "invok-node-odoo-mrp-workorder-list-128",
+      "name": "Invok: odoo-mrp-workorder-list",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        500,
+        4500
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/odoo-mrp-workorder-update",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"duration_expected\": \"\",\n  \"id\": \"\"\n}",
+        "options": {}
+      },
+      "id": "invok-node-odoo-mrp-workorder-update-129",
+      "name": "Invok: odoo-mrp-workorder-update",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        750,
+        4500
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/odoo-mrp-workorder-start",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"id\": \"\"\n}",
+        "options": {}
+      },
+      "id": "invok-node-odoo-mrp-workorder-start-130",
+      "name": "Invok: odoo-mrp-workorder-start",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1000,
+        4500
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/odoo-mrp-workorder-finish",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"id\": \"\"\n}",
+        "options": {}
+      },
+      "id": "invok-node-odoo-mrp-workorder-finish-131",
+      "name": "Invok: odoo-mrp-workorder-finish",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1250,
+        4500
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/odoo-mrp-workorder-pending",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"id\": \"\"\n}",
+        "options": {}
+      },
+      "id": "invok-node-odoo-mrp-workorder-pending-132",
+      "name": "Invok: odoo-mrp-workorder-pending",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1500,
+        4500
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/odoo-mrp-workorder-unblock",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"id\": \"\"\n}",
+        "options": {}
+      },
+      "id": "invok-node-odoo-mrp-workorder-unblock-133",
+      "name": "Invok: odoo-mrp-workorder-unblock",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        250,
+        4700
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/odoo-mrp-workcenter-list",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"limit\": \"10\"\n}",
+        "options": {}
+      },
+      "id": "invok-node-odoo-mrp-workcenter-list-134",
+      "name": "Invok: odoo-mrp-workcenter-list",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        500,
+        4700
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/odoo-mrp-workcenter-create",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"name\": \"\",\n  \"time_efficiency\": \"100.0\",\n  \"code\": \"\",\n  \"oee_target\": \"85.0\"\n}",
+        "options": {}
+      },
+      "id": "invok-node-odoo-mrp-workcenter-create-135",
+      "name": "Invok: odoo-mrp-workcenter-create",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        750,
+        4700
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/odoo-mrp-workcenter-update",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"code\": \"\",\n  \"id\": \"\",\n  \"name\": \"\"\n}",
+        "options": {}
+      },
+      "id": "invok-node-odoo-mrp-workcenter-update-136",
+      "name": "Invok: odoo-mrp-workcenter-update",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1000,
+        4700
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/odoo-mrp-workcenter-delete",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"id\": \"\"\n}",
+        "options": {}
+      },
+      "id": "invok-node-odoo-mrp-workcenter-delete-137",
+      "name": "Invok: odoo-mrp-workcenter-delete",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1250,
+        4700
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/odoo-mrp-product-list",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"limit\": \"10\"\n}",
+        "options": {}
+      },
+      "id": "invok-node-odoo-mrp-product-list-138",
+      "name": "Invok: odoo-mrp-product-list",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1500,
+        4700
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/odoo-mrp-product-create",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"type\": \"consu\",\n  \"name\": \"\",\n  \"standard_price\": \"0.0\",\n  \"default_code\": \"\",\n  \"lst_price\": \"0.0\"\n}",
+        "options": {}
+      },
+      "id": "invok-node-odoo-mrp-product-create-139",
+      "name": "Invok: odoo-mrp-product-create",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        250,
+        4900
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/odoo-mrp-product-update",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"id\": \"\",\n  \"standard_price\": \"null\",\n  \"default_code\": \"\",\n  \"name\": \"\",\n  \"lst_price\": \"null\"\n}",
+        "options": {}
+      },
+      "id": "invok-node-odoo-mrp-product-update-140",
+      "name": "Invok: odoo-mrp-product-update",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        500,
+        4900
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/odoo-mrp-unbuild-list",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"limit\": \"10\"\n}",
+        "options": {}
+      },
+      "id": "invok-node-odoo-mrp-unbuild-list-141",
+      "name": "Invok: odoo-mrp-unbuild-list",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        750,
+        4900
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/odoo-mrp-unbuild-create",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"bom_id\": \"null\",\n  \"product_id\": \"\",\n  \"product_qty\": \"\",\n  \"mo_id\": \"null\"\n}",
+        "options": {}
+      },
+      "id": "invok-node-odoo-mrp-unbuild-create-142",
+      "name": "Invok: odoo-mrp-unbuild-create",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1000,
+        4900
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/odoo-mrp-unbuild-validate",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"id\": \"\"\n}",
+        "options": {}
+      },
+      "id": "invok-node-odoo-mrp-unbuild-validate-143",
+      "name": "Invok: odoo-mrp-unbuild-validate",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1250,
+        4900
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/publicar-post-imagen",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"did\": null,\n  \"text\": null,\n  \"createdAt\": null,\n  \"altText\": null,\n  \"blobRef\": null\n}",
+        "options": {}
+      },
+      "id": "invok-node-publicar-post-imagen-144",
+      "name": "Invok: publicar-post-imagen",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1500,
+        4900
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/dar-like",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"createdAt\": null,\n  \"postUri\": null,\n  \"did\": null,\n  \"postCid\": null\n}",
+        "options": {}
+      },
+      "id": "invok-node-dar-like-145",
+      "name": "Invok: dar-like",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        250,
+        5100
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/ver-timeline",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"cursor\": null,\n  \"limit\": \"20\"\n}",
+        "options": {}
+      },
+      "id": "invok-node-ver-timeline-146",
+      "name": "Invok: ver-timeline",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        500,
+        5100
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/ver-perfil",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"actor\": null\n}",
+        "options": {}
+      },
+      "id": "invok-node-ver-perfil-147",
+      "name": "Invok: ver-perfil",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        750,
+        5100
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/ver-notificaciones",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"cursor\": null,\n  \"limit\": \"20\"\n}",
+        "options": {}
+      },
+      "id": "invok-node-ver-notificaciones-148",
+      "name": "Invok: ver-notificaciones",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1000,
+        5100
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/buscar-posts",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"limit\": \"20\",\n  \"q\": null\n}",
+        "options": {}
+      },
+      "id": "invok-node-buscar-posts-149",
+      "name": "Invok: buscar-posts",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1250,
+        5100
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/publicar-post",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"did\": \"\",\n  \"text\": \"\",\n  \"createdAt\": \"\"\n}",
+        "options": {}
+      },
+      "id": "invok-node-publicar-post-150",
+      "name": "Invok: publicar-post",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1500,
+        5100
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/trello-list-lists",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"board_id\": null\n}",
+        "options": {}
+      },
+      "id": "invok-node-trello-list-lists-151",
+      "name": "Invok: trello-list-lists",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        250,
+        5300
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/trello-list-cards",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"board_id\": null\n}",
+        "options": {}
+      },
+      "id": "invok-node-trello-list-cards-152",
+      "name": "Invok: trello-list-cards",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        500,
+        5300
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/trello-create-card",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"description\": null,\n  \"list_id\": null,\n  \"name\": null\n}",
+        "options": {}
+      },
+      "id": "invok-node-trello-create-card-153",
+      "name": "Invok: trello-create-card",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        750,
+        5300
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/trello-move-card",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"card_id\": null,\n  \"list_id\": null\n}",
+        "options": {}
+      },
+      "id": "invok-node-trello-move-card-154",
+      "name": "Invok: trello-move-card",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1000,
+        5300
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/trello-update-card",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"name\": null,\n  \"description\": null,\n  \"card_id\": null\n}",
+        "options": {}
+      },
+      "id": "invok-node-trello-update-card-155",
+      "name": "Invok: trello-update-card",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1250,
+        5300
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/trello-add-comment",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"card_id\": null,\n  \"comment\": null\n}",
+        "options": {}
+      },
+      "id": "invok-node-trello-add-comment-156",
+      "name": "Invok: trello-add-comment",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1500,
+        5300
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/api/v1/execute/trello-get-my-boards",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-HandsAI-Token",
+              "value": "YOUR_PAT_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{}",
+        "options": {}
+      },
+      "id": "invok-node-trello-get-my-boards-157",
+      "name": "Invok: trello-get-my-boards",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        250,
+        5500
+      ]
+    }
+  ],
+  "connections": {},
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "meta": {
+    "templateCredsSetupCompleted": true
+  }
+}
