@@ -45,7 +45,8 @@ export class HomeComponent implements OnInit {
     // Export Modal State
     showExportModal = false;
     exportableProviders: any[] = [];
-    selectedExportIds: Set<number> = new Set();
+    selectedToolCodes = new Set<string>();
+    exportSearchQuery = '';
     isExporting = false;
     invokUrl = window.location.origin;
     isSubmittingRefresh = false;
@@ -253,7 +254,8 @@ export class HomeComponent implements OnInit {
 
     // Export Logic
     openExportModal() {
-        this.selectedExportIds.clear();
+        this.selectedToolCodes.clear();
+        this.exportSearchQuery = '';
         this.apiService.getExportableProviders().subscribe({
             next: (data) => {
                 this.exportableProviders = data;
@@ -269,53 +271,119 @@ export class HomeComponent implements OnInit {
     closeExportModal() {
         this.showExportModal = false;
         this.exportableProviders = [];
-        this.selectedExportIds.clear();
+        this.selectedToolCodes.clear();
+        this.exportSearchQuery = '';
     }
 
-    toggleExportSelection(id: number) {
-        if (this.selectedExportIds.has(id)) {
-            this.selectedExportIds.delete(id);
+    get filteredExportableProviders(): any[] {
+        if (!this.exportSearchQuery || !this.exportSearchQuery.trim()) {
+            return this.exportableProviders;
+        }
+        const query = this.exportSearchQuery.toLowerCase().trim();
+        
+        return this.exportableProviders.map(provider => {
+            const providerMatches = provider.name.toLowerCase().includes(query) || 
+                                    (provider.baseUrl && provider.baseUrl.toLowerCase().includes(query));
+                                    
+            const matchedTools = provider.tools ? provider.tools.filter((tool: any) => 
+                tool.name.toLowerCase().includes(query) || 
+                tool.code.toLowerCase().includes(query) ||
+                (tool.description && tool.description.toLowerCase().includes(query))
+            ) : [];
+            
+            const toolsToShow = providerMatches ? (provider.tools || []) : matchedTools;
+            
+            if (providerMatches || matchedTools.length > 0) {
+                return {
+                    ...provider,
+                    tools: toolsToShow
+                };
+            }
+            return null;
+        }).filter(p => p !== null);
+    }
+
+    toggleToolSelection(tool: any) {
+        if (this.selectedToolCodes.has(tool.code)) {
+            this.selectedToolCodes.delete(tool.code);
         } else {
-            this.selectedExportIds.add(id);
+            this.selectedToolCodes.add(tool.code);
+        }
+    }
+
+    isProviderFullySelected(provider: any): boolean {
+        if (!provider.tools || provider.tools.length === 0) return false;
+        return provider.tools.every((t: any) => this.selectedToolCodes.has(t.code));
+    }
+
+    isProviderPartiallySelected(provider: any): boolean {
+        if (!provider.tools || provider.tools.length === 0) return false;
+        const selectedCount = provider.tools.filter((t: any) => this.selectedToolCodes.has(t.code)).length;
+        return selectedCount > 0 && selectedCount < provider.tools.length;
+    }
+
+    toggleProviderSelection(provider: any) {
+        const isFullySelected = this.isProviderFullySelected(provider);
+        if (isFullySelected) {
+            if (provider.tools) {
+                provider.tools.forEach((t: any) => this.selectedToolCodes.delete(t.code));
+            }
+        } else {
+            if (provider.tools) {
+                provider.tools.forEach((t: any) => this.selectedToolCodes.add(t.code));
+            }
         }
     }
 
     selectAllExport() {
-        if (this.selectedExportIds.size === this.exportableProviders.length) {
-            this.selectedExportIds.clear();
+        if (this.isAllToolsSelected()) {
+            this.selectedToolCodes.clear();
         } else {
-            this.exportableProviders.forEach((p, idx) => {
-                this.selectedExportIds.add(idx); // Use index instead of name to match toggle logic
+            this.exportableProviders.forEach(p => {
+                if (p.tools) {
+                    p.tools.forEach((t: any) => this.selectedToolCodes.add(t.code));
+                }
             });
         }
     }
 
+    isAllToolsSelected(): boolean {
+        let totalToolsCount = 0;
+        this.exportableProviders.forEach(p => {
+            if (p.tools) totalToolsCount += p.tools.length;
+        });
+        return totalToolsCount > 0 && this.selectedToolCodes.size === totalToolsCount;
+    }
+
     exportSelectedProviders() {
         this.isExporting = true;
-        // Construct query URL
-        // Actually, we need IDs to build the query.
-        // Wait, does ExportApiProviderDto have ID? No! Look at ExportApiProviderDto.java: it only has name, baseUrl, etc.
-        // If it doesn't have ID, how can we filter? 
-        // Ah, the frontend needs to fetch ALL exportable providers, let user select by NAME, then just filter the JS array locally and download it!
-        // That is much better and requires no extra API backend logic!
 
-        let providersToExport = this.exportableProviders;
-        if (this.selectedExportIds.size > 0) {
-            providersToExport = this.exportableProviders.filter((_, index) => this.selectedExportIds.has(index));
+        const providersToExport = this.exportableProviders.map(provider => {
+            const tools = provider.tools ? provider.tools.filter((t: any) => this.selectedToolCodes.has(t.code)) : [];
+            if (tools.length > 0) {
+                return {
+                    ...provider,
+                    tools: tools
+                };
+            }
+            return null;
+        }).filter(p => p !== null);
+
+        if (providersToExport.length === 0) {
+            alert('Por favor, selecciona al menos una herramienta para exportar.');
+            this.isExporting = false;
+            return;
         }
 
         const dataStr = JSON.stringify(providersToExport, null, 2);
-
-        // Use Blob instead of data URI to force the browser to respect the file name
         const blob = new Blob([dataStr], { type: 'application/json;charset=utf-8' });
         const url = window.URL.createObjectURL(blob);
-
         const exportFileDefaultName = 'invok_herramientas_publicas.json';
 
         const linkElement = document.createElement('a');
         linkElement.setAttribute('href', url);
         linkElement.setAttribute('download', exportFileDefaultName);
-        document.body.appendChild(linkElement); // Required for Firefox
+        document.body.appendChild(linkElement);
         linkElement.click();
         document.body.removeChild(linkElement);
         window.URL.revokeObjectURL(url);
@@ -324,12 +392,24 @@ export class HomeComponent implements OnInit {
         this.closeExportModal();
     }
 
-    exportAsN8nWorkflow() {
+    exportAsN8nWorkflowProxy() {
         this.isExporting = true;
 
-        let providersToExport = this.exportableProviders;
-        if (this.selectedExportIds.size > 0) {
-            providersToExport = this.exportableProviders.filter((_, index) => this.selectedExportIds.has(index));
+        const providersToExport = this.exportableProviders.map(provider => {
+            const tools = provider.tools ? provider.tools.filter((t: any) => this.selectedToolCodes.has(t.code)) : [];
+            if (tools.length > 0) {
+                return {
+                    ...provider,
+                    tools: tools
+                };
+            }
+            return null;
+        }).filter(p => p !== null);
+
+        if (providersToExport.length === 0) {
+            alert('Por favor, selecciona al menos una herramienta para exportar.');
+            this.isExporting = false;
+            return;
         }
 
         const nodes: any[] = [];
@@ -360,6 +440,15 @@ export class HomeComponent implements OnInit {
                     const parameters: any = {
                         method: 'POST',
                         url: `${baseUrl}/api/v1/execute/${tool.code}`,
+                        sendHeaders: true,
+                        headerParameters: {
+                            parameters: [
+                                {
+                                    name: 'X-HandsAI-Token',
+                                    value: 'YOUR_PAT_TOKEN'
+                                }
+                            ]
+                        },
                         sendBody: true,
                         specifyBody: 'json',
                         jsonBody: JSON.stringify(bodyParams, null, 2),
@@ -385,7 +474,7 @@ export class HomeComponent implements OnInit {
         });
 
         const n8nWorkflow = {
-            name: 'Workflow Invok',
+            name: 'Workflow Invok (Proxy)',
             nodes: nodes,
             connections: connections,
             active: false,
@@ -400,7 +489,7 @@ export class HomeComponent implements OnInit {
         const dataStr = JSON.stringify(n8nWorkflow, null, 2);
         const blob = new Blob([dataStr], { type: 'application/json;charset=utf-8' });
         const url = window.URL.createObjectURL(blob);
-        const exportFileDefaultName = 'invok_n8n_workflow.json';
+        const exportFileDefaultName = 'invok_n8n_proxy_workflow.json';
 
         const linkElement = document.createElement('a');
         linkElement.setAttribute('href', url);
@@ -414,6 +503,41 @@ export class HomeComponent implements OnInit {
         this.closeExportModal();
     }
 
+    exportAsN8nWorkflowDirect() {
+        this.isExporting = true;
+
+        const providerIds = this.exportableProviders
+            .filter(provider => provider.tools && provider.tools.some((t: any) => this.selectedToolCodes.has(t.code)))
+            .map(provider => provider.id)
+            .filter((id): id is number => id !== null && id !== undefined);
+
+        if (providerIds.length === 0) {
+            alert('Por favor, selecciona al menos una herramienta para exportar.');
+            this.isExporting = false;
+            return;
+        }
+
+        this.apiService.getN8nWorkflowExport(providerIds, 'Invok — Direct API Export').subscribe({
+            next: (blob) => {
+                const url = window.URL.createObjectURL(blob);
+                const linkElement = document.createElement('a');
+                linkElement.setAttribute('href', url);
+                linkElement.setAttribute('download', 'invok_n8n_direct_workflow.json');
+                document.body.appendChild(linkElement);
+                linkElement.click();
+                document.body.removeChild(linkElement);
+                window.URL.revokeObjectURL(url);
+                this.isExporting = false;
+                this.closeExportModal();
+            },
+            error: (err) => {
+                console.error('Error downloading direct workflow', err);
+                alert('Ocurrió un error al descargar el flujo directo de n8n.');
+                this.isExporting = false;
+            }
+        });
+    }
+
     refreshCache() {
         this.isSubmittingRefresh = true;
         this.refreshSuccessMessage = '';
@@ -421,7 +545,9 @@ export class HomeComponent implements OnInit {
         this.apiService.refreshToolCache().subscribe({
             next: (res) => {
                 this.isSubmittingRefresh = false;
-                this.refreshSuccessMessage = res.message || 'Caché de herramientas actualizada correctamente';
+                const match = (res.message || '').match(/\((\d+)\s*tools\)/i);
+                const count = match ? parseInt(match[1], 10) : 0;
+                this.refreshSuccessMessage = this.translate.instant('TOOLS.REFRESH_CACHE_SUCCESS', { count });
                 setTimeout(() => this.refreshSuccessMessage = '', 4000);
             },
             error: (err) => {

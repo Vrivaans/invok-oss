@@ -35,8 +35,13 @@
       "TOOLS_COUNT": "{{count}} herramientas",
       "DOWNLOAD_JSON_SPECIFIC": "Descargar JSON ({{count}} proveedores)",
       "DOWNLOAD_JSON_ALL": "Descargar JSON (Todos los proveedores)",
+      "DOWNLOAD_JSON_SPECIFIC_TOOLS": "Descargar JSON ({{count}} herramientas)",
+      "DOWNLOAD_JSON_ALL_TOOLS": "Descargar JSON (Todas)",
       "GENERATING": "Generando...",
-      "DOWNLOAD_N8N": "Exportar a n8n Workflow",
+      "DOWNLOAD_N8N_PROXY": "Exportar n8n (Proxy)",
+      "DOWNLOAD_N8N_DIRECT": "Exportar n8n (Directo)",
+      "N8N_PROXY_DESC": "El flujo de n8n usará Invok como intermediario. Las peticiones pasarán por Invok y requerirán configurar tu token (PAT) de Invok.",
+      "N8N_DIRECT_DESC": "El flujo de n8n llamará directamente a la API origen. No pasa por Invok y necesitarás configurar las credenciales directamente en los nodos de n8n.",
       "N8N_CONFIG_TITLE": "Configuración para n8n",
       "N8N_CONFIG_LEAD": "Especifica los datos de conexión que usarán los nodos de n8n para conectarse a este servidor Invok.",
       "N8N_URL_LABEL": "URL Base de Invok",
@@ -107,7 +112,8 @@
     "ADD_PARAMETER": "Añadir Parámetro",
     "OAUTH2_CONNECT": "Conectar con OAuth2",
     "OAUTH2_CONNECT_HELPER": "Haz clic para autorizar la aplicación y obtener el token inicial.",
-    "OAUTH2_REDIRECT_URI_HELPER_SHORT": "Copia esta URL en la configuración de tu proveedor OAuth."
+    "OAUTH2_REDIRECT_URI_HELPER_SHORT": "Copia esta URL en la configuración de tu proveedor OAuth.",
+    "REFRESH_CACHE_SUCCESS": "Caché de herramientas actualizada ({{count}} herramientas)"
   },
   "MODALS": {
     "CONFIRM_DELETE": "Confirmar Eliminación",

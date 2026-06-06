@@ -61,6 +61,7 @@ public class ExportService {
         }
 
         return new ExportApiProviderDto(
+                provider.getId(),
                 provider.getName(),
                 provider.getCode(),
                 provider.getBaseUrl(),

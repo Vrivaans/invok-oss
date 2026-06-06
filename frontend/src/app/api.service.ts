@@ -92,6 +92,21 @@ export class ApiService {
         return this.http.delete<void>(`/api/providers/${id}`);
     }
 
+    getN8nWorkflowExport(ids?: number[], name?: string): Observable<Blob> {
+        let url = '/api/export/n8n-workflow';
+        const params: string[] = [];
+        if (ids && ids.length > 0) {
+            params.push(`ids=${ids.join(',')}`);
+        }
+        if (name) {
+            params.push(`name=${encodeURIComponent(name)}`);
+        }
+        if (params.length > 0) {
+            url += `?${params.join('&')}`;
+        }
+        return this.http.get(url, { responseType: 'blob' });
+    }
+
     refreshToolCache(): Observable<any> {
         return this.http.post<any>('/api/tools/cache/refresh', {});
     }
