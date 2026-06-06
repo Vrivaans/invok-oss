@@ -292,9 +292,20 @@ Import any of these via `POST /api/import`.
 
 Invok can act as a secure, unified API Gateway for automation tools. You can expose all your active tools via a dynamic OpenAPI specification and execute them directly through raw HTTP requests without token formatting (TOON) or XML wrapping.
 
+### n8n Workflow Exporter
+Invok provides a built-in exporter that generates a fully formed, importable n8n workflow JSON containing pre-configured HTTP Request nodes for all selected tools.
+
+To use it:
+1. Click **Export Tools** in the dashboard header.
+2. Select the specific tools or providers you want to export.
+3. Choose one of the export options:
+   * **n8n (Proxy)**: Nodes execute calls through your local Invok instance (using `/api/v1/execute/{code}`). Requires setting your Invok PAT Token.
+   * **n8n (Direct)**: Nodes call the target API directly. Invok generates the workflow with correct endpoints, body structures, and authentication structures (using expressions for dynamic tokens). Credentials are exported masked so you can safely fill them in n8n.
+
 ### Automation Endpoints
 * **Get OpenAPI Specification**: `GET /api/v1/recipes/openapi.json`
 * **Execute raw tool**: `POST /api/v1/execute/{toolCode}`
+* **Get n8n Workflow**: `GET /api/export/n8n-workflow?ids=...&name=...`
 
 Since Invok OSS runs in a trusted local environment, these endpoints do not require authentication headers by default.
 

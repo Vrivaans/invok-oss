@@ -268,61 +268,98 @@
       <p class="modal-lead">{{ 'HOME.EXPORT_MODAL.LEAD' | translate }}</p>
 
       <div class="export-panel">
+        <!-- Buscador de herramientas -->
+        <div class="export-search-container">
+          <input type="text"
+                 [(ngModel)]="exportSearchQuery"
+                 placeholder="Buscar herramientas por nombre o código..."
+                 class="export-search-input" />
+        </div>
+
         <div class="export-panel-head">
-          <h4>{{ 'HOME.EXPORT_MODAL.AVAILABLE_PROVIDERS' | translate: { count: exportableProviders.length } }}</h4>
+          <h4>{{ 'HOME.EXPORT_MODAL.AVAILABLE_PROVIDERS' | translate: { count: filteredExportableProviders.length } }}</h4>
           <button type="button" class="btn secondary btn-select-all" (click)="selectAllExport()">
-            {{ selectedExportIds.size === exportableProviders.length ? ('HOME.EXPORT_MODAL.DESELECT_ALL' | translate) : ('HOME.EXPORT_MODAL.SELECT_ALL' | translate) }}
+            {{ isAllToolsSelected() ? ('HOME.EXPORT_MODAL.DESELECT_ALL' | translate) : ('HOME.EXPORT_MODAL.SELECT_ALL' | translate) }}
           </button>
         </div>
 
-        @if (exportableProviders.length === 0) {
+        @if (filteredExportableProviders.length === 0) {
         <p class="export-empty">{{ 'HOME.EXPORT_MODAL.EMPTY' | translate }}</p>
         } @else {
         <div class="export-list">
-          @for (provider of exportableProviders; track provider.name; let idx = $index) {
-          <div class="card export-card"
-            [class.export-card--selected]="selectedExportIds.has(idx)"
-            (click)="toggleExportSelection(idx)">
-            <div class="export-card-inner">
-              <div>
-                <h5 class="export-card-title">{{provider.name}}</h5>
-                <p class="export-card-meta">{{provider.baseUrl}} •
-                  {{ 'HOME.EXPORT_MODAL.TOOLS_COUNT' | translate: { count: provider.tools.length } }}</p>
+          @for (provider of filteredExportableProviders; track provider.name) {
+          <details class="export-provider-group">
+            <summary class="export-provider-summary">
+              <div class="export-provider-left" (click)="$event.stopPropagation()">
+                <input type="checkbox"
+                       [checked]="isProviderFullySelected(provider)"
+                       [indeterminate]="isProviderPartiallySelected(provider)"
+                       (change)="toggleProviderSelection(provider)"
+                       class="export-checkbox" />
+                <div class="export-provider-info">
+                  <span class="export-provider-name">{{ provider.name }}</span>
+                  <span class="export-provider-url">{{ provider.baseUrl }}</span>
+                </div>
               </div>
-              <div class="export-check" [class.export-check--on]="selectedExportIds.has(idx)">
-                <span *ngIf="selectedExportIds.has(idx)">✓</span>
-              </div>
+              <span class="badge secondary export-provider-badge">{{ provider.tools?.length || 0 }} tools</span>
+            </summary>
+
+            <div class="export-tools-body">
+              @for (tool of provider.tools; track tool.code) {
+              <label class="export-tool-row">
+                <input type="checkbox"
+                       [checked]="selectedToolCodes.has(tool.code)"
+                       (change)="toggleToolSelection(tool)"
+                       class="export-checkbox export-checkbox--sm" />
+                <div class="export-tool-info">
+                  <span class="export-tool-name">{{ tool.name }}</span>
+                  <code class="export-tool-code">{{ tool.code }}</code>
+                  <span *ngIf="tool.description" class="export-tool-desc">{{ tool.description }}</span>
+                </div>
+              </label>
+              }
             </div>
-          </div>
+          </details>
           }
         </div>
         }
       </div>
 
       <!-- n8n Export Configuration -->
-      <div class="n8n-export-config" *ngIf="exportableProviders.length > 0" style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid rgba(255,255,255,0.1);">
-        <h4 style="margin-bottom: 0.5rem; font-size: 1.1rem; color: #fff;">{{ 'HOME.EXPORT_MODAL.N8N_CONFIG_TITLE' | translate }}</h4>
-        <p class="helper-text" style="font-size: 0.85rem; opacity: 0.7; margin-bottom: 1rem;">
-          {{ 'HOME.EXPORT_MODAL.N8N_CONFIG_LEAD' | translate }}
-        </p>
-        <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
-          <div class="form-group" style="flex: 1; min-width: 220px; display: flex; flex-direction: column; gap: 4px;">
-            <label style="font-size: 0.85rem; font-weight: 500; color: rgba(255,255,255,0.8);">{{ 'HOME.EXPORT_MODAL.N8N_URL_LABEL' | translate }}</label>
-            <input type="url" [(ngModel)]="invokUrl" [ngModelOptions]="{standalone: true}" placeholder="http://localhost:8080" style="width: 100%; border-radius: 6px; padding: 0.5rem; background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.15); color: #fff;" />
-          </div>
+      <div class="n8n-export-config" *ngIf="exportableProviders.length > 0">
+        <h4 class="n8n-config-title">{{ 'HOME.EXPORT_MODAL.N8N_CONFIG_TITLE' | translate }}</h4>
+        <p class="helper-text n8n-config-lead">{{ 'HOME.EXPORT_MODAL.N8N_CONFIG_LEAD' | translate }}</p>
+        <div class="form-group n8n-url-group">
+          <label class="n8n-url-label">{{ 'HOME.EXPORT_MODAL.N8N_URL_LABEL' | translate }}</label>
+          <input type="url" [(ngModel)]="invokUrl" [ngModelOptions]="{standalone: true}" placeholder="http://localhost:8080"
+            class="n8n-url-input" />
         </div>
       </div>
 
-      <div class="modal-actions" style="margin-top: 2rem;">
-        <button type="button" class="btn text-btn" (click)="closeExportModal()">{{ 'MODALS.CANCEL' | translate }}</button>
-        <button type="button" class="btn secondary" (click)="exportAsN8nWorkflow()"
-          [disabled]="isExporting || exportableProviders.length === 0">
-          <span>{{ 'HOME.EXPORT_MODAL.DOWNLOAD_N8N' | translate }}</span>
-        </button>
+      <div class="modal-actions export-modal-actions" style="display: flex; gap: 8px; flex-wrap: wrap; align-items: center;">
+        <button type="button" class="btn danger" (click)="closeExportModal()">{{ 'MODALS.CANCEL' | translate }}</button>
+        
+        <div style="display: inline-flex; align-items: center;">
+          <button type="button" class="btn primary" (click)="exportAsN8nWorkflowProxy()"
+            [disabled]="isExporting || selectedToolCodes.size === 0">
+            <span>{{ 'HOME.EXPORT_MODAL.DOWNLOAD_N8N_PROXY' | translate }}</span>
+          </button>
+          <span class="info-tooltip" [attr.data-tooltip]="'HOME.EXPORT_MODAL.N8N_PROXY_DESC' | translate">?</span>
+        </div>
+
+        <div style="display: inline-flex; align-items: center;">
+          <button type="button" class="btn primary" (click)="exportAsN8nWorkflowDirect()"
+            [disabled]="isExporting || selectedToolCodes.size === 0">
+            <span>{{ 'HOME.EXPORT_MODAL.DOWNLOAD_N8N_DIRECT' | translate }}</span>
+          </button>
+          <span class="info-tooltip" [attr.data-tooltip]="'HOME.EXPORT_MODAL.N8N_DIRECT_DESC' | translate">?</span>
+        </div>
+
         <button type="button" class="btn primary" (click)="exportSelectedProviders()"
-          [disabled]="isExporting || exportableProviders.length === 0">
-          <span *ngIf="!isExporting && selectedExportIds.size > 0">{{ 'HOME.EXPORT_MODAL.DOWNLOAD_JSON_SPECIFIC' | translate: { count: selectedExportIds.size } }}</span>
-          <span *ngIf="!isExporting && selectedExportIds.size === 0">{{ 'HOME.EXPORT_MODAL.DOWNLOAD_JSON_ALL' | translate }}</span>
+          [disabled]="isExporting || selectedToolCodes.size === 0">
+          <span *ngIf="!isExporting">
+            {{ (selectedToolCodes.size > 0 ? ('HOME.EXPORT_MODAL.DOWNLOAD_JSON_SPECIFIC_TOOLS' | translate: { count: selectedToolCodes.size }) : ('HOME.EXPORT_MODAL.DOWNLOAD_JSON_ALL_TOOLS' | translate)) }}
+          </span>
           <span *ngIf="isExporting">{{ 'HOME.EXPORT_MODAL.GENERATING' | translate }}</span>
         </button>
       </div>
