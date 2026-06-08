@@ -159,7 +159,7 @@
 }
 
 .modal--wide-lg {
-  max-width: 600px;
+  max-width: 780px;
 }
 
 .export-card-title {
@@ -372,6 +372,7 @@
   max-height: 300px;
   overflow-y: auto;
   padding-right: 0.5rem;
+  overscroll-behavior: contain;
 }
 
 // Export modal redesign
@@ -401,6 +402,7 @@
 }
 
 .export-provider-group {
+  flex-shrink: 0;
   background: rgba(255, 255, 255, 0.02);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 8px;

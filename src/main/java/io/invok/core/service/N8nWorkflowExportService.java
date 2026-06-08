@@ -440,8 +440,12 @@ public class N8nWorkflowExportService {
         List<Map<String, Object>> query = new ArrayList<>();
 
         if (isGet && tool.parameters() != null) {
+            String path = tool.endpointPath() != null ? tool.endpointPath() : "";
             for (ExportToolParameterDto p : tool.parameters()) {
-                query.add(Map.of("name", p.name(), "value", ""));
+                String placeholder = "{" + p.name() + "}";
+                if (!path.contains(placeholder)) {
+                    query.add(Map.of("name", p.name(), "value", ""));
+                }
             }
         }
 
@@ -470,8 +474,12 @@ public class N8nWorkflowExportService {
         List<Map<String, Object>> entries = new ArrayList<>();
 
         if (tool.parameters() != null) {
+            String path = tool.endpointPath() != null ? tool.endpointPath() : "";
             for (ExportToolParameterDto p : tool.parameters()) {
-                entries.add(Map.of("name", p.name(), "value", ""));
+                String placeholder = "{" + p.name() + "}";
+                if (!path.contains(placeholder)) {
+                    entries.add(Map.of("name", p.name(), "value", ""));
+                }
             }
         }
 
@@ -593,7 +601,17 @@ public class N8nWorkflowExportService {
                 : (provider.baseUrl() != null ? provider.baseUrl() : "");
         String path = tool.endpointPath() != null ? tool.endpointPath() : "";
         if (!path.isEmpty() && !path.startsWith("/")) path = "/" + path;
-        return base + path;
+        
+        String url = base + path;
+        if (tool.parameters() != null) {
+            for (ExportToolParameterDto p : tool.parameters()) {
+                String placeholder = "{" + p.name() + "}";
+                if (url.contains(placeholder)) {
+                    url = url.replace(placeholder, "{{ $json." + p.name() + " }}");
+                }
+            }
+        }
+        return url;
     }
 
     private String buildAuthNodeName(ExportApiProviderDto provider) {
