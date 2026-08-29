@@ -194,9 +194,24 @@ public class ToolExecutionService {
         }
 
         if (httpMethod == HttpMethod.GET || httpMethod == HttpMethod.DELETE) {
-            return requestSpec
+            // Content-type aware: parse JSON a estructura, y devolver texto plano
+            // (text/plain, HTML, CSV, etc.) como String sin romper el converter.
+            org.springframework.http.ResponseEntity<String> responseEntity = requestSpec
                     .retrieve()
-                    .body(Object.class);
+                    .toEntity(String.class);
+            MediaType responseContentType = responseEntity.getHeaders().getContentType();
+            String rawBody = responseEntity.getBody();
+            if (responseContentType != null
+                    && responseContentType.isCompatibleWith(MediaType.APPLICATION_JSON)
+                    && rawBody != null && !rawBody.isBlank()) {
+                try {
+                    return objectMapper.readValue(rawBody, Object.class);
+                } catch (Exception parseEx) {
+                    log.warn("Response declared JSON but parsing failed; returning raw body: {}",
+                            parseEx.getMessage());
+                }
+            }
+            return rawBody;
         } else {
             byte[] binaryBody = extractBinaryBody(apiTool, finalParameters);
             if (binaryBody != null) {
