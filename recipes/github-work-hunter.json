@@ -1,0 +1,160 @@
+[
+  {
+    "name": "GitHub",
+    "code": "github",
+    "baseUrl": "https://api.github.com",
+    "authenticationType": "BEARER_TOKEN",
+    "apiKeyLocation": "HEADER",
+    "isDynamicAuth": false,
+    "customHeaders": {
+      "Accept": "application/vnd.github+json",
+      "User-Agent": "Invok-WorkHunter/1.0",
+      "X-GitHub-Api-Version": "2022-11-28"
+    },
+    "tools": [
+      {
+        "name": "GitHub Get Authenticated User",
+        "code": "github-get-user",
+        "description": "Devuelve el usuario autenticado de GitHub (o error 401 si no hay token). Úsala para verificar que la credencial del provider está configurada y funcionando.",
+        "endpointPath": "/user",
+        "httpMethod": "GET",
+        "enabled": true,
+        "parameters": []
+      },
+      {
+        "name": "GitHub Search Issues",
+        "code": "github-search-issues",
+        "description": "Busca issues y PRs en GitHub con la query estándar de GitHub. Ejemplos: 'label:bounty is:issue is:open sort:created-desc', 'repo:owner/name is:open', 'label:\"help wanted\" created:2026-01-01..2026-07-01', 'language:typescript bounty'. Devuelve total_count e items con title, html_url, labels, comments, created_at, repository_url y body.",
+        "endpointPath": "/search/issues",
+        "httpMethod": "GET",
+        "enabled": true,
+        "parameters": [
+          {"name": "q", "type": "STRING", "description": "Query de búsqueda GitHub (obligatoria). Calificadores: label:, repo:, is:issue, is:open, created:>fecha, language:, sort:created-desc.", "required": true},
+          {"name": "per_page", "type": "NUMBER", "description": "Resultados por página (max 100, default 20).", "required": false, "defaultValue": "20"},
+          {"name": "sort", "type": "STRING", "description": "Orden: created, updated, comments, reactions.", "required": false},
+          {"name": "order", "type": "STRING", "description": "asc o desc.", "required": false}
+        ]
+      },
+      {
+        "name": "GitHub Search Repositories",
+        "code": "github-search-repositories",
+        "description": "Busca repositorios por lenguaje, topic o nombre. Útil para discovery proactivo: encontrar proyectos activos de un stack (ej. q='language:go pushed:>2026-08-01 stars:>100') donde luego buscar issues atacables.",
+        "endpointPath": "/search/repositories",
+        "httpMethod": "GET",
+        "enabled": true,
+        "parameters": [
+          {"name": "q", "type": "STRING", "description": "Query de repos: language:, topic:, stars:>N, pushed:>fecha, org:, etc.", "required": true},
+          {"name": "per_page", "type": "NUMBER", "description": "Resultados por página (max 100).", "required": false, "defaultValue": "10"},
+          {"name": "sort", "type": "STRING", "description": "Orden: stars, forks, updated.", "required": false},
+          {"name": "order", "type": "STRING", "description": "asc o desc.", "required": false}
+        ]
+      },
+      {
+        "name": "GitHub Get Repository",
+        "code": "github-get-repo",
+        "description": "Datos de salud de un repositorio: stars, language, pushed_at (última actividad), archived, open_issues_count, description, has_pages. Útil para verificar que un repo es un producto real y está activo.",
+        "endpointPath": "/repos/{owner}/{repo}",
+        "httpMethod": "GET",
+        "enabled": true,
+        "parameters": [
+          {"name": "owner", "type": "STRING", "description": "Dueño del repositorio.", "required": true},
+          {"name": "repo", "type": "STRING", "description": "Nombre del repositorio.", "required": true}
+        ]
+      },
+      {
+        "name": "GitHub Get Issue",
+        "code": "github-get-issue",
+        "description": "Trae UN issue completo y limpio: body completo, labels, assignees, estado, comentarios count. Más liviano que search para análisis profundo de una oportunidad.",
+        "endpointPath": "/repos/{owner}/{repo}/issues/{issue_number}",
+        "httpMethod": "GET",
+        "enabled": true,
+        "parameters": [
+          {"name": "owner", "type": "STRING", "description": "Dueño del repositorio.", "required": true},
+          {"name": "repo", "type": "STRING", "description": "Nombre del repositorio.", "required": true},
+          {"name": "issue_number", "type": "NUMBER", "description": "Número del issue.", "required": true}
+        ]
+      },
+      {
+        "name": "GitHub Issue Timeline",
+        "code": "github-issue-timeline",
+        "description": "Timeline de un issue: eventos cross-referenced revelan PRs vinculadas (competencia real por un bounty), assignees, cierres. Filtrar eventos con event='cross-referenced' cuyo source.issue tiene pull_request.",
+        "endpointPath": "/repos/{owner}/{repo}/issues/{issue_number}/timeline",
+        "httpMethod": "GET",
+        "enabled": true,
+        "parameters": [
+          {"name": "owner", "type": "STRING", "description": "Dueño del repositorio.", "required": true},
+          {"name": "repo", "type": "STRING", "description": "Nombre del repositorio.", "required": true},
+          {"name": "issue_number", "type": "NUMBER", "description": "Número del issue.", "required": true},
+          {"name": "per_page", "type": "NUMBER", "description": "Eventos por página (max 100).", "required": false, "defaultValue": "100"}
+        ]
+      },
+      {
+        "name": "GitHub List Pull Requests",
+        "code": "github-list-pulls",
+        "description": "Lista PRs de un repo (por estado). Mide competencia a nivel repo y si el proyecto integra contribuciones externas activamente.",
+        "endpointPath": "/repos/{owner}/{repo}/pulls",
+        "httpMethod": "GET",
+        "enabled": true,
+        "parameters": [
+          {"name": "owner", "type": "STRING", "description": "Dueño del repositorio.", "required": true},
+          {"name": "repo", "type": "STRING", "description": "Nombre del repositorio.", "required": true},
+          {"name": "state", "type": "STRING", "description": "open, closed o all.", "required": false, "defaultValue": "open"},
+          {"name": "per_page", "type": "NUMBER", "description": "PRs por página.", "required": false, "defaultValue": "10"}
+        ]
+      },
+      {
+        "name": "GitHub List Commits",
+        "code": "github-list-commits",
+        "description": "Commits recientes de un repo: verifica actividad real del mantenedor (repo vivo) y ritmo de desarrollo. Señal anti-granja.",
+        "endpointPath": "/repos/{owner}/{repo}/commits",
+        "httpMethod": "GET",
+        "enabled": true,
+        "parameters": [
+          {"name": "owner", "type": "STRING", "description": "Dueño del repositorio.", "required": true},
+          {"name": "repo", "type": "STRING", "description": "Nombre del repositorio.", "required": true},
+          {"name": "per_page", "type": "NUMBER", "description": "Commits por página.", "required": false, "defaultValue": "10"}
+        ]
+      },
+      {
+        "name": "GitHub List Releases",
+        "code": "github-list-releases",
+        "description": "Lista releases de un repo: si tiene releases recientes es un producto real con mantenedor activo (señal anti-granja de bounties).",
+        "endpointPath": "/repos/{owner}/{repo}/releases",
+        "httpMethod": "GET",
+        "enabled": true,
+        "parameters": [
+          {"name": "owner", "type": "STRING", "description": "Dueño del repositorio.", "required": true},
+          {"name": "repo", "type": "STRING", "description": "Nombre del repositorio.", "required": true},
+          {"name": "per_page", "type": "NUMBER", "description": "Releases por página.", "required": false, "defaultValue": "5"}
+        ]
+      }
+    ]
+  },
+  {
+    "name": "GitHub Raw",
+    "code": "github-raw",
+    "baseUrl": "https://raw.githubusercontent.com",
+    "authenticationType": "NONE",
+    "apiKeyLocation": "NONE",
+    "isDynamicAuth": false,
+    "customHeaders": {
+      "User-Agent": "Invok-WorkHunter/1.0"
+    },
+    "tools": [
+      {
+        "name": "GitHub Get Raw File",
+        "code": "github-raw-get-file",
+        "description": "Descarga un archivo de texto de un repo como contenido plano: README.md, CONTRIBUTING.md, docker-compose.yml, package.json, etc. El path puede incluir subcarpetas (ej. 'docs/CONTRIBUTING.md'). Sirve para leer convenciones de contribución y verificar que el proyecto es real.",
+        "endpointPath": "/{owner}/{repo}/{branch}/{file_path}",
+        "httpMethod": "GET",
+        "enabled": true,
+        "parameters": [
+          {"name": "owner", "type": "STRING", "description": "Dueño del repositorio.", "required": true},
+          {"name": "repo", "type": "STRING", "description": "Nombre del repositorio.", "required": true},
+          {"name": "branch", "type": "STRING", "description": "Rama (usualmente main o master).", "required": false, "defaultValue": "main"},
+          {"name": "file_path", "type": "STRING", "description": "Ruta del archivo, puede incluir subcarpetas (ej. 'docs/CONTRIBUTING.md').", "required": true}
+        ]
+      }
+    ]
+  }
+]
