@@ -1,0 +1,65 @@
+[
+  {
+    "name": "HN Algolia",
+    "code": "hn-algolia",
+    "baseUrl": "https://hn.algolia.com",
+    "authenticationType": "NONE",
+    "apiKeyLocation": "NONE",
+    "isDynamicAuth": false,
+    "customHeaders": {
+      "User-Agent": "Invok-WorkHunter/1.0"
+    },
+    "tools": [
+      {
+        "name": "HN Search Stories",
+        "code": "hn-search",
+        "description": "Busca stories o comments en Hacker News via la API publica de Algolia (orden por fecha). Para gigs de freelance: query='freelancer seeking freelancer' tags='story' trae los hilos mensuales 'Ask HN: Freelancer? Seeking freelancer?'; luego tags='comment,story_{id}' trae los comentarios (los gigs) de un hilo. Devuelve hits con author, title, comment_text, story_id, objectID, created_at.",
+        "endpointPath": "/api/v1/search_by_date",
+        "httpMethod": "GET",
+        "enabled": true,
+        "parameters": [
+          {"name": "query", "type": "STRING", "description": "Texto a buscar (puede ir vacio si se filtra solo por tags).", "required": false, "defaultValue": ""},
+          {"name": "tags", "type": "STRING", "description": "Filtro de tipo: 'story', 'comment', 'comment,story_12345' (comentarios de un hilo).", "required": false},
+          {"name": "hitsPerPage", "type": "NUMBER", "description": "Resultados por pagina (max 100).", "required": false, "defaultValue": "20"},
+          {"name": "numericFilters", "type": "STRING", "description": "Filtros numericos, ej: created_at_i>1754000000 (unix timestamp).", "required": false}
+        ]
+      },
+      {
+        "name": "HN Search Relevance",
+        "code": "hn-search-relevance",
+        "description": "Igual que hn-search pero ordenado por RELEVANCIA (no por fecha). Usar para encontrar los hilos canonicos mensuales ('Ask HN: Who is hiring? (August 2026)', 'Ask HN: Freelancer? Seeking freelancer?') porque search_by_date los entierra bajo menciones mas recientes del mismo termino.",
+        "endpointPath": "/api/v1/search",
+        "httpMethod": "GET",
+        "enabled": true,
+        "parameters": [
+          {"name": "query", "type": "STRING", "description": "Texto a buscar.", "required": true},
+          {"name": "tags", "type": "STRING", "description": "Filtro de tipo: 'story', 'comment'.", "required": false},
+          {"name": "hitsPerPage", "type": "NUMBER", "description": "Resultados por pagina.", "required": false, "defaultValue": "10"}
+        ]
+      }
+    ]
+  },
+  {
+    "name": "RemoteOK",
+    "code": "remoteok",
+    "baseUrl": "https://remoteok.com",
+    "authenticationType": "NONE",
+    "apiKeyLocation": "NONE",
+    "isDynamicAuth": false,
+    "customHeaders": {
+      "User-Agent": "Invok-WorkHunter/1.0",
+      "Accept": "application/json"
+    },
+    "tools": [
+      {
+        "name": "RemoteOK List Jobs",
+        "code": "remoteok-list-jobs",
+        "description": "Lista ofertas remotas de RemoteOK (JSON). El primer elemento es un legal notice: ignorarlo. Cada job tiene position, company, tags, salary_min/max, date, url. Filtrar por tags tech (go, typescript, java, devops) y contract/freelance.",
+        "endpointPath": "/api",
+        "httpMethod": "GET",
+        "enabled": true,
+        "parameters": []
+      }
+    ]
+  }
+]
