@@ -1,0 +1,44 @@
+[
+  {
+    "name": "Freelancer.com",
+    "code": "freelancer",
+    "baseUrl": "https://www.freelancer.com",
+    "authenticationType": "API_KEY",
+    "apiKeyLocation": "HEADER",
+    "apiKeyName": "Freelancer-OAuth-V1",
+    "isDynamicAuth": false,
+    "customHeaders": {
+      "User-Agent": "Invok-WorkHunter/1.0",
+      "Accept": "application/json"
+    },
+    "tools": [
+      {
+        "name": "Freelancer Search Projects",
+        "code": "freelancer-search-projects",
+        "description": "Busca proyectos activos en Freelancer.com. SIN token devuelve campos básicos (title, currency, seo_url); CON Personal Access Token se completan description, jobs (categorías), owner_id, budget y bidz. Para micro-trabajo: query con el stack (ej. 'java spring fix', 'typescript react bug'), limit 20-50. Respuesta: result.projects[] con id, title, seo_url, currency, budget_minimum, budget_maximum, jobs, description.",
+        "endpointPath": "/api/projects/0.1/projects/active/",
+        "httpMethod": "GET",
+        "enabled": true,
+        "parameters": [
+          {"name": "query", "type": "STRING", "description": "Texto de búsqueda de proyectos (stack o tipo de tarea).", "required": false},
+          {"name": "limit", "type": "NUMBER", "description": "Cantidad de proyectos por página (max 100).", "required": false, "defaultValue": "20"},
+          {"name": "offset", "type": "NUMBER", "description": "Offset de paginación.", "required": false, "defaultValue": "0"},
+          {"name": "full_description", "type": "BOOLEAN", "description": "true para traer la descripción completa del proyecto (requiere token).", "required": false, "defaultValue": "false"},
+          {"name": "sort", "type": "STRING", "description": "Orden del resultado, ej: 'time_submitted' (más nuevos primero por defecto).", "required": false}
+        ]
+      },
+      {
+        "name": "Freelancer Get Project",
+        "code": "freelancer-get-project",
+        "description": "Trae UN proyecto por ID con detalle completo: descripción, budget, skills requeridos (jobs), estado, cantidad de bids. Con token incluye campos premium. Útil para el análisis profundo de una oportunidad antes de proponer.",
+        "endpointPath": "/api/projects/0.1/projects/{project_id}/",
+        "httpMethod": "GET",
+        "enabled": true,
+        "parameters": [
+          {"name": "project_id", "type": "NUMBER", "description": "ID numérico del proyecto.", "required": true},
+          {"name": "full_description", "type": "BOOLEAN", "description": "true para la descripción completa (requiere token).", "required": false, "defaultValue": "true"}
+        ]
+      }
+    ]
+  }
+]
