@@ -77,6 +77,102 @@
             "defaultValue": "true"
           }
         ]
+      },
+      {
+        "name": "Freelancer Place Bid",
+        "code": "freelancer-place-bid",
+        "description": "COLOCA UNA PROPUESTA (bid) en un proyecto. SENSIBLE: en aigent requiere aprobación humana (approval policy). URL real del request: POST https://www.freelancer.com/api/projects/0.1/bids/ con header Freelancer-OAuth-V1 inyectado por Invok (nunca visible). Body JSON: project_id (int), amount (float, precio ofertado USD), period (int, días de entrega), description (texto de la propuesta). Respuesta exitosa: result con bid id y status. CONTRATO VERIFICADO: exige bidder_id (de freelancer-self), project_id, amount, period, description.",
+        "endpointPath": "/api/projects/0.1/bids/",
+        "httpMethod": "POST",
+        "enabled": true,
+        "parameters": [
+          {
+            "name": "bidder_id",
+            "type": "NUMBER",
+            "description": "TU user_id (obtenelo de freelancer-self). El API lo exige.",
+            "required": true
+          },
+          {
+            "name": "project_id",
+            "type": "NUMBER",
+            "description": "ID del proyecto a onde pujar.",
+            "required": true
+          },
+          {
+            "name": "amount",
+            "type": "NUMBER",
+            "description": "Monto ofertado en USD.",
+            "required": true
+          },
+          {
+            "name": "period",
+            "type": "NUMBER",
+            "description": "Días de entrega.",
+            "required": false,
+            "defaultValue": "7"
+          },
+          {
+            "name": "description",
+            "type": "STRING",
+            "description": "Texto completo de la propuesta (personalizada, sin templates).",
+            "required": true
+          }
+        ]
+      },
+      {
+        "name": "Freelancer Self",
+        "code": "freelancer-self",
+        "description": "Datos del usuario autenticado (user_id propio). Necesario para consultar tus propios bids y respuestas.",
+        "endpointPath": "/api/users/0.1/self/",
+        "httpMethod": "GET",
+        "enabled": true,
+        "parameters": []
+      },
+      {
+        "name": "Freelancer List Bids",
+        "code": "freelancer-list-bids",
+        "description": "Lista bids. Con project_id: los bids de un proyecto (ver competencia). Con user_id (tu id de freelancer-self): TUS bids enviados y su estado (active/awarded/ended) para saber si te aceptaron.",
+        "endpointPath": "/api/projects/0.1/bids/",
+        "httpMethod": "GET",
+        "enabled": true,
+        "parameters": [
+          {
+            "name": "project_id",
+            "type": "NUMBER",
+            "description": "Filtrar por proyecto.",
+            "required": false
+          },
+          {
+            "name": "user_id",
+            "type": "NUMBER",
+            "description": "Filtrar por usuario (tu user_id para ver tus bids).",
+            "required": false
+          },
+          {
+            "name": "limit",
+            "type": "NUMBER",
+            "description": "Cantidad de resultados.",
+            "required": false,
+            "defaultValue": "20"
+          }
+        ]
+      },
+      {
+        "name": "Freelancer List Threads",
+        "code": "freelancer-list-threads",
+        "description": "Bandeja de mensajes: hilos de chat con clientes. Sirve para detectar RESPUESTAS a propuestas enviadas (el cliente escribió = interés). Devuelve threads con último mensaje y estado de lectura.",
+        "endpointPath": "/api/messages/0.1/threads/",
+        "httpMethod": "GET",
+        "enabled": true,
+        "parameters": [
+          {
+            "name": "limit",
+            "type": "NUMBER",
+            "description": "Cantidad de hilos.",
+            "required": false,
+            "defaultValue": "20"
+          }
+        ]
       }
     ]
   }
